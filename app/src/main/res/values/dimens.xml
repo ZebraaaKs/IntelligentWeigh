@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <!--固定高度-->
+    <dimen name="fixed_height">44dp</dimen>
+    <!--item固定高度-->
+    <dimen name="fixed_item_height_small">48dp</dimen>
+    <dimen name="fixed_item_height_medium">56dp</dimen>
+    <dimen name="fixed_item_height_large">72dp</dimen>
+
+    <!--图片大小-->
+    <dimen name="icon">24dp</dimen>
+    <dimen name="head">40dp</dimen>
+    <dimen name="big_pic">56dp</dimen>
+
+    <!-- margin -->
+    <dimen name="margin_tiny">4dp</dimen>
+    <dimen name="margin_small">8dp</dimen>
+    <dimen name="margin_medium">16dp</dimen>
+    <dimen name="margin_large">32dp</dimen>
+    <dimen name="margin_huge">64dp</dimen>
+    <dimen name="margin_only_txt">48dp</dimen>
+
+    <!-- txtsize -->
+    <dimen name="txtsize_display1">34sp</dimen>
+    <dimen name="txtsize_headline">24sp</dimen>
+    <dimen name="txtsize_title">20sp</dimen>
+    <dimen name="txtsize_subhead">16sp</dimen>
+    <dimen name="txtsize_body">14sp</dimen>
+    <dimen name="txtsize_caption">12sp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
+
+    <dimen name="common_item_margin">16dp</dimen>
+
+    <dimen name="dialog_radius">15dp</dimen>
+</resources>

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#5588fc</color>
+    <color name="colorPrimar">#90a2cc</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="white">#ffffff</color>
+    <color name="green">#4fd065</color>
+    <color name="primary">#67b5fd</color>
+
+    <color name="transparent">#00000000</color>
+
+    <!-- 主体文字,标题/标签 -->
+    <color name="txt_black">#2e3134</color>
+    <!-- 内容文字,正文 -->
+    <color name="txt_gray">#808589</color>
+    <color name="txt_red">#F14A4A</color>
+    <color name="txt_orange">#F9854F</color>
+    <color name="txt_yello">#ffea01</color>
+
+    <!-- 辅助文字,提示 -->
+    <color name="txt_light_gray">#aaaaaa</color>
+    <color name="txt_light_gray_in_parimary">#C6D4FE</color>
+    <!-- 背景色 -->
+    <color name="bg_gray">#f0f0f0</color>
+    <color name="home_title_bg">#F7F7F7</color>
+
+    <!-- 分割线 -->
+    <color name="divider_gray_in_white">#D6D7DC</color>
+    <color name="divider_gray_in_gray">#d6d6d6</color>
+
+
+    <color name="black">#000000</color>
+    <color name="grey">#C2C2C2</color>
+    <color name="map_bg">#F6F5EF</color>
+    <color name="monitor_state1">#29CF57</color>
+    <color name="monitor_state2">#FF5252</color>
+    <color name="text">#9E9C9D</color>
+    <color name="title_red">#FF537B</color>
+    <color name="title_color">#333333</color>
+    <color name="text_blue">#3E79FF</color>
+    <color name="divider">#F0F0F0</color>
+    <color name="text_grey">#6F6F6F</color>
+    <color name="title_bg">#FF242736</color>
+    <color name="result_view">#b0000000</color>
+    <color name="viewfinder_mask">#60000000</color>
+    <color name="viewfinder_laser">#ffcc0000</color> <!-- Android standard ICS color -->
+    <color name="possible_result_points">#c0ffff00</color>
+    <color name="text_orange">#E18D2E</color>
+    <color name="light_grey">#A6A6A6</color>
+    <color name="verylight_grey">#ECEEF3</color>
+    <color name="grey_searchitem">#DBDBDB</color>
+    <color name="divider_grey">#F5F5F5</color>
+    <color name="text_dark_grey">#606060</color>
+    <color name="listview_divider">#E7E7E7</color>
+    <color name="black_0.2">#99000000</color>
+
+    <!-- 分割线 -->
+    <!--<color name="red">#ff403c</color>-->
+
+    <color name="scan_corner_color">#5588FC</color>
+    <color name="car_line">#de3720</color>
+
+    <color name="txt_ty">#A2FFA9</color>
+    <color name="txt_ty_no">#FFCE7A</color>
+    <color name="hint_color">#66ffffff</color>
+    <color name="login_color">#1492ff</color>
+    <color name="red">#ff0000</color>
+    <color name="tv_color">#e0e0e0</color>
+    <color name="btn_bg_color">#f98e0f</color>
+
+    <color name="line_default_color">#e5e5e5</color>
+
+    <color name="list_view_item_org">#f8f8f8</color>
+    <color name="list_view_item_white">#ffffff</color>
+    <color name="background_tab_pressed">#e5e5e5</color>
+    <color name="action_sheet_blue">#037BFF</color>
+</resources>
