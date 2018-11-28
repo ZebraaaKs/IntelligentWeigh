@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
@@ -57,7 +58,9 @@ public class RegisterActivity extends BaseActivity implements View.OnClickListen
 
     private void initView() {
         et_phone = (EditText) findViewById(R.id.et_phone);
+        et_phone.setInputType( InputType.TYPE_CLASS_NUMBER);
         ed_ensurecode = (EditText) findViewById(R.id.ed_ensurecode);
+        ed_ensurecode.setInputType( InputType.TYPE_CLASS_NUMBER);
         bt_codesend = (Button) findViewById(R.id.bt_codesend);
         et_register_password = (EditText) findViewById(R.id.et_register_password);
         et_register_username = (EditText) findViewById(R.id.et_register_username);

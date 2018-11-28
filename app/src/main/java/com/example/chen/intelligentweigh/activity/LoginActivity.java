@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -61,6 +62,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     private void initView() {
         et_phone = (EditText) findViewById(R.id.et_phone);
+        et_phone.setInputType( InputType.TYPE_CLASS_NUMBER);
         et_password = (EditText) findViewById(R.id.et_password);
         initPhonePwd();
         rg_loginType = (RadioGroup) findViewById(R.id.rg_loginType);
@@ -79,7 +81,15 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         User user = LitePal.findLast(User.class);
         if (user != null) {
             et_phone.setText(user.getPhone());
+            et_phone.setFocusable(false);
+            et_phone.setFocusable(true);
+            et_phone.setFocusableInTouchMode(true);
+            et_phone.requestFocus();
             et_password.setText(user.getPassword());
+            et_password.setFocusable(false);
+            et_password.setFocusable(true);
+            et_password.setFocusableInTouchMode(true);
+            et_password.requestFocus();
         }
     }
 
@@ -136,6 +146,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         }
         List<User> users = LitePal.where("phone = ? and password = ?", phone, password).find(User.class);
         if(users!=null&&!users.isEmpty()){
+            SharedPreferences sharedPreferences = getSharedPreferences("login",MODE_PRIVATE);
+            SharedPreferences.Editor editor=sharedPreferences.edit();
+            editor.putString("phone",phone);
+            editor.commit();
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
@@ -149,7 +163,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
      * @param phone
      * @param password
      */
-    private void LoginAppByNet(String phone, String password) {
+    private void LoginAppByNet(final String phone, String password) {
         if (TextUtils.isEmpty(phone)) {
             Toast.makeText(this, "请输入手机号", Toast.LENGTH_SHORT).show();
             return;
@@ -182,7 +196,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                                 user_db.setName(user.getName());
                                 user_db.save();
                             }
-
+                            SharedPreferences sharedPreferences = getSharedPreferences("login",MODE_PRIVATE);
+                            SharedPreferences.Editor editor=sharedPreferences.edit();
+                            editor.putString("phone",user.getPhone());
+                            editor.commit();
+                            user.updateAll("phone = ?",phone);
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             startActivity(intent);
                             finish();

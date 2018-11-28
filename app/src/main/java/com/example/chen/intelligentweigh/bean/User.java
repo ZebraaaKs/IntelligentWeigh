@@ -62,7 +62,7 @@ public class User extends LitePalSupport{
         this.name = name;
     }
 
-    public Object getAge() {
+    public String getAge() {
         return age;
     }
 
