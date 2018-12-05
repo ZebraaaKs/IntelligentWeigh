@@ -1,11 +1,7 @@
 package com.example.chen.intelligentweigh.activity;
 
-import android.content.pm.ActivityInfo;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.DisplayMetrics;
-import android.view.Display;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -15,11 +11,11 @@ import com.example.chen.intelligentweigh.util.CommonAction;
 import com.example.chen.intelligentweigh.util.StatusBarUtils;
 
 /**
- * author : chen
- * date   : 2018/11/27  15:56
- * desc   :
+ * @author chen
+ * @date 2018/12/5.   15:21
+ * description：
  */
-public class MeInfoActivity extends BaseActivity {
+public class HouseMangerActivity extends BaseActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -29,8 +25,8 @@ public class MeInfoActivity extends BaseActivity {
         //取消状态栏
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.me_info_activity);
+        setContentView(R.layout.house_manger_activity);
+        StatusBarUtils.setStatusBarFull(this);
         CommonAction.getInstance().addActivity(this);
-
     }
 }

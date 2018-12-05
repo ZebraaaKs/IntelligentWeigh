@@ -79,7 +79,7 @@ public class AlertDialog {
         setGone();
         dialog = new Dialog(context, R.style.AlertDialogStyle);
         dialog.setContentView(view);
-        lLayout_bg.setLayoutParams(new FrameLayout.LayoutParams((int) (800), LayoutParams.WRAP_CONTENT));
+        lLayout_bg.setLayoutParams(new FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 
         return this;
     }
@@ -102,7 +102,7 @@ public class AlertDialog {
         setEtGone();
         dialog = new Dialog(context, R.style.AlertDialogStyle);
         dialog.setContentView(view);
-        lLayout_bg.setLayoutParams(new FrameLayout.LayoutParams((int) (800), LayoutParams.WRAP_CONTENT));
+        lLayout_bg.setLayoutParams(new FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
         return this;
     }
 
@@ -124,7 +124,7 @@ public class AlertDialog {
         setRgGone();
         dialog = new Dialog(context, R.style.AlertDialogStyle);
         dialog.setContentView(view);
-        lLayout_bg.setLayoutParams(new FrameLayout.LayoutParams((int) (800), LayoutParams.WRAP_CONTENT));
+        lLayout_bg.setLayoutParams(new FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
         return this;
     }
 

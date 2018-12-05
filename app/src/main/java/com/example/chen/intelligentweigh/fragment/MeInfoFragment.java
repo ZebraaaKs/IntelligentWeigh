@@ -1,23 +1,36 @@
 package com.example.chen.intelligentweigh.fragment;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.signature.StringSignature;
 import com.example.chen.intelligentweigh.BaseFragment;
 import com.example.chen.intelligentweigh.R;
 import com.example.chen.intelligentweigh.activity.LoginActivity;
+import com.example.chen.intelligentweigh.activity.SetTouXiangActivity;
 import com.example.chen.intelligentweigh.bean.User;
 import com.example.chen.intelligentweigh.util.AlertDialog;
 import com.example.chen.intelligentweigh.util.HttpUrlUtils;
+import com.example.chen.intelligentweigh.util.SharedUtils;
+import com.example.chen.intelligentweigh.util.StatusBarUtils;
 import com.example.chen.intelligentweigh.util.TitleBuilder;
 import com.squareup.okhttp.Request;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -35,7 +48,7 @@ import static android.content.Context.MODE_PRIVATE;
  * date   : 2018/11/27  15:59
  * desc   : 用户信息的展示
  */
-public class MeInfoFragment extends BaseFragment {
+public class MeInfoFragment extends Fragment {
 
 
     private RelativeLayout rl_touxiang;
@@ -46,6 +59,8 @@ public class MeInfoFragment extends BaseFragment {
     private TextView tv_item_sex;
     private RelativeLayout rl_sex;
     private TextView tv_item_phone;
+    private ImageView iv_item_touxiang;
+    private String TAG = "MeInfoFragment";
 
     @Nullable
     @Override
@@ -87,7 +102,7 @@ public class MeInfoFragment extends BaseFragment {
             List<User> users = LitePal.where("phone = ?", phone).find(User.class);
             if (users != null && !users.isEmpty()) {
                 User user = users.get(0);
-                tv_item_phone.setText(user.getPhone().substring(0,3)+"****"+user.getPhone().substring(7,11));
+                tv_item_phone.setText(user.getPhone().substring(0, 3) + "****" + user.getPhone().substring(7, 11));
                 if (user.getAge() == null) {
                     tv_item_age.setText("0");
                 } else {
@@ -102,7 +117,7 @@ public class MeInfoFragment extends BaseFragment {
 
             }
         }
-
+        iv_item_touxiang = (ImageView) view.findViewById(R.id.iv_item_touxiang);
 
     }
 
@@ -117,8 +132,8 @@ public class MeInfoFragment extends BaseFragment {
             initAge(phone);
             initSex(phone);
         }
-
-
+        IntentFilter filter = new IntentFilter(SetTouXiangActivity.action);
+        getActivity().registerReceiver(broadcastReceiver, filter);
     }
 
     private void initSex(final String phone) {
@@ -132,9 +147,9 @@ public class MeInfoFragment extends BaseFragment {
                         final String msg = myDialog.getRgChoose();
                         OkHttpUtils.get()
                                 .url(HttpUrlUtils.CHANGEINFO_NOTOUXINANG_URL)
-                                .addParams("ziduan","sex")
-                                .addParams("value",msg)
-                                .addParams("phone",phone)
+                                .addParams("ziduan", "sex")
+                                .addParams("value", msg)
+                                .addParams("phone", phone)
                                 .build()
                                 .execute(new StringCallback() {
                                     @Override
@@ -142,7 +157,7 @@ public class MeInfoFragment extends BaseFragment {
                                         getActivity().runOnUiThread(new Runnable() {
                                             @Override
                                             public void run() {
-                                                Toast.makeText(getContext(), "请检查网络连接", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(getActivity(), "请检查网络连接", Toast.LENGTH_SHORT).show();
                                             }
                                         });
 
@@ -150,7 +165,7 @@ public class MeInfoFragment extends BaseFragment {
 
                                     @Override
                                     public void onResponse(String response) {
-                                        if("ok".equals(response.toString())){
+                                        if ("ok".equals(response.toString())) {
                                             //先更新数据库
                                             User user = new User();
                                             user.setSex(msg);
@@ -161,7 +176,7 @@ public class MeInfoFragment extends BaseFragment {
                                                     tv_item_sex.setText(msg);
                                                 }
                                             });
-                                        }else{
+                                        } else {
                                             getActivity().runOnUiThread(new Runnable() {
                                                 @Override
                                                 public void run() {
@@ -205,7 +220,7 @@ public class MeInfoFragment extends BaseFragment {
                                             getActivity().runOnUiThread(new Runnable() {
                                                 @Override
                                                 public void run() {
-                                                    Toast.makeText(getContext(), "请检查网络连接", Toast.LENGTH_SHORT).show();
+                                                    Toast.makeText(getActivity(), "请检查网络连接", Toast.LENGTH_SHORT).show();
                                                 }
                                             });
 
@@ -284,7 +299,7 @@ public class MeInfoFragment extends BaseFragment {
                                         getActivity().runOnUiThread(new Runnable() {
                                             @Override
                                             public void run() {
-                                                Toast.makeText(getContext(), "请检查网络连接", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(getActivity(), "请检查网络连接", Toast.LENGTH_SHORT).show();
                                             }
                                         });
                                     }
@@ -325,11 +340,55 @@ public class MeInfoFragment extends BaseFragment {
      * 设置用户头像
      */
     private void initTouxiang() {
+        refreshIcon();
         rl_touxiang.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getActivity(), "设置头像", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(getActivity(), SetTouXiangActivity.class);
+                startActivity(intent);
             }
         });
+    }
+
+    BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            refreshIcon();
+        }
+    };
+
+    private void refreshIcon() {
+        Log.e(TAG,"me 广播");
+        String phone = SharedUtils.getPhone(getActivity());
+        if (!TextUtils.isEmpty(phone)) {
+            List<User> users = LitePal.where("phone = ?", phone).find(User.class);
+            if (users != null || !users.isEmpty()) {
+                String touxiang = users.get(0).getTouxiang();
+                if(touxiang!=null) {
+                    if (!touxiang.contains("/JDGJ/TOUX/")) {
+                        Glide.with(getActivity()).load(touxiang)
+                                .error(R.drawable.iconn)
+                                .signature(new StringSignature(SharedUtils.getTime(getActivity())))
+                                .into(iv_item_touxiang);
+                    } else {
+                        Log.e(TAG, "网络获取me");
+                        Glide.with(getActivity()).load(HttpUrlUtils.TOUXIANG_URL + touxiang)
+                                .error(R.drawable.iconn)
+                                .signature(new StringSignature(SharedUtils.getTime(getActivity())))
+                                .into(iv_item_touxiang);
+                    }
+                }else{
+                    iv_item_touxiang.setImageResource(R.drawable.iconn);
+                }
+            }
+        }else{
+            iv_item_touxiang.setImageResource(R.drawable.iconn);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        getActivity().unregisterReceiver(broadcastReceiver);
     }
 }

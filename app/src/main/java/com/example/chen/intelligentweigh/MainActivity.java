@@ -12,7 +12,7 @@ import android.widget.Toast;
 import com.example.chen.intelligentweigh.util.CommonAction;
 import com.example.chen.intelligentweigh.util.StatusBarUtils;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     //是否连续点击两次（2s之类）
     private static boolean isExit = false;
@@ -29,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //取消标题栏
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         //取消状态栏
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+    >
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/iv_touxiang"
+        android:src="@drawable/cow"
+        android:layout_width="60dp"
+        android:layout_height="60dp" />
+    <TextView
+        android:id="@+id/tv_name"
+        android:paddingLeft="6dp"
+        android:textColor="@color/txt_black"
+        android:textSize="20sp"
+        android:text="chen"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/iv_touxiang"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/tv_house"
+        android:text="牧场一，牧场二"
+        android:textSize="12sp"
+        android:textColor="@color/txt_black"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/tv_phone"
+        android:paddingTop="14dp"
+        android:text="15162249219"
+        android:textColor="@color/txt_black"
+        android:textSize="18sp"
+        android:layout_below="@id/tv_house"
+        android:layout_alignParentRight="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>

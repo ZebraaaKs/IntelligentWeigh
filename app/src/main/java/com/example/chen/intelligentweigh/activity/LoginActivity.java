@@ -200,6 +200,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                             SharedPreferences.Editor editor=sharedPreferences.edit();
                             editor.putString("phone",user.getPhone());
                             editor.commit();
+                            //更新数据库
                             user.updateAll("phone = ?",phone);
                             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                             startActivity(intent);

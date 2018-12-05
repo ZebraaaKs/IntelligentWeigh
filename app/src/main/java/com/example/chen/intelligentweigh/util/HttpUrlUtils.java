@@ -10,6 +10,9 @@ public class HttpUrlUtils {
     //基础URL
     public final static String BASE_URL = "http://106.14.145.208/IntelligentWeigh/";
 
+    //头像URL
+    public final static String TOUXIANG_URL = "http://106.14.145.208/";
+
     //登录url
     public final static String LOGIN_URL = BASE_URL+"LoginCheckSer";
 
@@ -24,4 +27,8 @@ public class HttpUrlUtils {
 
     //删除用户url
     public final static String DELETEUSER_URL = BASE_URL+"DeleteUser";
+
+    //所有用户信息URL
+    public final static String ALL_USER_URL = BASE_URL+"BackAllUsers";
+
 }
