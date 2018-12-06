@@ -14,17 +14,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.chen.intelligentweigh.BaseFragment;
 import com.example.chen.intelligentweigh.R;
 import com.example.chen.intelligentweigh.activity.LoginActivity;
+import com.example.chen.intelligentweigh.activity.PeopleMangerActivity;
 import com.example.chen.intelligentweigh.activity.kidActivity.PeopleInfoActivity;
 import com.example.chen.intelligentweigh.bean.People;
 import com.example.chen.intelligentweigh.fragment.PeopleMangerFragment;
 import com.example.chen.intelligentweigh.util.AlertDialog;
+import com.example.chen.intelligentweigh.util.Event.MessageEvent;
 import com.example.chen.intelligentweigh.util.HttpUrlUtils;
 import com.example.chen.intelligentweigh.util.TitleBuilder;
+import com.squareup.okhttp.Request;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -52,6 +58,7 @@ public class PeopleInfoFragment extends BaseFragment {
     private Button btn_bindhouse;
     private Button btn_deletepeople;
     private People people;
+    private boolean isTwoPan;
     private String TAG = "PeopleInfoFragment";
 
 
@@ -75,6 +82,18 @@ public class PeopleInfoFragment extends BaseFragment {
         bundle.putSerializable("peopleInfo",people);
         peopleInfoFragment.setArguments(bundle);
         return peopleInfoFragment;
+    }
+
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (getActivity().findViewById(R.id.other_content_frag) != null) {
+            isTwoPan = true;
+        } else {
+            isTwoPan = false;
+        }
+
     }
 
 
@@ -156,6 +175,38 @@ public class PeopleInfoFragment extends BaseFragment {
      * @param phone 手机号
      */
     private void doDeletePeople(String phone) {
+        OkHttpUtils.get()
+                .url(HttpUrlUtils.DELETEUSER_URL)
+                .addParams("user_phone",phone)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Request request, Exception e) {
+                        if (getActivity() != null) {
+                            Toast.makeText(getActivity(), "请检查网络连接", Toast.LENGTH_LONG).show();
+                        }
+                    }
+
+                    @Override
+                    public void onResponse(String response) {
+                        if (getActivity() != null) {
+                            if ("ok".equals(response.toString())) {
+                                Toast.makeText(getActivity(), "删除成功", Toast.LENGTH_LONG).show();
+                                EventBus.getDefault().post(new MessageEvent("delete_user"));
+                                if (isTwoPan) {
+                                    PeopleMangerFragment fragment = new PeopleMangerFragment();
+                                    getFragmentManager().beginTransaction().replace(R.id.other_content_frag, fragment).commit();
+                                } else {
+                                    getActivity().finish();
+                                }
+
+                            } else {
+                                Toast.makeText(getActivity(), "删除失败", Toast.LENGTH_LONG).show();
+                            }
+
+                        }
+                    }
+                });
     }
 
 
@@ -199,6 +250,7 @@ public class PeopleInfoFragment extends BaseFragment {
                         @Override
                         public void onClick(View v) {
                             doDeletePeople(people.getPhone());
+
                         }
                     }).show();
                 }

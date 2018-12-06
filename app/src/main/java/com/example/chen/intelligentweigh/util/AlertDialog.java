@@ -96,6 +96,7 @@ public class AlertDialog {
         lLayout_bg = (LinearLayout) view.findViewById(R.id.lLayout_bg);
         txt_title = (TextView) view.findViewById(R.id.txt_title);
         et_msg = (EditText) view.findViewById(R.id.et_msg);
+
         btn_neg = (Button) view.findViewById(R.id.btn_neg);
         btn_pos = (Button) view.findViewById(R.id.btn_pos);
         img_line = (ImageView) view.findViewById(R.id.img_line);
@@ -207,7 +208,7 @@ public class AlertDialog {
 
     /**
      * 设置输入Message
-     * 1 姓名  2 年龄
+     * 1 姓名  2 年龄   3牧场  4牧场分区
      * @param type
      * @return
      */
@@ -239,6 +240,10 @@ public class AlertDialog {
                     et_msg.setText(user.getAge());
                     et_msg.setSelection(user.getAge().length());
                 }
+            }else if("3".equals(type)){
+                et_msg.setHint("牧场名字");
+            }else if("4".equals(type)){
+                et_msg.setHint("分区名字");
             }
 
         }

@@ -31,4 +31,19 @@ public class HttpUrlUtils {
     //所有用户信息URL
     public final static String ALL_USER_URL = BASE_URL+"BackAllUsers";
 
+    //所有牧场信息URL
+    public final static String ALL_HOUSE_URL = BASE_URL+"BackUserAllFarms";
+
+    //添加牧场URL
+    public final static String ADD_NEW_HOUSE = BASE_URL+"AddNewFarm";
+
+    //指定牧场分区URL
+    public final static String ALL_HOUSE_AREA_URL = BASE_URL+"BackFarmAreasByID";
+
+    //添加牧场分区URL
+    public final static String ADD_HOUSE_AREA_URL = BASE_URL+"AddFarmArea";
+
+    //删除牧场分区URL
+    public final static String DELETE_HOUSE_AREA_URL = BASE_URL+"DeleteFarmArea";
+
 }

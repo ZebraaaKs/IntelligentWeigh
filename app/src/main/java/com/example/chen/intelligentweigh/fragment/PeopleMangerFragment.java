@@ -21,6 +21,7 @@ import com.example.chen.intelligentweigh.activity.kidActivity.PeopleInfoActivity
 import com.example.chen.intelligentweigh.adapter.ListViewPeopleAdapter;
 import com.example.chen.intelligentweigh.bean.People;
 import com.example.chen.intelligentweigh.fragment.kidFragment.PeopleInfoFragment;
+import com.example.chen.intelligentweigh.util.Event.MessageEvent;
 import com.example.chen.intelligentweigh.util.HttpUrlUtils;
 import com.example.chen.intelligentweigh.util.TitleBuilder;
 import com.google.gson.Gson;
@@ -30,6 +31,8 @@ import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -52,6 +55,7 @@ public class PeopleMangerFragment extends BaseFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.people_manger_frag, container, false);
         initView(view);
+        EventBus.getDefault().register(this);
         return view;
     }
 
@@ -101,34 +105,99 @@ public class PeopleMangerFragment extends BaseFragment {
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Request request, Exception e) {
-                        Toast.makeText(getActivity(), "请检查网络连接", Toast.LENGTH_SHORT).show();
+                        if (getActivity() != null) {
+                            Toast.makeText(getActivity(), "请检查网络连接", Toast.LENGTH_SHORT).show();
+                        }
                     }
 
                     @Override
                     public void onResponse(String response) {
-                        if("error".equals(response.toString())){
-                            getActivity().runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Toast.makeText(getActivity(), "数据出错", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-                        }else{
-                            Type type = new TypeToken<List<People>>(){}.getType();
-                            list = new Gson().fromJson(response.toString(), type);
-                            getActivity().runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Log.e(TAG,list.toString());
-                                    ListViewPeopleAdapter adapter = new ListViewPeopleAdapter(getActivity(),R.layout.item_people,list);
-                                    lv_people.setAdapter(adapter);
-                                }
-                            });
+                        if(getActivity()!=null) {
+                            if ("error".equals(response.toString())) {
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(getActivity(), "数据出错", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            } else {
+                                Type type = new TypeToken<List<People>>() {
+                                }.getType();
+                                list = new Gson().fromJson(response.toString(), type);
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Log.e(TAG, list.toString());
+                                        ListViewPeopleAdapter adapter = new ListViewPeopleAdapter(getActivity(), R.layout.item_people, list);
+                                        lv_people.setAdapter(adapter);
+
+                                    }
+                                });
+                            }
                         }
 
                     }
                 });
     }
 
+    public void updateListView(){
+            OkHttpUtils.get()
+                    .url(HttpUrlUtils.ALL_USER_URL)
+                    .build()
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onError(Request request, Exception e) {
+                            if (getActivity() != null) {
+                                Toast.makeText(getActivity(), "请检查网络连接", Toast.LENGTH_SHORT).show();
+                            }
+                        }
 
+                        @Override
+                        public void onResponse(String response) {
+                            if(getActivity()!=null){
+                            if("error".equals(response.toString())){
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(getActivity(), "数据出错", Toast.LENGTH_SHORT).show();
+                                    }
+                                });
+                            }else {
+                                Type type = new TypeToken<List<People>>() {
+                                }.getType();
+                                list = new Gson().fromJson(response.toString(), type);
+                                getActivity().runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Log.e(TAG, list.toString());
+                                        ListViewPeopleAdapter adapter = new ListViewPeopleAdapter(getActivity(), R.layout.item_people, list);
+                                        lv_people.setAdapter(adapter);
+
+                                    }
+                                });
+                            }
+                            }
+
+                        }
+                    });
+
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEvent messageEvent) {
+        if("delete_user".equals(messageEvent.getMessage())){
+            Log.e(TAG,"更新了");
+            list.clear();
+            updateListView();
+        }
+
+    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
 }

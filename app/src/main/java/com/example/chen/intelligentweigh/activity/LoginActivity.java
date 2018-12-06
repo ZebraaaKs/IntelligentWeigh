@@ -22,6 +22,7 @@ import com.example.chen.intelligentweigh.R;
 import com.example.chen.intelligentweigh.bean.User;
 import com.example.chen.intelligentweigh.util.CommonAction;
 import com.example.chen.intelligentweigh.util.HttpUrlUtils;
+import com.example.chen.intelligentweigh.util.SharedUtils;
 import com.example.chen.intelligentweigh.util.StatusBarUtils;
 import com.google.gson.Gson;
 import com.squareup.okhttp.Request;
@@ -78,18 +79,22 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
     private void initPhonePwd() {
-        User user = LitePal.findLast(User.class);
-        if (user != null) {
-            et_phone.setText(user.getPhone());
-            et_phone.setFocusable(false);
-            et_phone.setFocusable(true);
-            et_phone.setFocusableInTouchMode(true);
-            et_phone.requestFocus();
-            et_password.setText(user.getPassword());
-            et_password.setFocusable(false);
-            et_password.setFocusable(true);
-            et_password.setFocusableInTouchMode(true);
-            et_password.requestFocus();
+        String phone = SharedUtils.getPhone(this);
+        if(phone!=null){
+            List<User> users = LitePal.where("phone = ?", phone).find(User.class);
+            if(!users.isEmpty()){
+                User user = users.get(0);
+                et_phone.setText(user.getPhone());
+                et_phone.setFocusable(false);
+                et_phone.setFocusable(true);
+                et_phone.setFocusableInTouchMode(true);
+                et_phone.requestFocus();
+                et_password.setText(user.getPassword());
+                et_password.setFocusable(false);
+                et_password.setFocusable(true);
+                et_password.setFocusableInTouchMode(true);
+                et_password.requestFocus();
+            }
         }
     }
 

@@ -154,36 +154,39 @@ public class MeInfoFragment extends Fragment {
                                 .execute(new StringCallback() {
                                     @Override
                                     public void onError(Request request, Exception e) {
-                                        getActivity().runOnUiThread(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                Toast.makeText(getActivity(), "请检查网络连接", Toast.LENGTH_SHORT).show();
-                                            }
-                                        });
-
+                                        if(getActivity()!=null) {
+                                            getActivity().runOnUiThread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    Toast.makeText(getActivity(), "请检查网络连接", Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+                                        }
                                     }
 
                                     @Override
                                     public void onResponse(String response) {
-                                        if ("ok".equals(response.toString())) {
-                                            //先更新数据库
-                                            User user = new User();
-                                            user.setSex(msg);
-                                            user.updateAll("phone = ?", phone);
-                                            getActivity().runOnUiThread(new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    tv_item_sex.setText(msg);
-                                                }
-                                            });
-                                        } else {
-                                            getActivity().runOnUiThread(new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    Toast.makeText(getActivity(), "修改性别失败", Toast.LENGTH_SHORT).show();
-                                                }
-                                            });
+                                        if(getActivity()!=null) {
+                                            if ("ok".equals(response.toString())) {
+                                                //先更新数据库
+                                                User user = new User();
+                                                user.setSex(msg);
+                                                user.updateAll("phone = ?", phone);
+                                                getActivity().runOnUiThread(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        tv_item_sex.setText(msg);
+                                                    }
+                                                });
+                                            } else {
+                                                getActivity().runOnUiThread(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        Toast.makeText(getActivity(), "修改性别失败", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                });
 
+                                            }
                                         }
 
                                     }
@@ -217,44 +220,51 @@ public class MeInfoFragment extends Fragment {
                                     .execute(new StringCallback() {
                                         @Override
                                         public void onError(Request request, Exception e) {
-                                            getActivity().runOnUiThread(new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    Toast.makeText(getActivity(), "请检查网络连接", Toast.LENGTH_SHORT).show();
-                                                }
-                                            });
+                                            if(getActivity()!=null) {
+                                                getActivity().runOnUiThread(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        Toast.makeText(getActivity(), "请检查网络连接", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                });
+                                            }
 
                                         }
 
                                         @Override
                                         public void onResponse(String response) {
-                                            if ("ok".equals(response.toString())) {
-                                                //先更新数据库
-                                                User user = new User();
-                                                user.setAge(msg);
-                                                user.updateAll("phone = ?", phone);
-                                                getActivity().runOnUiThread(new Runnable() {
-                                                    @Override
-                                                    public void run() {
-                                                        tv_item_age.setText(msg);
-                                                    }
-                                                });
+                                            if(getActivity()!=null) {
+                                                if ("ok".equals(response.toString())) {
+                                                    //先更新数据库
+                                                    User user = new User();
+                                                    user.setAge(msg);
+                                                    user.updateAll("phone = ?", phone);
+                                                    getActivity().runOnUiThread(new Runnable() {
+                                                        @Override
+                                                        public void run() {
+                                                            tv_item_age.setText(msg);
+                                                        }
+                                                    });
 
-                                            } else {
-                                                getActivity().runOnUiThread(new Runnable() {
-                                                    @Override
-                                                    public void run() {
-                                                        Toast.makeText(getActivity(), "修改年龄失败", Toast.LENGTH_SHORT).show();
-                                                    }
-                                                });
+                                                } else {
+                                                    getActivity().runOnUiThread(new Runnable() {
+                                                        @Override
+                                                        public void run() {
+                                                            Toast.makeText(getActivity(), "修改年龄失败", Toast.LENGTH_SHORT).show();
+                                                        }
+                                                    });
 
+                                                }
                                             }
 
                                         }
                                     });
 
+
                         } else {
-                            Toast.makeText(getActivity(), "年龄为数字整数", Toast.LENGTH_SHORT).show();
+                            if (getActivity() != null) {
+                                Toast.makeText(getActivity(), "年龄为数字整数", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     }
                 }).show();
@@ -296,34 +306,38 @@ public class MeInfoFragment extends Fragment {
                                 .execute(new StringCallback() {
                                     @Override
                                     public void onError(Request request, Exception e) {
-                                        getActivity().runOnUiThread(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                Toast.makeText(getActivity(), "请检查网络连接", Toast.LENGTH_SHORT).show();
-                                            }
-                                        });
+                                        if(getActivity()!=null) {
+                                            getActivity().runOnUiThread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    Toast.makeText(getActivity(), "请检查网络连接", Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+                                        }
                                     }
 
                                     @Override
                                     public void onResponse(String response) {
-                                        if ("ok".equals(response.toString())) {
-                                            //先更新数据库
-                                            User user = new User();
-                                            user.setName(msg);
-                                            user.updateAll("phone = ?", phone);
-                                            getActivity().runOnUiThread(new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    tv_item_username.setText(msg);
-                                                }
-                                            });
-                                        } else {
-                                            getActivity().runOnUiThread(new Runnable() {
-                                                @Override
-                                                public void run() {
-                                                    Toast.makeText(getActivity(), "修改姓名失败", Toast.LENGTH_SHORT).show();
-                                                }
-                                            });
+                                        if(getActivity()!=null) {
+                                            if ("ok".equals(response.toString())) {
+                                                //先更新数据库
+                                                User user = new User();
+                                                user.setName(msg);
+                                                user.updateAll("phone = ?", phone);
+                                                getActivity().runOnUiThread(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        tv_item_username.setText(msg);
+                                                    }
+                                                });
+                                            } else {
+                                                getActivity().runOnUiThread(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        Toast.makeText(getActivity(), "修改姓名失败", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                });
+                                            }
                                         }
 
                                     }
