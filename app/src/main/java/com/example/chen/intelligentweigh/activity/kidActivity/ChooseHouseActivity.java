@@ -1,4 +1,4 @@
-package com.example.chen.intelligentweigh.activity;
+package com.example.chen.intelligentweigh.activity.kidActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,11 +13,12 @@ import com.example.chen.intelligentweigh.util.CommonAction;
 import com.example.chen.intelligentweigh.util.StatusBarUtils;
 
 /**
- * author : chen
- * date   : 2018/11/27  17:09
- * desc   :
+ * @author chen
+ * @date 2018/12/12.   20:26
+ * description：
  */
-public class NewCowActivity extends BaseActivity {
+public class ChooseHouseActivity extends BaseActivity {
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,20 +27,30 @@ public class NewCowActivity extends BaseActivity {
         //取消状态栏
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.new_cow_activity);
+        setContentView(R.layout.choose_house_activity);
         StatusBarUtils.setStatusBarFull(this);
         CommonAction.getInstance().addActivity(this);
-
     }
 
-    public NewCow setData(){
+    public NewCow setNewcowData(){
         Intent intent = getIntent();
         if(intent!=null){
-            NewCow cow = (NewCow)intent.getSerializableExtra("cowInfo");
+            NewCow cow = (NewCow)intent.getSerializableExtra("newcow");
             return cow;
         }else{
             return null;
         }
-
     }
+
+    public String setData(){
+        Intent intent = getIntent();
+        if(intent!=null){
+            String framid = intent.getStringExtra("framid");
+            return framid;
+        }else{
+            return null;
+        }
+    }
+
+
 }

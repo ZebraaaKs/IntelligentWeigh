@@ -46,4 +46,19 @@ public class HttpUrlUtils {
     //删除牧场分区URL
     public final static String DELETE_HOUSE_AREA_URL = BASE_URL+"DeleteFarmArea";
 
+    //绑定用户牧场
+    public final static String BING_USER_HOUSE_URL = BASE_URL+"BindUserFarms";
+
+    //牧场信息
+    public final static String HOUSE_CHOOSE_URL = BASE_URL+"BackBindFarmByBindStr";
+
+    //肉牛品种
+    public final static String CATTLEBACKALLKIND = BASE_URL+"CattleBackAllKind";
+
+    //添加肉牛品种
+    public final static String CATTLEKINDADD = BASE_URL+"CattleKindAdd";
+
+    //录入新牛
+    public final static String CATTLEADDSERVER = BASE_URL+"CattleAddServer";
+
 }

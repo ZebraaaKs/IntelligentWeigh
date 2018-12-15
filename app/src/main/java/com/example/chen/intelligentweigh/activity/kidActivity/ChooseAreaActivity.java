@@ -1,4 +1,4 @@
-package com.example.chen.intelligentweigh.activity;
+package com.example.chen.intelligentweigh.activity.kidActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,11 +13,12 @@ import com.example.chen.intelligentweigh.util.CommonAction;
 import com.example.chen.intelligentweigh.util.StatusBarUtils;
 
 /**
- * author : chen
- * date   : 2018/11/27  17:09
- * desc   :
+ * @author chen
+ * @date 2018/12/13.   20:40
+ * description：
  */
-public class NewCowActivity extends BaseActivity {
+public class ChooseAreaActivity extends BaseActivity{
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,13 +27,32 @@ public class NewCowActivity extends BaseActivity {
         //取消状态栏
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        setContentView(R.layout.new_cow_activity);
+        setContentView(R.layout.choose_area_activity);
         StatusBarUtils.setStatusBarFull(this);
         CommonAction.getInstance().addActivity(this);
-
     }
 
-    public NewCow setData(){
+    public String setIdData(){
+        Intent intent = getIntent();
+        if(intent!=null){
+            String id = intent.getStringExtra("id");
+            return id;
+        }else{
+            return null;
+        }
+    }
+
+    public String setNameData(){
+        Intent intent = getIntent();
+        if(intent!=null){
+            String name = intent.getStringExtra("name");
+            return name;
+        }else{
+            return null;
+        }
+    }
+
+    public NewCow setCowData(){
         Intent intent = getIntent();
         if(intent!=null){
             NewCow cow = (NewCow)intent.getSerializableExtra("cowInfo");
@@ -40,6 +60,5 @@ public class NewCowActivity extends BaseActivity {
         }else{
             return null;
         }
-
     }
 }

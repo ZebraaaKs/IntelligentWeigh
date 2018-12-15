@@ -21,12 +21,14 @@ import com.example.chen.intelligentweigh.BaseFragment;
 import com.example.chen.intelligentweigh.R;
 import com.example.chen.intelligentweigh.activity.LoginActivity;
 import com.example.chen.intelligentweigh.activity.PeopleMangerActivity;
+import com.example.chen.intelligentweigh.activity.kidActivity.BindHouseActivity;
 import com.example.chen.intelligentweigh.activity.kidActivity.PeopleInfoActivity;
 import com.example.chen.intelligentweigh.bean.People;
 import com.example.chen.intelligentweigh.fragment.PeopleMangerFragment;
 import com.example.chen.intelligentweigh.util.AlertDialog;
 import com.example.chen.intelligentweigh.util.Event.MessageEvent;
 import com.example.chen.intelligentweigh.util.HttpUrlUtils;
+import com.example.chen.intelligentweigh.util.SharedUtils;
 import com.example.chen.intelligentweigh.util.TitleBuilder;
 import com.squareup.okhttp.Request;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -150,6 +152,10 @@ public class PeopleInfoFragment extends BaseFragment {
             btn_bindhouse.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if(getActivity()!=null){
+                        BindHouseFragment fragment = BindHouseFragment.newInstance(people);
+                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.other_content_frag,fragment).commit();
+                    }
 
                 }
             });
@@ -238,6 +244,13 @@ public class PeopleInfoFragment extends BaseFragment {
             btn_bindhouse.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if(getActivity()!=null){
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("BindPeopleInfo",people);
+                        Intent intent = new Intent(getActivity(), BindHouseActivity.class);
+                        intent.putExtras(bundle);
+                        startActivity(intent);
+                    }
 
                 }
             });

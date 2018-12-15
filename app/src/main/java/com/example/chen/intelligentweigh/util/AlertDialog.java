@@ -109,12 +109,35 @@ public class AlertDialog {
 
 
     /**
-     *  选择弹框
+     * 选择弹框
+     *
      * @return
      */
     public AlertDialog rgBuilder() {
         View view = LayoutInflater.from(context).inflate(
                 R.layout.view_alert_choosedialog, null);
+
+        lLayout_bg = (LinearLayout) view.findViewById(R.id.lLayout_bg);
+        txt_title = (TextView) view.findViewById(R.id.txt_title);
+        rg_choose = (RadioGroup) view.findViewById(R.id.rg_choose);
+        btn_neg = (Button) view.findViewById(R.id.btn_neg);
+        btn_pos = (Button) view.findViewById(R.id.btn_pos);
+        img_line = (ImageView) view.findViewById(R.id.img_line);
+        setRgGone();
+        dialog = new Dialog(context, R.style.AlertDialogStyle);
+        dialog.setContentView(view);
+        lLayout_bg.setLayoutParams(new FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+        return this;
+    }
+
+    /**
+     * 选择弹框
+     *
+     * @return
+     */
+    public AlertDialog rgCowBuilder() {
+        View view = LayoutInflater.from(context).inflate(
+                R.layout.view_alert_choosecowdialog, null);
 
         lLayout_bg = (LinearLayout) view.findViewById(R.id.lLayout_bg);
         txt_title = (TextView) view.findViewById(R.id.txt_title);
@@ -182,9 +205,17 @@ public class AlertDialog {
         return this;
     }
 
-    public String getRgChoose(){
+    public String getRgChoose() {
         View view = LayoutInflater.from(context).inflate(
                 R.layout.view_alert_choosedialog, null);
+        int id = rg_choose.getCheckedRadioButtonId();
+        RadioButton rb_choice = (RadioButton) view.findViewById(id);
+        return rb_choice.getText().toString();
+    }
+
+    public String getRgCowChoose() {
+        View view = LayoutInflater.from(context).inflate(
+                R.layout.view_alert_choosecowdialog, null);
         int id = rg_choose.getCheckedRadioButtonId();
         RadioButton rb_choice = (RadioButton) view.findViewById(id);
         return rb_choice.getText().toString();
@@ -208,7 +239,9 @@ public class AlertDialog {
 
     /**
      * 设置输入Message
-     * 1 姓名  2 年龄   3牧场  4牧场分区
+     * 1 姓名  2 年龄   3牧场  4牧场分区 5肉牛名字
+     * 6 肉牛价格 7 肉牛编号 8 父牛编号  9 母牛编号 10添加肉牛种类
+     *
      * @param type
      * @return
      */
@@ -232,7 +265,7 @@ public class AlertDialog {
                     et_msg.setSelection(user.getName().length());
                 }
             } else if ("2".equals(type)) {
-                et_msg.setInputType( InputType.TYPE_CLASS_NUMBER);
+                et_msg.setInputType(InputType.TYPE_CLASS_NUMBER);
                 if (TextUtils.isEmpty(user.getAge())) {
                     et_msg.setText("0");
                     et_msg.setSelection("0".length());
@@ -240,10 +273,23 @@ public class AlertDialog {
                     et_msg.setText(user.getAge());
                     et_msg.setSelection(user.getAge().length());
                 }
-            }else if("3".equals(type)){
+            } else if ("3".equals(type)) {
                 et_msg.setHint("牧场名字");
-            }else if("4".equals(type)){
+            } else if ("4".equals(type)) {
                 et_msg.setHint("分区名字");
+            } else if ("5".equals(type)) {
+                et_msg.setHint("肉牛名称");
+            } else if ("6".equals(type)) {
+                et_msg.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                et_msg.setHint("进场价格");
+            } else if ("7".equals(type)) {
+                et_msg.setHint("肉牛编号");
+            } else if ("8".equals(type)) {
+                et_msg.setHint("父牛编号");
+            } else if ("9".equals(type)) {
+                et_msg.setHint("母牛编号");
+            }else if("10".equals(type)){
+                et_msg.setHint("肉牛种类");
             }
 
         }
@@ -251,35 +297,39 @@ public class AlertDialog {
     }
 
     /**
-     *  choose选择框
+     * choose选择框
+     *
      * @param type 3 性别
      * @return
      */
     public AlertDialog setChooseMsg(String type) {
         showRg = true;
-        SharedPreferences sharedPreferences = context.getSharedPreferences("login", MODE_PRIVATE);
-        String phone = sharedPreferences.getString("phone", "");
-        if (!"".equals(phone) && phone != null) {
-            List<User> users = LitePal.where("phone = ?", phone).find(User.class);
-            if (users != null || !users.isEmpty()) {
-                user = users.get(0);
+        if ("3".equals(type)) {
+            SharedPreferences sharedPreferences = context.getSharedPreferences("login", MODE_PRIVATE);
+            String phone = sharedPreferences.getString("phone", "");
+            if (!"".equals(phone) && phone != null) {
+                List<User> users = LitePal.where("phone = ?", phone).find(User.class);
+                if (users != null || !users.isEmpty()) {
+                    user = users.get(0);
+                }
             }
-        }
-        if (user != null) {
-            if ("3".equals(type)) {
+            if (user != null) {
                 if (!TextUtils.isEmpty(user.getSex())) {
-                    if("男".equals(user.getSex())){
+                    if ("男".equals(user.getSex())) {
                         rg_choose.check(R.id.rb_man);
-                    }else{
+                    } else {
                         rg_choose.check(R.id.rb_woman);
                     }
 
                 }
             }
 
+        } else if ("4".equals(type)) {
+
         }
         return this;
     }
+
 
     /**
      * 设置Message
@@ -344,7 +394,7 @@ public class AlertDialog {
     }
 
 
-    public String getEtMsg(){
+    public String getEtMsg() {
         return et_msg.getText().toString();
     }
 
@@ -402,10 +452,10 @@ public class AlertDialog {
         if (showMsg) {
             txt_msg.setVisibility(View.VISIBLE);
         }
-        if(showEtMsg){
+        if (showEtMsg) {
             et_msg.setVisibility(View.VISIBLE);
         }
-        if(showRg){
+        if (showRg) {
             rg_choose.setVisibility(View.VISIBLE);
         }
 
@@ -461,4 +511,6 @@ public class AlertDialog {
         }
 
     }
+
+
 }
