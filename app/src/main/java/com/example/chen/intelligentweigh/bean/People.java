@@ -4,9 +4,9 @@ import java.io.Serializable;
 
 /**
  * @author chen
- * @date 2018/12/5.   15:41
- * description：
- */
+ *
+ * 人员管理
+ * */
 public class People implements Serializable{
 
     /**

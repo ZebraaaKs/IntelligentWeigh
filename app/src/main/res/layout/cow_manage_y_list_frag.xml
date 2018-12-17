@@ -4,9 +4,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <include layout="@layout/rl_titlebar"></include>
-    <ListView
-        android:id="@+id/lv_cow_manager"
+    <com.baoyz.swipemenulistview.SwipeMenuListView
+        android:id="@+id/lv_y_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></ListView>
+        android:layout_height="match_parent"></com.baoyz.swipemenulistview.SwipeMenuListView>
 
 </LinearLayout>

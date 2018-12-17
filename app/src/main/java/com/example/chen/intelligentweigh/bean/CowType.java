@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * @author chen
  * @date 2018/12/15.   19:18
- * description：
+ * description：牛分类
  */
 public class CowType implements Serializable{
 

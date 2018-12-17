@@ -283,7 +283,7 @@ public class NewCowFragment extends BaseFragment {
                 .addParams("id",tv_cow_id.getText().toString())
                 .addParams("father_id",tv_father_id.getText().toString())
                 .addParams("mother_id",tv_mather_id.getText().toString())
-                .addParams("kind",tv_cow_typeid.getText().toString())
+                .addParams("kind",tv_cow_type.getText().toString())
                 .addParams("sex",tv_cow_sex.getText().toString())
                 .addParams("birthday",tv_cow_birth.getText().toString())
                 .addParams("entranceDay",tv_cow_access.getText().toString())
@@ -621,7 +621,6 @@ public class NewCowFragment extends BaseFragment {
         if(!tv_cow_typeid.getText().toString().isEmpty()){
             newCow.setCowTypeId(tv_cow_typeid.getText().toString());
         }
-
 
         return newCow;
     }

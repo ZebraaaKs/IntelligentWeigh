@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * @author chen
  * @date 2018/12/15.   16:45
- * description：
+ * description：录入新牛
  */
 public class NewCow implements Serializable{
     private String houseId;

@@ -61,4 +61,10 @@ public class HttpUrlUtils {
     //录入新牛
     public final static String CATTLEADDSERVER = BASE_URL+"CattleAddServer";
 
+    //根据条件返回肉牛（健在与删除）
+    public final static String CATTLEBACKBYFRAMAREA = BASE_URL+"CattleBackByFarmArea";
+
+    //返回肉牛称重的记录
+    public final static String CATTLEBACKWEIGHRECORD = BASE_URL+"CattleBackWeighRecord";
+
 }

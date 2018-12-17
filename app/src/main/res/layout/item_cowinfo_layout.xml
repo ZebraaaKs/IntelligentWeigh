@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:padding="4dp"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:id="@+id/iv_cow_icon"
+        android:src="@drawable/cow"
+        android:layout_width="60dp"
+        android:layout_height="60dp" />
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_toRightOf="@+id/iv_cow_icon"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="6dp"
+        android:layout_height="60dp">
+        <LinearLayout
+            android:layout_weight="3"
+            android:layout_width="match_parent"
+            android:layout_height="0dp">
+            <TextView
+                android:id="@+id/tv_namearea"
+                android:textSize="18sp"
+                android:layout_gravity="center_vertical"
+                android:text="名字.牧场1"
+                android:textColor="@color/txt_black"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/tv_type"
+                android:textColor="@color/txt_gray"
+                android:text="哥斯拉"
+                android:layout_gravity="center_vertical"
+                android:textSize="14sp"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/tv_id"
+                android:textColor="@color/txt_gray"
+                android:text="编号:1234"
+                android:layout_gravity="center_vertical"
+                android:textSize="14sp"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </LinearLayout>
+
+
+
+
+</RelativeLayout>

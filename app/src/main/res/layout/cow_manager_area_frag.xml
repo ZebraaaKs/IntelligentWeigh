@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
     <include layout="@layout/rl_titlebar"></include>
     <ListView
-        android:id="@+id/lv_cow_manager"
+        android:id="@+id/lv_cow_manger_area"
         android:layout_width="match_parent"
         android:layout_height="match_parent"></ListView>
 

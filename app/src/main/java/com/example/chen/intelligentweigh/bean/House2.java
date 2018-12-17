@@ -6,7 +6,7 @@ import android.os.Parcelable;
 /**
  * @author chen
  * @date 2018/12/13.   21:26
- * description：
+ * description：好像没用到 是Parcelable接口下可以进行对象的传递
  */
 public class House2 implements Parcelable {
 

@@ -24,7 +24,6 @@ import com.example.chen.intelligentweigh.activity.kidActivity.PeopleInfoActivity
 import com.example.chen.intelligentweigh.adapter.ListViewChooseHouseAdapter;
 import com.example.chen.intelligentweigh.adapter.ListViewHouseAdapter;
 import com.example.chen.intelligentweigh.bean.House;
-import com.example.chen.intelligentweigh.bean.House2;
 import com.example.chen.intelligentweigh.bean.NewCow;
 import com.example.chen.intelligentweigh.fragment.NewCowFragment;
 import com.example.chen.intelligentweigh.util.HttpUrlUtils;
