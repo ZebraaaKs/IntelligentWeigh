@@ -22,6 +22,7 @@ import com.example.chen.intelligentweigh.activity.NewCowActivity;
 import com.example.chen.intelligentweigh.activity.kidActivity.ChooseAreaActivity;
 import com.example.chen.intelligentweigh.activity.kidActivity.CowTypeActivity;
 import com.example.chen.intelligentweigh.adapter.ListViewChooseTypeAdapter;
+import com.example.chen.intelligentweigh.bean.Cow;
 import com.example.chen.intelligentweigh.bean.CowType;
 import com.example.chen.intelligentweigh.bean.NewCow;
 import com.example.chen.intelligentweigh.fragment.NewCowFragment;
@@ -59,6 +60,14 @@ public class CowTypeFragment extends BaseFragment {
         View view = inflater.inflate(R.layout.cow_type_frag, container, false);
         initView(view);
         return view;
+    }
+
+    public static CowTypeFragment newInsatanceEdit(Cow cow){
+        CowTypeFragment fragment = new CowTypeFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("editCow",cow);
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     public static CowTypeFragment newInstance(NewCow cow){
@@ -121,6 +130,11 @@ public class CowTypeFragment extends BaseFragment {
                     if (cow != null) {
                         NewCowFragment fragment = NewCowFragment.newInstances(cow);
                         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.other_content_frag, fragment).commit();
+                    }
+                    Cow editCow = (Cow)getArguments().getSerializable("editCow");
+                    if(editCow!=null){
+                        EditCowInfoFragment fragment = EditCowInfoFragment.newInsatnces(editCow,editCow.getFather_id(),editCow.getArea(),editCow.getName());
+                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.other_content_frag,fragment).commit();
                     }
 
 

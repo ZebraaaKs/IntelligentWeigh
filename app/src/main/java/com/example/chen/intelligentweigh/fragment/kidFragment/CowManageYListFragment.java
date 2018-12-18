@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -24,12 +25,15 @@ import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.example.chen.intelligentweigh.BaseFragment;
 import com.example.chen.intelligentweigh.R;
+import com.example.chen.intelligentweigh.activity.LoginActivity;
 import com.example.chen.intelligentweigh.activity.kidActivity.CowManageExitsActivity;
 import com.example.chen.intelligentweigh.activity.kidActivity.CowManageYListActivity;
+import com.example.chen.intelligentweigh.activity.kidActivity.EditCowInfoActivty;
 import com.example.chen.intelligentweigh.activity.kidActivity.ShowCowInfoActivity;
 import com.example.chen.intelligentweigh.adapter.ListViewCowInfoAdapter;
 import com.example.chen.intelligentweigh.bean.Cow;
 import com.example.chen.intelligentweigh.bean.WeighData;
+import com.example.chen.intelligentweigh.util.AlertDialog;
 import com.example.chen.intelligentweigh.util.HttpUrlUtils;
 import com.example.chen.intelligentweigh.util.TitleBuilder;
 import com.google.gson.Gson;
@@ -134,7 +138,7 @@ public class CowManageYListFragment extends BaseFragment {
                 }
             });
             Log.e(TAG,"activity "+Yidd+Yname);
-            initYListView(Yidd,Yname);
+            initYListView(Yidd,Yname,"");
         }
 
 
@@ -153,13 +157,13 @@ public class CowManageYListFragment extends BaseFragment {
                 }
             }).build();
 
-            initYListView(yid,yname);
+            initYListView(yid,yname,tName);
 
         }
 
     }
 
-    private void initYListView(final String yid, String yname) {
+    private void initYListView(final String yid, final String yname, final String tname) {
         if (getActivity() != null) {
             OkHttpUtils.get()
                     .url(HttpUrlUtils.CATTLEBACKBYFRAMAREA)
@@ -191,10 +195,131 @@ public class CowManageYListFragment extends BaseFragment {
                                         initListData(list.get(position).getID(),list.get(position),yid);
                                     }
                                 });
+                                lv_y_list.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
+                                    @Override
+                                    public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
+                                        switch (index){
+                                            case 0:
+                                                if(isTwoPan){
+                                                    if(!"".equals(tname)){
+                                                        EditCowInfoFragment fragment = EditCowInfoFragment.newInsatnces(list.get(position),yid,yname,tname);
+                                                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.other_content_frag,fragment).commit();
+                                                    }
+                                                }else{
+                                                    Intent intent = new Intent(getActivity(), EditCowInfoActivty.class);
+                                                    intent.putExtra("eeidd",yid);
+                                                    intent.putExtra("eename",yname);
+                                                    intent.putExtra("eetname",tname);
+                                                    intent.putExtra("eeCow",list.get(position));
+                                                    Log.e(TAG,"eeidd"+yid+" eename"+yname+" eetname"+tname+" cow"+list.get(position));
+                                                    startActivity(intent);
+
+                                                }
+                                                break;
+                                            case 1:
+                                                Showdelete(list.get(position).getID(),yid,yname);
+                                                break;
+                                        }
+
+                                        return false;
+                                    }
+                                });
                             }
 
                         }
 
+                    });
+        }
+    }
+
+    /**
+     * 展示删除弹框
+     * @param id
+     */
+    private void Showdelete(final String id, final String yidd, final String yname) {
+        AlertDialog myDialog = new AlertDialog(getActivity()).builder();
+        myDialog.setGone().setTitle("提示").setMsg("确认删除").setNegativeButton("取消", null).setPositiveButton("删除", new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DeleteCow(id);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        initCrashAreaList(yidd,yname);
+                    }
+                },1000);
+            }
+        }).show();
+
+    }
+
+    /**
+     * 刷新界面
+     * @param yidd
+     * @param yname
+     */
+    private void initCrashAreaList(String yidd, String yname) {
+        if (getActivity() != null) {
+            OkHttpUtils.get()
+                    .url(HttpUrlUtils.CATTLEBACKBYFRAMAREA)
+                    .addParams("farmid", yidd)
+                    .addParams("area", yname)
+                    .addParams("exist", "1")
+                    .build()
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onError(Request request, Exception e) {
+
+                        }
+
+                        @Override
+                        public void onResponse(String response) {
+                            if ("error".equals(response)) {
+                                Toast.makeText(getActivity(), "数据出错", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Type type = new TypeToken<List<Cow>>() {
+                                }.getType();
+                                Gson gson = new Gson();
+                                if (!list.isEmpty()) {
+                                    list.clear();
+                                }
+                                list = (List<Cow>) gson.fromJson(response, type);
+                                adapter = new ListViewCowInfoAdapter(getActivity(), R.layout.item_cowinfo_layout, list);
+                                adapter.notifyDataSetChanged();
+                                lv_y_list.setAdapter(adapter);
+                            }
+                        }
+                    });
+        }
+
+
+    }
+
+    /**
+     * 删除
+     * @param id
+     */
+    private void DeleteCow(String id) {
+        if(getActivity()!=null) {
+            OkHttpUtils.get()
+                    .url(HttpUrlUtils.DELETECOW)
+                    .addParams("cattleid", id)
+                    .build()
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onError(Request request, Exception e) {
+                            Toast.makeText(getActivity(),"请检查网络连接",Toast.LENGTH_SHORT).show();
+                        }
+
+                        @Override
+                        public void onResponse(String response) {
+                            if ("error".equals(response)){
+                                Toast.makeText(getActivity(),"删除失败",Toast.LENGTH_SHORT).show();
+                            }else{
+                                Toast.makeText(getActivity(),"删除成功",Toast.LENGTH_SHORT).show();
+                            }
+
+                        }
                     });
         }
     }
@@ -246,7 +371,7 @@ public class CowManageYListFragment extends BaseFragment {
 
                             }
                             if(isTwoPan) {
-                                ShowCowInfoFragment fragment = ShowCowInfoFragment.newInstances(cow, yid, xValues, yValues);
+                                ShowCowInfoFragment fragment = ShowCowInfoFragment.newInstances(cow, yid, xValues, yValues,"1");
                                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.other_content_frag, fragment).commit();
                             }else{
                                 Intent intent = new Intent(getActivity(),ShowCowInfoActivity.class);

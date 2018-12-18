@@ -65,13 +65,14 @@ public class ShowCowInfoFragment extends BaseFragment {
         return view;
     }
 
-    public static ShowCowInfoFragment newInstances(Cow cow, String framid,ArrayList<String> xList,ArrayList<Float> yList) {
+    public static ShowCowInfoFragment newInstances(Cow cow, String framid,ArrayList<String> xList,ArrayList<Float> yList,String YN) {
         ShowCowInfoFragment fragment = new ShowCowInfoFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable("cowInfo", cow);
         bundle.putSerializable("framid", framid);
         bundle.putSerializable("xlist",xList);
         bundle.putSerializable("ylist",yList);
+        bundle.putSerializable("YN",YN);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -126,15 +127,21 @@ public class ShowCowInfoFragment extends BaseFragment {
 
         if (getArguments() != null && getActivity() != null) {
             final Cow newInfo = (Cow) getArguments().getSerializable("cowInfo");
-            final String framid = (String) getArguments().getSerializable("framid");
+            final String framid =  getArguments().getString("framid");
             ArrayList<String> xlist = (ArrayList<String>)getArguments().getSerializable("xlist");
             ArrayList<Float> ylist = (ArrayList<Float>)getArguments().getSerializable("ylist");
-
+            final String yn = getArguments().getString("YN");
             new TitleBuilder(view).setTitleText("详情").setLeftImage(R.drawable.arrowleft).setLeftOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    CowManageYListFragment fragment = CowManageYListFragment.newInstances(framid, newInfo.getArea(), newInfo.getFarmname());
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.other_content_frag, fragment).commit();
+                    if("1".equals(yn)) {
+                        CowManageYListFragment fragment = CowManageYListFragment.newInstances(framid, newInfo.getArea(), newInfo.getFarmname());
+                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.other_content_frag, fragment).commit();
+                    }else{
+                        CowManageNListFragment fragment = CowManageNListFragment.newInstances(framid, newInfo.getArea(), newInfo.getFarmname());
+                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.other_content_frag, fragment).commit();
+
+                    }
                 }
             });
 

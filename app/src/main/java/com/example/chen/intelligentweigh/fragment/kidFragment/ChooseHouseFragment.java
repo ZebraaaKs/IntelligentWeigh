@@ -23,6 +23,7 @@ import com.example.chen.intelligentweigh.activity.kidActivity.ChooseHouseActivit
 import com.example.chen.intelligentweigh.activity.kidActivity.PeopleInfoActivity;
 import com.example.chen.intelligentweigh.adapter.ListViewChooseHouseAdapter;
 import com.example.chen.intelligentweigh.adapter.ListViewHouseAdapter;
+import com.example.chen.intelligentweigh.bean.Cow;
 import com.example.chen.intelligentweigh.bean.House;
 import com.example.chen.intelligentweigh.bean.NewCow;
 import com.example.chen.intelligentweigh.fragment.NewCowFragment;
@@ -73,6 +74,15 @@ public class ChooseHouseFragment extends BaseFragment {
         return chooseHouseFragment;
     }
 
+    public static ChooseHouseFragment newInstanceEdit(String ehouse,Cow ecow){
+        ChooseHouseFragment chooseHouseFragment = new ChooseHouseFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("ehouse",ehouse);
+        bundle.putSerializable("editCow",ecow);
+        chooseHouseFragment.setArguments(bundle);
+        return chooseHouseFragment;
+    }
+
 
 
 
@@ -116,11 +126,19 @@ public class ChooseHouseFragment extends BaseFragment {
      */
     private void onFragmentUI(View view) {
         if(getArguments()!=null){
+            final NewCow cow = (NewCow) getArguments().getSerializable("choosecow");
+            final Cow cow1 = (Cow) getArguments().getSerializable("editCow");
             new TitleBuilder(view).setTitleText("选择牧场").setLeftImage(R.drawable.arrowleft).setLeftOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    NewCowFragment fragment =  NewCowFragment.newInstances((NewCow) getArguments().getSerializable("choosecow"));
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.other_content_frag,fragment).commit();
+                    if (cow != null) {
+                        NewCowFragment fragment = NewCowFragment.newInstances(cow);
+                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.other_content_frag, fragment).commit();
+                    }else if(cow1!=null){
+                        EditCowInfoFragment fragment = EditCowInfoFragment.newInsatnces(cow1,cow1.getFather_id(),cow1.getArea(),cow1.getName());
+                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.other_content_frag, fragment).commit();
+                    }
+
                 }
             });
             String house = getArguments().getString("house");

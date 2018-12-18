@@ -26,6 +26,7 @@ import com.example.chen.intelligentweigh.activity.kidActivity.ChooseAreaActivity
 import com.example.chen.intelligentweigh.activity.kidActivity.ChooseHouseActivity;
 import com.example.chen.intelligentweigh.activity.kidActivity.CowTypeActivity;
 import com.example.chen.intelligentweigh.activity.kidActivity.HouseAreaActivity;
+import com.example.chen.intelligentweigh.bean.Cow;
 import com.example.chen.intelligentweigh.bean.NewCow;
 import com.example.chen.intelligentweigh.bean.User;
 import com.example.chen.intelligentweigh.fragment.kidFragment.ChooseHouseFragment;
@@ -575,6 +576,8 @@ public class NewCowFragment extends BaseFragment {
         fragment.setArguments(bundle);
         return fragment;
     }
+
+
 
     /**
      * 保存数据

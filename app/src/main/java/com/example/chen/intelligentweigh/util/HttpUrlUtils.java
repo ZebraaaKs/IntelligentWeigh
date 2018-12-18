@@ -67,4 +67,7 @@ public class HttpUrlUtils {
     //返回肉牛称重的记录
     public final static String CATTLEBACKWEIGHRECORD = BASE_URL+"CattleBackWeighRecord";
 
+    //删除牛
+    public final static String DELETECOW = BASE_URL+"CattleDeleteSer";
+
 }

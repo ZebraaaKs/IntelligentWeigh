@@ -19,6 +19,7 @@ import android.widget.ListView;
 import com.example.chen.intelligentweigh.BaseFragment;
 import com.example.chen.intelligentweigh.R;
 import com.example.chen.intelligentweigh.activity.kidActivity.CowManageExitsActivity;
+import com.example.chen.intelligentweigh.activity.kidActivity.CowManageNListActivity;
 import com.example.chen.intelligentweigh.activity.kidActivity.CowManageYListActivity;
 import com.example.chen.intelligentweigh.activity.kidActivity.CowMangerAreaActivity;
 import com.example.chen.intelligentweigh.util.TitleBuilder;
@@ -132,6 +133,8 @@ public class CowManageExitsFragment extends BaseFragment {
                             CowManageYListFragment fragment = CowManageYListFragment.newInstances(ids,names,tmanageName2);
                             getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.other_content_frag,fragment).commit();
                         }else{
+                            CowManageNListFragment fragment = CowManageNListFragment.newInstances(ids,names,tmanageName2);
+                            getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.other_content_frag,fragment).commit();
 
                         }
 
@@ -143,6 +146,10 @@ public class CowManageExitsFragment extends BaseFragment {
                             intent.putExtra("Yname",names);
                             startActivity(intent);
                         }else{
+                            Intent intent = new Intent(getActivity(), CowManageNListActivity.class);
+                            intent.putExtra("Nidd",ids);
+                            intent.putExtra("Nname",names);
+                            startActivity(intent);
 
                         }
                     }
