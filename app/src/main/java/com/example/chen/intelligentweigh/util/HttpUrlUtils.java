@@ -70,4 +70,12 @@ public class HttpUrlUtils {
     //删除牛
     public final static String DELETECOW = BASE_URL+"CattleDeleteSer";
 
+    //云统计
+    public final static String CLOUDMANAGE = BASE_URL+"CatYunCount";
+
+    //添加一次称重记录
+    public final static String ADDONEWEIGHT = BASE_URL+"CattleWeighCattle";
+
+    //修改肉牛信息
+    public final static String UPDATECOWINFO = BASE_URL+"CattleModifySer";
 }

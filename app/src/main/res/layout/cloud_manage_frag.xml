@@ -4,12 +4,214 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <include layout="@layout/rl_titlebar"></include>
-    <TextView
-        android:gravity="center_horizontal|center_vertical"
-        android:text="牧场云统计"
-        android:textColor="@color/green"
-        android:textSize="36sp"
+    <LinearLayout
+        android:padding="10dp"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
+        android:layout_height="wrap_content">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+        <TextView
+            android:textSize="24sp"
+            android:layout_gravity="center_vertical"
+            android:text="饲养成本:"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:id="@+id/et_feedcost"
+            android:hint="请输入日成本"
+            android:textColor="@color/txt_black"
+            android:textSize="24sp"
+            android:background="@null"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/txt_gray"
+            ></View>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="60dp">
+            <TextView
+                android:textSize="24sp"
+                android:layout_gravity="center_vertical"
+                android:text="当前肉价:"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content" />
+            <EditText
+                android:id="@+id/et_currentprice"
+                android:hint="请输入当前肉价"
+                android:textColor="@color/txt_black"
+                android:textSize="24sp"
+                android:background="@null"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/txt_gray"
+            ></View>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginTop="20dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <View
+            android:background="@color/txt_gray"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"></View>
+        <LinearLayout
+            android:padding="10dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+            <TextView
+                android:textColor="@color/txt_black"
+                android:textSize="22sp"
+                android:text="登记总头数:"
+                android:layout_gravity="center_vertical"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/tv_cownum"
+                android:text="0"
+                android:textSize="24sp"
+                android:textColor="@color/txt_black"
+                android:gravity="center_horizontal"
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:textSize="22sp"
+                android:layout_gravity="center_vertical"
+                android:text="头"
+                android:textColor="@color/txt_black"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+            <View
+                android:background="@color/txt_gray"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"></View>
+        <LinearLayout
+            android:padding="10dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+            <TextView
+                android:textColor="@color/txt_black"
+                android:textSize="22sp"
+                android:text="平均日增量:"
+                android:layout_gravity="center_vertical"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/tv_dayadd"
+                android:text="0"
+                android:textSize="24sp"
+                android:textColor="@color/txt_black"
+                android:gravity="center_horizontal"
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:textSize="22sp"
+                android:layout_gravity="center_vertical"
+                android:text="斤/天"
+                android:textColor="@color/txt_black"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <View
+            android:background="@color/txt_gray"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"></View>
+        <LinearLayout
+            android:padding="10dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+            <TextView
+                android:textColor="@color/txt_black"
+                android:textSize="22sp"
+                android:text="折算     成本:"
+                android:layout_gravity="center_vertical"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/tv_reducecost"
+                android:text="0"
+                android:textSize="24sp"
+                android:textColor="@color/txt_black"
+                android:gravity="center_horizontal"
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:textSize="22sp"
+                android:layout_gravity="center_vertical"
+                android:text="元/斤"
+                android:textColor="@color/txt_black"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <View
+            android:background="@color/txt_gray"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"></View>
+        <LinearLayout
+            android:padding="10dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+            <TextView
+                android:textColor="@color/txt_black"
+                android:textSize="22sp"
+                android:text="盈利     情况:"
+                android:layout_gravity="center_vertical"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/tv_earnings"
+                android:text="0"
+                android:textSize="24sp"
+                android:textColor="@color/txt_black"
+                android:gravity="center_horizontal"
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:textSize="22sp"
+                android:layout_gravity="center_vertical"
+                android:text="元"
+                android:textColor="@color/txt_black"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <View
+            android:background="@color/txt_gray"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"></View>
+    </LinearLayout>
 </LinearLayout>

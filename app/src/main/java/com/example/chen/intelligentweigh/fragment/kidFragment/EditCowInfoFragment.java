@@ -23,6 +23,7 @@ import com.example.chen.intelligentweigh.activity.NewCowActivity;
 import com.example.chen.intelligentweigh.activity.kidActivity.ChooseHouseActivity;
 import com.example.chen.intelligentweigh.activity.kidActivity.CowTypeActivity;
 import com.example.chen.intelligentweigh.activity.kidActivity.EditCowInfoActivty;
+import com.example.chen.intelligentweigh.activity.kidActivity.EditHouseActivity;
 import com.example.chen.intelligentweigh.bean.Cow;
 import com.example.chen.intelligentweigh.bean.NewCow;
 import com.example.chen.intelligentweigh.bean.User;
@@ -88,6 +89,8 @@ public class EditCowInfoFragment extends BaseFragment {
     private Cow eeCow;
     private String eeid;
     private String eename;
+    private String etname;
+    private String eyid;
     private String eetname;
 
     @Nullable
@@ -108,13 +111,12 @@ public class EditCowInfoFragment extends BaseFragment {
         }
     }
 
-    public static EditCowInfoFragment newInsatnces(Cow cow,String yid,String yname,String tname){
+    public static EditCowInfoFragment newInsatnces(Cow cow,String yid,String etname){
         EditCowInfoFragment fragment = new EditCowInfoFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable("editCow",cow);
         bundle.putString("eyid",yid);
-        bundle.putString("eyname",yname);
-        bundle.putString("etname",tname);
+        bundle.putString("etname",etname);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -165,7 +167,7 @@ public class EditCowInfoFragment extends BaseFragment {
 
 
     private void initActivityView(View view) {
-        if(getActivity()!=null&&eeCow!=null&&eeid!=null&&eename!=null){
+        if(getActivity()!=null&&eeCow!=null){
             new TitleBuilder(view).setTitleText("信息编辑").setLeftImage(R.drawable.arrowleft).setLeftOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -187,8 +189,9 @@ public class EditCowInfoFragment extends BaseFragment {
             tv_cow_register.setText(eeCow.getRegisterDay());
             tv_cow_sex.setText(eeCow.getSex());
             tv_cow_type.setText(eeCow.getKind());
-            tv_father_id.setText(eeCow.getFather_id());
+            tv_father_id.setText(eCow.getFather_id());
             tv_mather_id.setText(eeCow.getMother_id());
+            ChooseHouseArea();
             InputCowName();
             InputCowPrice();
             ChooseBrithDate();
@@ -202,12 +205,14 @@ public class EditCowInfoFragment extends BaseFragment {
     private void initFragView(View view) {
         if(getArguments()!=null&&getActivity()!=null){
             eCow = (Cow)getArguments().getSerializable("editCow");
-            final String eyid = getArguments().getString("eyid");
+            eyid = getArguments().getString("eyid");
+            etname = getArguments().getString("etname");
             final String eyname = getArguments().getString("eyname");
             final String etname = getArguments().getString("etname");
             new TitleBuilder(view).setTitleText("信息编辑").setLeftImage(R.drawable.arrowleft).setLeftOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    //Log.e(TAG,eyid+eyname+etname);
                     CowManageYListFragment fragment = CowManageYListFragment.newInstances(eyid,eyname,etname);
                     getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.other_content_frag,fragment).commit();
                 }
@@ -229,7 +234,7 @@ public class EditCowInfoFragment extends BaseFragment {
             tv_cow_type.setText(eCow.getKind());
             tv_father_id.setText(eCow.getFather_id());
             tv_mather_id.setText(eCow.getMother_id());
-            //ChooseHouseArea();
+            ChooseHouseArea();
             //ChooseType();
             InputCowName();
             InputCowPrice();
@@ -346,12 +351,9 @@ public class EditCowInfoFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 if (isTwoPan) {
-                    CowTypeFragment fragment = CowTypeFragment.newInsatanceEdit(SaveStausData());
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.other_content_frag, fragment).commit();
+
                 } else {
-                    Intent intent = new Intent(getActivity(), CowTypeActivity.class);
-                    intent.putExtra("cowsInfo",SaveStausData());
-                    startActivity(intent);
+
                 }
             }
         });
@@ -399,6 +401,49 @@ public class EditCowInfoFragment extends BaseFragment {
         return eCow;
     }
 
+
+    /**
+     * 保存数据
+     *
+     * @return
+     */
+    private Cow SaveStauseData() {
+        if (!tv_cow_name.getText().toString().isEmpty()) {
+            eeCow.setName(tv_cow_name.getText().toString());
+        }
+        if (!tv_choose_housename.getText().toString().isEmpty()) {
+            eeCow.setFarmname(tv_choose_housename.getText().toString());
+        }
+        if (!tv_cow_sex.getText().toString().isEmpty()) {
+            eeCow.setSex(tv_cow_sex.getText().toString());
+        }
+        if (!tv_cow_type.getText().toString().isEmpty()) {
+            eeCow.setKind(tv_cow_type.getText().toString());
+        }
+        if (!tv_cow_register.getText().toString().isEmpty()) {
+            eeCow.setRegisterDay(tv_cow_register.getText().toString());
+        }
+        if (!tv_access_peice.getText().toString().isEmpty()) {
+            eeCow.setEnterancePrice(Float.parseFloat(tv_access_peice.getText().toString()));
+        }
+        if (!tv_cow_id.getText().toString().isEmpty()) {
+            eeCow.setID(tv_cow_id.getText().toString());
+        }
+        if (!tv_mather_id.getText().toString().isEmpty()) {
+            eeCow.setMother_id(tv_mather_id.getText().toString());
+        }
+        if (!tv_father_id.getText().toString().isEmpty()) {
+            eeCow.setFather_id(tv_father_id.getText().toString());
+        }
+        if (!tv_cow_access.getText().toString().isEmpty()) {
+            eeCow.setEntranceDay(tv_cow_access.getText().toString());
+        }
+        if (!tv_cow_birth.getText().toString().isEmpty()) {
+            eeCow.setBirthday(tv_cow_birth.getText().toString());
+        }
+        return eeCow;
+    }
+
     /**
      * 肉牛牧区点击事件
      */
@@ -414,15 +459,13 @@ public class EditCowInfoFragment extends BaseFragment {
                     }
                     Log.e(TAG, "牧场：" + user.getFarmids());
                     if (isTwoPan) {
-                        ChooseHouseFragment fragment = ChooseHouseFragment.newInstanceEdit(user.getFarmids(), SaveStausData());
-                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.other_content_frag, fragment, "0").addToBackStack(null).commit();
+                        EditHouseFragment fragment = EditHouseFragment.newInstances(SaveStausData(),user.getFarmids(),eyid,etname);
+                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.other_content_frag,fragment).commit();
                     } else {
-                        if (getActivity() != null) {
-                            Intent intent = new Intent(getActivity(), ChooseHouseActivity.class);
-                            intent.putExtra("framid", user.getFarmids());
-                            intent.putExtra("newcow",SaveStausData());
-                            startActivity(intent);
-                        }
+                        Intent intent = new Intent(getActivity(), EditHouseActivity.class);
+                        intent.putExtra("abindstr",user.getFarmids());
+                        intent.putExtra("aeditcow",SaveStauseData());
+                        startActivity(intent);
                     }
                 }
             }

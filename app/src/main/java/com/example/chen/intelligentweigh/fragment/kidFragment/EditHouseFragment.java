@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -20,8 +19,7 @@ import com.example.chen.intelligentweigh.BaseFragment;
 import com.example.chen.intelligentweigh.R;
 import com.example.chen.intelligentweigh.activity.kidActivity.ChooseAreaActivity;
 import com.example.chen.intelligentweigh.activity.kidActivity.ChooseHouseActivity;
-import com.example.chen.intelligentweigh.activity.kidActivity.PeopleInfoActivity;
-import com.example.chen.intelligentweigh.adapter.ListViewChooseHouseAdapter;
+import com.example.chen.intelligentweigh.activity.kidActivity.EditHouseActivity;
 import com.example.chen.intelligentweigh.adapter.ListViewHouseAdapter;
 import com.example.chen.intelligentweigh.bean.Cow;
 import com.example.chen.intelligentweigh.bean.House;
@@ -35,22 +33,23 @@ import com.squareup.okhttp.Request;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
+import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author chen
- * @date 2018/12/12.   20:24
+ * @date 2018/12/19.   22:37
  * description：
  */
-public class ChooseHouseFragment extends BaseFragment {
+public class EditHouseFragment extends BaseFragment {
 
     private ListView lv_choose_house;
     private boolean isTwoPan;
-    private String TAG = "ChooseHouseFragment";
+    private String TAG = "EditHouseFragment";
     private String framdata;
-    private NewCow newCow;
+    private Cow newCow;
     private List<House> list = new ArrayList<>();
 
     @Nullable
@@ -60,23 +59,6 @@ public class ChooseHouseFragment extends BaseFragment {
         initView(view);
         return view;
     }
-
-    /**
-     *  提前加载布局
-     * @return
-     */
-    public static ChooseHouseFragment newInstance(String house,NewCow newCow){
-        ChooseHouseFragment chooseHouseFragment = new ChooseHouseFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString("house",house);
-        bundle.putSerializable("choosecow",newCow);
-        chooseHouseFragment.setArguments(bundle);
-        return chooseHouseFragment;
-    }
-
-
-
-
 
 
     @Override
@@ -90,61 +72,41 @@ public class ChooseHouseFragment extends BaseFragment {
 
     }
 
-    private void initView(View view) {
-        lv_choose_house = (ListView) view.findViewById(R.id.lv_choose_house);
-        onFragmentUI(view);
-        onActivityUI(view);
+    public static EditHouseFragment newInstances(Cow cow,String bindStr,String editid,String etname){
+        EditHouseFragment fragment = new EditHouseFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("bindstr",bindStr);
+        bundle.putSerializable("editcow",cow);
+        bundle.putString("editid",editid);
+        bundle.putString("etname",etname);
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
-    /**
-     * 在Activity下
-     * @param view
-     */
-    private void onActivityUI(View view) {
+    private void initView(View view) {
+        lv_choose_house = (ListView) view.findViewById(R.id.lv_choose_house);
+        initFragView(view);
+        initActivityView(view);
+    }
 
-        if(framdata!=null){
+    private void initActivityView(View view) {
+        if(getActivity()!=null&&framdata!=null&&newCow!=null){
             new TitleBuilder(view).setTitleText("选择牧场").setLeftImage(R.drawable.arrowleft).setLeftOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     getActivity().finish();
                 }
             });
-            ChooseHouse(framdata);
+            initListView(framdata);
+
+            
         }
     }
 
-    /**
-     * fragment下UI
-     * @param view
-     */
-    private void onFragmentUI(View view) {
-        if(getArguments()!=null){
-            final NewCow cow = (NewCow) getArguments().getSerializable("choosecow");
-            new TitleBuilder(view).setTitleText("选择牧场").setLeftImage(R.drawable.arrowleft).setLeftOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (cow != null) {
-                        NewCowFragment fragment = NewCowFragment.newInstances(cow);
-                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.other_content_frag, fragment).commit();
-                    }
-
-                }
-            });
-            String house = getArguments().getString("house");
-            if(house!=null) {
-                ChooseHouse(house);
-            }
-        }
-    }
-
-    /**
-     * 请求得到牧场信息
-     * @param farmids
-     */
-    private void ChooseHouse(String farmids) {
+    private void initListView(String framids) {
         OkHttpUtils.get()
                 .url(HttpUrlUtils.HOUSE_CHOOSE_URL)
-                .addParams("bindstr",farmids)
+                .addParams("bindstr",framids)
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -169,19 +131,9 @@ public class ChooseHouseFragment extends BaseFragment {
                                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                             House house = list.get(position);
                                             if(isTwoPan){
-                                                NewCow cow = (NewCow)getArguments().getSerializable("choosecow");
-                                                cow.setHouseId(house.getID());
-                                                ChooseAreaFragment fragment = ChooseAreaFragment.newInstances(house.getID(),house.getName(),cow);
-                                                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.other_content_frag,fragment,"1").commit();
+
                                             }else{
-                                                Intent intent = new Intent(getActivity(), ChooseAreaActivity.class);
-                                                intent.putExtra("name",house.getName());
-                                                intent.putExtra("id",house.getID());
-                                                newCow.setHouseName(house.getName());
-                                                newCow.setHouseId(house.getID());
-                                                intent.putExtra("cowInfo",newCow);
-                                                Log.e(TAG,"name"+house.getName()+"id"+house.getID()+"cowInfo"+newCow);
-                                                startActivity(intent);
+
                                             }
                                         }
                                     });
@@ -193,30 +145,27 @@ public class ChooseHouseFragment extends BaseFragment {
                         }
                     }
                 });
-
     }
 
-    /**
-     * fragment展示area
-     * @param id
-     */
-    private void initHouseAreaFrag(String id) {
-        OkHttpUtils.get()
-                .url(HttpUrlUtils.ALL_HOUSE_AREA_URL)
-                .addParams("farmid",id)
-                .build()
-                .execute(new StringCallback() {
-                    @Override
-                    public void onError(Request request, Exception e) {
-
+    private void initFragView(View view) {
+        if(getArguments()!=null&&getActivity()!=null){
+            final Cow cow = (Cow)getArguments().getSerializable("editcow");
+            String bindstr = getArguments().getString("bindstr");
+            final String editid = getArguments().getString("editid");
+            final String etname = getArguments().getString("etname");
+            new TitleBuilder(view).setTitleText("选择牧场").setLeftImage(R.drawable.arrowleft).setLeftOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (cow != null) {
+                        EditCowInfoFragment fragment = EditCowInfoFragment.newInsatnces(cow,editid,etname);
+                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.other_content_frag, fragment).commit();
                     }
 
-                    @Override
-                    public void onResponse(String response) {
+                }
+            });
+            initListView(bindstr);
+        }
 
-
-                    }
-                });
     }
 
 
@@ -244,13 +193,10 @@ public class ChooseHouseFragment extends BaseFragment {
      * Called when the fragment attaches to the context
      */
     protected void onAttachToContext(Context context) {
-        if(context instanceof ChooseHouseActivity) {
-            framdata = ((ChooseHouseActivity) context).setData();
-            newCow = ((ChooseHouseActivity) context).setNewcowData();
+        if(context instanceof EditHouseActivity) {
+            framdata = ((EditHouseActivity) context).setData();
+            newCow = ((EditHouseActivity) context).setcowData();
             Log.e(TAG, "activity传递来的数据" + framdata+newCow);
         }
     }
-
-
-
 }

@@ -62,13 +62,6 @@ public class CowTypeFragment extends BaseFragment {
         return view;
     }
 
-    public static CowTypeFragment newInsatanceEdit(Cow cow){
-        CowTypeFragment fragment = new CowTypeFragment();
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("editCow",cow);
-        fragment.setArguments(bundle);
-        return fragment;
-    }
 
     public static CowTypeFragment newInstance(NewCow cow){
         CowTypeFragment fragment = new CowTypeFragment();
@@ -130,11 +123,6 @@ public class CowTypeFragment extends BaseFragment {
                     if (cow != null) {
                         NewCowFragment fragment = NewCowFragment.newInstances(cow);
                         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.other_content_frag, fragment).commit();
-                    }
-                    Cow editCow = (Cow)getArguments().getSerializable("editCow");
-                    if(editCow!=null){
-                        EditCowInfoFragment fragment = EditCowInfoFragment.newInsatnces(editCow,editCow.getFather_id(),editCow.getArea(),editCow.getName());
-                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.other_content_frag,fragment).commit();
                     }
 
 

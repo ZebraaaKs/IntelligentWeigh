@@ -202,7 +202,7 @@ public class CowManageYListFragment extends BaseFragment {
                                             case 0:
                                                 if(isTwoPan){
                                                     if(!"".equals(tname)){
-                                                        EditCowInfoFragment fragment = EditCowInfoFragment.newInsatnces(list.get(position),yid,yname,tname);
+                                                        EditCowInfoFragment fragment = EditCowInfoFragment.newInsatnces(list.get(position),yid,tname);
                                                         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.other_content_frag,fragment).commit();
                                                     }
                                                 }else{
