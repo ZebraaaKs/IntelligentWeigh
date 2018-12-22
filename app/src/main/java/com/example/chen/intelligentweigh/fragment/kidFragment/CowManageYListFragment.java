@@ -224,6 +224,7 @@ public class CowManageYListFragment extends BaseFragment {
                                         return false;
                                     }
                                 });
+
                             }
 
                         }

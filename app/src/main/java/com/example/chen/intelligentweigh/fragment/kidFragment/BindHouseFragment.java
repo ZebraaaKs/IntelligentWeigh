@@ -203,6 +203,7 @@ public class BindHouseFragment extends BaseFragment {
                                     user.updateAll("phone = ?",phone);
                                 }
                                 Intent intent = new Intent(getActivity(), PeopleMangerActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(intent);
                                 getActivity().finish();
                             }else{

@@ -19,6 +19,7 @@ import com.example.chen.intelligentweigh.BaseFragment;
 import com.example.chen.intelligentweigh.R;
 import com.example.chen.intelligentweigh.activity.kidActivity.ChooseAreaActivity;
 import com.example.chen.intelligentweigh.activity.kidActivity.ChooseHouseActivity;
+import com.example.chen.intelligentweigh.activity.kidActivity.EditAreaActivity;
 import com.example.chen.intelligentweigh.activity.kidActivity.EditHouseActivity;
 import com.example.chen.intelligentweigh.adapter.ListViewHouseAdapter;
 import com.example.chen.intelligentweigh.bean.Cow;
@@ -50,6 +51,10 @@ public class EditHouseFragment extends BaseFragment {
     private String TAG = "EditHouseFragment";
     private String framdata;
     private Cow newCow;
+    private Cow cow;
+    private String bindstr;
+    private String editid;
+    private String etname;
     private List<House> list = new ArrayList<>();
 
     @Nullable
@@ -131,9 +136,18 @@ public class EditHouseFragment extends BaseFragment {
                                         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                             House house = list.get(position);
                                             if(isTwoPan){
-
+                                                cow.setPast_id(Integer.parseInt(house.getID()));
+                                                cow.setFarmname(house.getName());
+                                                Log.e(TAG,cow.toString());
+                                                EditAreaFragment fragment = EditAreaFragment.newInstances(cow,bindstr,editid,house.getName())
+                                                        ;
+                                                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.other_content_frag,fragment).commit();
                                             }else{
-
+                                                newCow.setPast_id(Integer.parseInt(house.getID()));
+                                                newCow.setFarmname(house.getName());
+                                                Intent intent = new Intent(getActivity(), EditAreaActivity.class);
+                                                intent.putExtra("aeditCow",newCow);
+                                                startActivity(intent);
                                             }
                                         }
                                     });
@@ -149,10 +163,10 @@ public class EditHouseFragment extends BaseFragment {
 
     private void initFragView(View view) {
         if(getArguments()!=null&&getActivity()!=null){
-            final Cow cow = (Cow)getArguments().getSerializable("editcow");
-            String bindstr = getArguments().getString("bindstr");
-            final String editid = getArguments().getString("editid");
-            final String etname = getArguments().getString("etname");
+            cow = (Cow)getArguments().getSerializable("editcow");
+            bindstr = getArguments().getString("bindstr");
+            editid = getArguments().getString("editid");
+            etname = getArguments().getString("etname");
             new TitleBuilder(view).setTitleText("选择牧场").setLeftImage(R.drawable.arrowleft).setLeftOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

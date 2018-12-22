@@ -249,6 +249,7 @@ public class CowTypeFragment extends BaseFragment {
                                             cows.setCowTypeId(cowType.getID());
                                             Intent intent = new Intent(getActivity(), NewCowActivity.class);
                                             intent.putExtra("cowInfo",cows);
+                                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                             startActivity(intent);
                                             getActivity().finish();
                                         }

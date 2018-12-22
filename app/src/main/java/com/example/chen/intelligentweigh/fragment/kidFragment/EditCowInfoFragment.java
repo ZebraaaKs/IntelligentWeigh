@@ -16,25 +16,34 @@ import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.chen.intelligentweigh.BaseFragment;
 import com.example.chen.intelligentweigh.R;
+import com.example.chen.intelligentweigh.activity.CowManageActivity;
 import com.example.chen.intelligentweigh.activity.NewCowActivity;
 import com.example.chen.intelligentweigh.activity.kidActivity.ChooseHouseActivity;
 import com.example.chen.intelligentweigh.activity.kidActivity.CowTypeActivity;
 import com.example.chen.intelligentweigh.activity.kidActivity.EditCowInfoActivty;
 import com.example.chen.intelligentweigh.activity.kidActivity.EditHouseActivity;
+import com.example.chen.intelligentweigh.activity.kidActivity.EditTypeActivity;
 import com.example.chen.intelligentweigh.bean.Cow;
 import com.example.chen.intelligentweigh.bean.NewCow;
 import com.example.chen.intelligentweigh.bean.User;
+import com.example.chen.intelligentweigh.fragment.CowManageFragment;
 import com.example.chen.intelligentweigh.util.AlertDialog;
+import com.example.chen.intelligentweigh.util.HttpUrlUtils;
 import com.example.chen.intelligentweigh.util.NetWorkUtils;
 import com.example.chen.intelligentweigh.util.SharedUtils;
 import com.example.chen.intelligentweigh.util.TitleBuilder;
+import com.squareup.okhttp.Request;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.litepal.LitePal;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.Calendar;
 import java.util.List;
 
@@ -176,12 +185,13 @@ public class EditCowInfoFragment extends BaseFragment {
             }).setRightText("提交").setRightOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Submit(eeCow);
 
                 }
             }).build();
             tv_cow_name.setText(eeCow.getName());
             tv_access_peice.setText(""+eeCow.getEnterancePrice());
-            tv_choose_housename.setText(eeCow.getFarmname());
+            tv_choose_housename.setText(eeCow.getFarmname()+"·"+eeCow.getArea());
             tv_choose_id.setText(eeid);
             tv_cow_access.setText(eeCow.getEntranceDay());
             tv_cow_birth.setText(eeCow.getBirthday());
@@ -189,9 +199,10 @@ public class EditCowInfoFragment extends BaseFragment {
             tv_cow_register.setText(eeCow.getRegisterDay());
             tv_cow_sex.setText(eeCow.getSex());
             tv_cow_type.setText(eeCow.getKind());
-            tv_father_id.setText(eCow.getFather_id());
+            tv_father_id.setText(eeCow.getFather_id());
             tv_mather_id.setText(eeCow.getMother_id());
             ChooseHouseArea();
+            ChooseType();
             InputCowName();
             InputCowPrice();
             ChooseBrithDate();
@@ -202,29 +213,107 @@ public class EditCowInfoFragment extends BaseFragment {
 
     }
 
+    /**
+     * 修改信息提交
+     */
+    private void Submit(Cow cow) {
+        if(tv_choose_housename.getText().toString().isEmpty()){
+            Toast.makeText(getActivity(),"请选择牧场分区",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(tv_cow_name.getText().toString().isEmpty()){
+            Toast.makeText(getActivity(),"请输入肉牛名称",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(tv_cow_type.getText().toString().isEmpty()){
+            Toast.makeText(getActivity(),"请选择肉牛种类",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(tv_cow_sex.getText().toString().isEmpty()){
+            Toast.makeText(getActivity(),"请输入肉牛公母",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(tv_cow_birth.getText().toString().isEmpty()){
+            Toast.makeText(getActivity(),"请输入肉牛出生日期",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(tv_cow_access.getText().toString().isEmpty()){
+            Toast.makeText(getActivity(),"请输入肉牛进场日期",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(tv_cow_register.getText().toString().isEmpty()){
+            Toast.makeText(getActivity(),"请输入肉牛注册日期",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if( tv_access_peice.getText().toString().isEmpty()){
+            Toast.makeText(getActivity(),"请输入肉牛价格",Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+
+        OkHttpUtils.get()
+                .url(HttpUrlUtils.UPDATECOWINFO)
+                .addParams("past_id",String.valueOf(cow.getPast_id()))
+                .addParams("area",cow.getArea())
+                .addParams("name",tv_cow_name.getText().toString())
+                .addParams("cattleid",tv_cow_id.getText().toString())
+                .addParams("father_id",tv_father_id.getText().toString())
+                .addParams("mother_id",tv_mather_id.getText().toString())
+                .addParams("kind",tv_cow_type.getText().toString())
+                .addParams("sex",tv_cow_sex.getText().toString())
+                .addParams("birthday",tv_cow_birth.getText().toString())
+                .addParams("entranceDay",tv_cow_access.getText().toString())
+                .addParams("registerDay",tv_cow_register.getText().toString())
+                .addParams("enterancePrice",tv_access_peice.getText().toString())
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Request request, Exception e) {
+                        Toast.makeText(getActivity(),"请检查网络连接",Toast.LENGTH_SHORT).show();
+
+                    }
+
+                    @Override
+                    public void onResponse(String response) {
+                        if("ok".equals(response)){
+                            Toast.makeText(getActivity(),"修改信息成功",Toast.LENGTH_SHORT).show();
+                            if(isTwoPan){
+                                CowManageFragment fragment = new CowManageFragment();
+                                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.other_content_frag,fragment).commit();
+                            }else{
+                                Intent intent = new Intent(getActivity(), CowManageActivity.class);
+                                startActivity(intent);
+                            }
+                        }else{
+                            Toast.makeText(getActivity(),"数据错误",Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                });
+    }
+
     private void initFragView(View view) {
         if(getArguments()!=null&&getActivity()!=null){
             eCow = (Cow)getArguments().getSerializable("editCow");
             eyid = getArguments().getString("eyid");
             etname = getArguments().getString("etname");
-            final String eyname = getArguments().getString("eyname");
-            final String etname = getArguments().getString("etname");
             new TitleBuilder(view).setTitleText("信息编辑").setLeftImage(R.drawable.arrowleft).setLeftOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     //Log.e(TAG,eyid+eyname+etname);
-                    CowManageYListFragment fragment = CowManageYListFragment.newInstances(eyid,eyname,etname);
+                    CowManageYListFragment fragment = CowManageYListFragment.newInstances(eyid,eCow.getArea(),etname);
                     getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.other_content_frag,fragment).commit();
                 }
             }).setRightText("提交").setRightOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Submit(eCow);
 
                 }
             }).build();
             tv_cow_name.setText(eCow.getName());
             tv_access_peice.setText(""+eCow.getEnterancePrice());
-            tv_choose_housename.setText(eCow.getFarmname());
+            tv_choose_housename.setText(eCow.getFarmname()+"·"+eCow.getArea());
             tv_choose_id.setText(eyid);
             tv_cow_access.setText(eCow.getEntranceDay());
             tv_cow_birth.setText(eCow.getBirthday());
@@ -235,7 +324,7 @@ public class EditCowInfoFragment extends BaseFragment {
             tv_father_id.setText(eCow.getFather_id());
             tv_mather_id.setText(eCow.getMother_id());
             ChooseHouseArea();
-            //ChooseType();
+            ChooseType();
             InputCowName();
             InputCowPrice();
             ChooseBrithDate();
@@ -351,8 +440,12 @@ public class EditCowInfoFragment extends BaseFragment {
             @Override
             public void onClick(View v) {
                 if (isTwoPan) {
-
+                    EditTypeFragment fragment = EditTypeFragment.newInstances(SaveStausData(),eyid,etname);
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.other_content_frag,fragment).commit();
                 } else {
+                    Intent intent = new Intent(getActivity(), EditTypeActivity.class);
+                    intent.putExtra("acow",SaveStauseData());
+                    startActivity(intent);
 
                 }
             }
@@ -369,7 +462,12 @@ public class EditCowInfoFragment extends BaseFragment {
             eCow.setName(tv_cow_name.getText().toString());
         }
         if (!tv_choose_housename.getText().toString().isEmpty()) {
-            eCow.setFarmname(tv_choose_housename.getText().toString());
+            if (tv_choose_housename.getText().toString().contains("·")) {
+                String[] split = tv_choose_housename.getText().toString().split("·");
+                eCow.setFarmname(split[0]);
+            } else {
+                eCow.setFarmname(tv_choose_housename.getText().toString());
+            }
         }
         if (!tv_cow_sex.getText().toString().isEmpty()) {
             eCow.setSex(tv_cow_sex.getText().toString());
@@ -381,7 +479,7 @@ public class EditCowInfoFragment extends BaseFragment {
             eCow.setRegisterDay(tv_cow_register.getText().toString());
         }
         if (!tv_access_peice.getText().toString().isEmpty()) {
-            eCow.setEnterancePrice(Float.parseFloat(tv_access_peice.getText().toString()));
+            eCow.setEnterancePrice(Double.parseDouble(tv_access_peice.getText().toString()));
         }
         if (!tv_cow_id.getText().toString().isEmpty()) {
             eCow.setID(tv_cow_id.getText().toString());
@@ -412,7 +510,12 @@ public class EditCowInfoFragment extends BaseFragment {
             eeCow.setName(tv_cow_name.getText().toString());
         }
         if (!tv_choose_housename.getText().toString().isEmpty()) {
-            eeCow.setFarmname(tv_choose_housename.getText().toString());
+            if (tv_choose_housename.getText().toString().contains("·")) {
+                String[] split = tv_choose_housename.getText().toString().split("·");
+                eeCow.setFarmname(split[0]);
+            } else {
+                eeCow.setFarmname(tv_choose_housename.getText().toString());
+            }
         }
         if (!tv_cow_sex.getText().toString().isEmpty()) {
             eeCow.setSex(tv_cow_sex.getText().toString());
@@ -424,7 +527,7 @@ public class EditCowInfoFragment extends BaseFragment {
             eeCow.setRegisterDay(tv_cow_register.getText().toString());
         }
         if (!tv_access_peice.getText().toString().isEmpty()) {
-            eeCow.setEnterancePrice(Float.parseFloat(tv_access_peice.getText().toString()));
+            eeCow.setEnterancePrice(Double.parseDouble(tv_access_peice.getText().toString()));
         }
         if (!tv_cow_id.getText().toString().isEmpty()) {
             eeCow.setID(tv_cow_id.getText().toString());

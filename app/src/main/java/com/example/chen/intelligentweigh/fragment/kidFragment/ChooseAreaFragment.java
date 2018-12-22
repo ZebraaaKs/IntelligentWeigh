@@ -109,6 +109,7 @@ public class ChooseAreaFragment extends BaseFragment {
                 cow.setHouseName(s);
                 Intent intent = new Intent(getActivity(), NewCowActivity.class);
                 intent.putExtra("cowInfo",cow);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 getActivity().finish();
             }
