@@ -1,10 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     android:orientation="vertical"
-    >
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
     <include layout="@layout/rl_titlebar"></include>
-
     <LinearLayout
         android:background="@drawable/itembackgroud"
         android:fitsSystemWindows="true"
@@ -86,7 +85,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="50dp" />
             <EditText
-                android:id="@+id/et_register_password"
+                android:id="@+id/et_loss_password"
                 android:hint="登陆密码"
                 android:textSize="16sp"
                 android:singleLine="true"
@@ -101,46 +100,16 @@
             android:background="@color/text_grey"
             android:layout_width="match_parent"
             android:layout_height="1dp"></View>
-
-        <LinearLayout
-            android:layout_marginTop="30dp"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="50dp">
-            <TextView
-                android:textColor="@color/txt_black"
-                android:textSize="16sp"
-                android:text="用户名          "
-                android:layout_width="wrap_content"
-                android:layout_height="50dp" />
-            <EditText
-                android:id="@+id/et_register_username"
-                android:hint="用户名"
-                android:textSize="16sp"
-                android:singleLine="true"
-                android:layout_width="match_parent"
-                android:background="@null"
-                android:layout_height="50dp"
-                android:textColor="@color/txt_black"
-                />
-        </LinearLayout>
-        <View
-            android:background="@color/text_grey"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"></View>
-
         <Button
             android:id="@+id/bt_register"
             android:layout_marginTop="30dp"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:text="注  册"
+            android:text="确   定"
             android:textSize="16sp"
             android:background="@color/primary"
             />
-
-
-
     </LinearLayout>
+
 
 </LinearLayout>

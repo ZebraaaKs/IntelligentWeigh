@@ -104,7 +104,7 @@ public class ShowCowInfoFragment extends BaseFragment {
                     getActivity().finish();
                 }
             });
-            Glide.with(getActivity()).load(R.drawable.cow).into(iv_cow_photo);
+            Glide.with(getActivity()).load(R.drawable.cowphoto).into(iv_cow_photo);
             tv_cow_id.setText(""+cows.getID());
             tv_access_date.setText(cows.getEntranceDay());
             tv_access_price.setText("" + cows.getEnterancePrice()+" (元/斤)");

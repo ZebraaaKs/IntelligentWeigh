@@ -4,12 +4,102 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <include layout="@layout/rl_titlebar"></include>
-    <TextView
-        android:gravity="center_horizontal|center_vertical"
-        android:text="实时称重"
-        android:textColor="@color/green"
-        android:textSize="36sp"
+    <LinearLayout
+        android:background="@drawable/itembackgroud"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+    <LinearLayout
+        android:padding="10dp"
+        android:orientation="horizontal"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+        <ImageView
+            android:src="@drawable/cowphoto"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+        <TextView
+            android:gravity="center_vertical|center_horizontal"
+            android:text="肉牛编号:"
+            android:textColor="@color/txt_black"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+        <TextView
+            android:id="@+id/tv_real_id"
+            android:gravity="center_vertical"
+            android:text="000000000000000"
+            android:textColor="@color/txt_black"
+            android:layout_weight="3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent" />
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/tv_real_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+    <View
+        android:background="@color/txt_gray"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"></View>
+    <View
+        android:layout_marginTop="10dp"
+        android:background="@color/txt_gray"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"></View>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_weight="3"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+        <TextView
+            android:paddingLeft="10dp"
+            android:textColor="@color/txt_black"
+            android:textSize="24sp"
+            android:text="称重："
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:id="@+id/tv_real_weight"
+            android:textColor="@color/txt_black"
+            android:textSize="20sp"
+            android:text="0.0"
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            />
+        <TextView
+            android:paddingRight="10dp"
+            android:textSize="24sp"
+            android:text="KG"
+            android:textColor="@color/red"
+            android:gravity="right"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <View
+            android:background="@color/txt_gray"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"></View>
+        <RelativeLayout
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp">
+            <Button
+                android:id="@+id/bt_real_sure"
+                android:background="@drawable/btn_shape"
+                android:gravity="center"
+                android:layout_centerInParent="true"
+                android:layout_width="300dp"
+                android:text="确认重量"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+    </LinearLayout>
 
+</LinearLayout>
 </LinearLayout>

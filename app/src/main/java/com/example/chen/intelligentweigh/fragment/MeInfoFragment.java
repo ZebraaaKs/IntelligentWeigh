@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,7 +21,6 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.signature.StringSignature;
-import com.example.chen.intelligentweigh.BaseFragment;
 import com.example.chen.intelligentweigh.R;
 import com.example.chen.intelligentweigh.activity.LoginActivity;
 import com.example.chen.intelligentweigh.activity.SetTouXiangActivity;
@@ -30,7 +28,6 @@ import com.example.chen.intelligentweigh.bean.User;
 import com.example.chen.intelligentweigh.util.AlertDialog;
 import com.example.chen.intelligentweigh.util.HttpUrlUtils;
 import com.example.chen.intelligentweigh.util.SharedUtils;
-import com.example.chen.intelligentweigh.util.StatusBarUtils;
 import com.example.chen.intelligentweigh.util.TitleBuilder;
 import com.squareup.okhttp.Request;
 import com.zhy.http.okhttp.OkHttpUtils;
@@ -61,6 +58,7 @@ public class MeInfoFragment extends Fragment {
     private TextView tv_item_phone;
     private ImageView iv_item_touxiang;
     private String TAG = "MeInfoFragment";
+    private TextView tv_house;
 
     @Nullable
     @Override
@@ -78,6 +76,7 @@ public class MeInfoFragment extends Fragment {
         rl_age = (RelativeLayout) view.findViewById(R.id.rl_age);
         tv_item_sex = (TextView) view.findViewById(R.id.tv_item_sex);
         rl_sex = (RelativeLayout) view.findViewById(R.id.rl_sex);
+        tv_house = (TextView) view.findViewById(R.id.tv_house);
         tv_item_phone = (TextView) view.findViewById(R.id.tv_item_phone);
         new TitleBuilder(view).setTitleText("我的信息").setRightText("退出")
                 .setRightOnClickListener(new View.OnClickListener() {
@@ -114,10 +113,17 @@ public class MeInfoFragment extends Fragment {
                     tv_item_sex.setText(user.getSex());
                 }
                 tv_item_username.setText(user.getName());
+                if(user.getFarmids() ==null){
+                    tv_house.setText("暂无牧场");
+                }else{
+                    tv_house.setText(user.getFarmids());
+                }
 
             }
         }
         iv_item_touxiang = (ImageView) view.findViewById(R.id.iv_item_touxiang);
+
+
 
     }
 
@@ -154,7 +160,7 @@ public class MeInfoFragment extends Fragment {
                                 .execute(new StringCallback() {
                                     @Override
                                     public void onError(Request request, Exception e) {
-                                        if(getActivity()!=null) {
+                                        if (getActivity() != null) {
                                             getActivity().runOnUiThread(new Runnable() {
                                                 @Override
                                                 public void run() {
@@ -166,7 +172,7 @@ public class MeInfoFragment extends Fragment {
 
                                     @Override
                                     public void onResponse(String response) {
-                                        if(getActivity()!=null) {
+                                        if (getActivity() != null) {
                                             if ("ok".equals(response.toString())) {
                                                 //先更新数据库
                                                 User user = new User();
@@ -220,7 +226,7 @@ public class MeInfoFragment extends Fragment {
                                     .execute(new StringCallback() {
                                         @Override
                                         public void onError(Request request, Exception e) {
-                                            if(getActivity()!=null) {
+                                            if (getActivity() != null) {
                                                 getActivity().runOnUiThread(new Runnable() {
                                                     @Override
                                                     public void run() {
@@ -233,7 +239,7 @@ public class MeInfoFragment extends Fragment {
 
                                         @Override
                                         public void onResponse(String response) {
-                                            if(getActivity()!=null) {
+                                            if (getActivity() != null) {
                                                 if ("ok".equals(response.toString())) {
                                                     //先更新数据库
                                                     User user = new User();
@@ -306,7 +312,7 @@ public class MeInfoFragment extends Fragment {
                                 .execute(new StringCallback() {
                                     @Override
                                     public void onError(Request request, Exception e) {
-                                        if(getActivity()!=null) {
+                                        if (getActivity() != null) {
                                             getActivity().runOnUiThread(new Runnable() {
                                                 @Override
                                                 public void run() {
@@ -318,7 +324,7 @@ public class MeInfoFragment extends Fragment {
 
                                     @Override
                                     public void onResponse(String response) {
-                                        if(getActivity()!=null) {
+                                        if (getActivity() != null) {
                                             if ("ok".equals(response.toString())) {
                                                 //先更新数据库
                                                 User user = new User();
@@ -372,13 +378,13 @@ public class MeInfoFragment extends Fragment {
     };
 
     private void refreshIcon() {
-        Log.e(TAG,"me 广播");
+        Log.e(TAG, "me 广播");
         String phone = SharedUtils.getPhone(getActivity());
         if (!TextUtils.isEmpty(phone)) {
             List<User> users = LitePal.where("phone = ?", phone).find(User.class);
             if (users != null || !users.isEmpty()) {
                 String touxiang = users.get(0).getTouxiang();
-                if(touxiang!=null) {
+                if (touxiang != null) {
                     if (!touxiang.contains("/JDGJ/TOUX/")) {
                         Glide.with(getActivity()).load(touxiang)
                                 .error(R.drawable.iconn)
@@ -391,11 +397,11 @@ public class MeInfoFragment extends Fragment {
                                 .signature(new StringSignature(SharedUtils.getTime(getActivity())))
                                 .into(iv_item_touxiang);
                     }
-                }else{
+                } else {
                     iv_item_touxiang.setImageResource(R.drawable.iconn);
                 }
             }
-        }else{
+        } else {
             iv_item_touxiang.setImageResource(R.drawable.iconn);
         }
     }

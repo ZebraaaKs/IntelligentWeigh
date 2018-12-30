@@ -217,6 +217,49 @@
            android:background="@color/bg_gray"
            android:layout_width="match_parent"
            android:layout_height="1dp"></View>
+       <RelativeLayout
+           android:id="@+id/rl_house"
+           android:layout_width="match_parent"
+           android:layout_height="50dp"
+           android:padding="6dp"
+           >
+           <TextView
+               android:textColor="@color/black"
+               android:textSize="20sp"
+               android:layout_alignParentStart="true"
+               android:layout_centerVertical="true"
+               android:text="牧场"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content" />
+           <TextView
+               android:id="@+id/tv_house"
+               android:layout_width="wrap_content"
+               android:textSize="20sp"
+               android:layout_height="wrap_content"
+               android:paddingTop="4dp"
+               android:paddingBottom="4dp"
+               android:paddingRight="4dp"
+               android:singleLine="true"
+               android:maxLength="12"
+               android:gravity="right"
+               android:layout_centerVertical="true"
+               android:layout_toStartOf="@id/tv_house_arrow"
+               />
+           <ImageView
+               android:id="@+id/tv_house_arrow"
+               android:layout_alignParentRight="true"
+               android:layout_centerVertical="true"
+               android:paddingTop="10dp"
+               android:paddingBottom="10dp"
+               android:src="@drawable/right_arrow"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content" />
+
+       </RelativeLayout>
+       <View
+           android:background="@color/bg_gray"
+           android:layout_width="match_parent"
+           android:layout_height="1dp"></View>
    </LinearLayout>
 
 </LinearLayout>

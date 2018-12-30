@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.signature.StringSignature;
@@ -42,6 +43,7 @@ import com.example.chen.intelligentweigh.util.SharedUtils;
 import org.litepal.LitePal;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -57,6 +59,9 @@ public class MainFragment extends BaseFragment {
     private GridView gv_menu;
     private CircleImageView iv_touxiang;
     private String TAG = "MainFragment";
+    private TextView tv_date;
+    private TextView tv_weekday;
+    private TextView tv_yearmonth;
 
     @Nullable
     @Override
@@ -131,19 +136,19 @@ public class MainFragment extends BaseFragment {
                         }
                         break;
                     case 4:
-                        if(isTwoPan){
+                        if (isTwoPan) {
                             PeopleMangerFragment fragment = new PeopleMangerFragment();
-                            getFragmentManager().beginTransaction().replace(R.id.other_content_frag,fragment).commit();
-                        }else{
+                            getFragmentManager().beginTransaction().replace(R.id.other_content_frag, fragment).commit();
+                        } else {
                             Intent intent = new Intent(getActivity(), PeopleMangerActivity.class);
                             startActivity(intent);
                         }
                         break;
                     case 5:
-                        if(isTwoPan){
+                        if (isTwoPan) {
                             HouseMangerFragment fragment = new HouseMangerFragment();
-                            getFragmentManager().beginTransaction().replace(R.id.other_content_frag,fragment).commit();
-                        }else{
+                            getFragmentManager().beginTransaction().replace(R.id.other_content_frag, fragment).commit();
+                        } else {
                             Intent intent = new Intent(getActivity(), HouseMangerActivity.class);
                             startActivity(intent);
                         }
@@ -167,8 +172,31 @@ public class MainFragment extends BaseFragment {
                 }
             }
         });
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH);
+        int date = calendar.get(Calendar.DATE);
+        int i = calendar.get(Calendar.DAY_OF_WEEK);
+        String weekDay = "星期";
+        switch (i){
+            case 1: weekDay = weekDay+"日";break;
+            case 2: weekDay = weekDay+"一";break;
+            case 3: weekDay = weekDay+"二";break;
+            case 4: weekDay = weekDay+"三";break;
+            case 5: weekDay = weekDay+"四";break;
+            case 6: weekDay = weekDay+"五";break;
+            case 7: weekDay = weekDay+"六";break;
+        }
+        Log.e(TAG,"星期"+i);
+        String tyearmonth = year+"-"+(month+1);
+        String tdate = ""+date;
+        tv_date = (TextView) view.findViewById(R.id.tv_date);
+        tv_date.setText(tdate);
+        tv_weekday = (TextView) view.findViewById(R.id.tv_weekday);
+        tv_weekday.setText(weekDay);
+        tv_yearmonth = (TextView) view.findViewById(R.id.tv_yearmonth);
+        tv_yearmonth.setText(tyearmonth);
     }
-
 
 
     @Override
@@ -187,13 +215,13 @@ public class MainFragment extends BaseFragment {
     };
 
     private void refreshIcon() {
-        Log.e(TAG,"main 广播");
+        Log.e(TAG, "main 广播");
         String phone = SharedUtils.getPhone(getActivity());
         if (!TextUtils.isEmpty(phone)) {
             List<User> users = LitePal.where("phone = ?", phone).find(User.class);
             if (users != null || !users.isEmpty()) {
                 String touxiang = users.get(0).getTouxiang();
-                if(touxiang!=null) {
+                if (touxiang != null) {
                     Log.e(TAG, "头像路径" + touxiang);
                     if (!touxiang.contains("/JDGJ/TOUX/")) {
                         Log.e(TAG, "本地获取main");
@@ -208,11 +236,11 @@ public class MainFragment extends BaseFragment {
                                 .signature(new StringSignature(SharedUtils.getTime(getActivity())))
                                 .into(iv_touxiang);
                     }
-                }else{
+                } else {
                     iv_touxiang.setImageResource(R.drawable.iconn);
                 }
             }
-        }else{
+        } else {
             iv_touxiang.setImageResource(R.drawable.iconn);
         }
     }
@@ -248,16 +276,16 @@ public class MainFragment extends BaseFragment {
         list.add(item_4);
         String phone = SharedUtils.getPhone(getActivity());
         List<User> users = LitePal.where("phone = ?", phone).find(User.class);
-        if (users!=null&&users.size()>0){
+        if (users != null && users.size() > 0) {
             User user = users.get(0);
-            Log.e(TAG,"当前用户信息："+user.toString());
-            if("1".equals(user.getJurisdiction())){
+            Log.e(TAG, "当前用户信息：" + user.toString());
+            if ("1".equals(user.getJurisdiction())) {
                 Items item_5 = new Items();
-                item_5.setImageId(R.drawable.peoplemanger);
+                item_5.setImageId(R.drawable.shenpi);
                 item_5.setText("人员管理");
                 list.add(item_5);
                 Items item_6 = new Items();
-                item_6.setImageId(R.drawable.housemanger);
+                item_6.setImageId(R.drawable.gongdan);
                 item_6.setText("牧场管理");
                 list.add(item_6);
             }

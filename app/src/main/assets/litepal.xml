@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <litepal>
     <dbname value="IntelligentWeighStore"></dbname>
-    <version value="1"></version>
+    <version value="3"></version>
     <list>
         <mapping class="com.example.chen.intelligentweigh.bean.User"></mapping>
+    </list>
+    <list>
+        <mapping class="com.example.chen.intelligentweigh.bean.CowWeight"></mapping>
     </list>
 
 </litepal>

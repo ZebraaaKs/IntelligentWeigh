@@ -20,7 +20,7 @@
                 android:layout_height="match_parent">
                 <ImageView
                     android:id="@+id/iv_cow_photo"
-                    android:src="@drawable/cow"
+                    android:src="@drawable/cowphoto"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
             </LinearLayout>

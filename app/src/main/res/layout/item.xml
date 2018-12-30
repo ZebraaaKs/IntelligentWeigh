@@ -9,9 +9,9 @@
     >
     <ImageView
         android:id="@+id/ItemImage"
-        android:layout_width="30dp"
+        android:layout_width="50dp"
         android:src="@drawable/manage"
-        android:layout_height="30dp"
+        android:layout_height="50dp"
         android:layout_gravity="center_horizontal"
         />
     <TextView
@@ -19,7 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="管理一下"
-        android:textSize="8sp"
+        android:textSize="14sp"
         android:textColor="@color/black"
         android:layout_marginTop="6dp"
         android:layout_gravity="center_horizontal"

@@ -5,6 +5,7 @@
     android:layout_height="match_parent">
     <include layout="@layout/rl_titlebar"></include>
     <ListView
+        android:background="@drawable/itembackgroud"
         android:id="@+id/lv_edit_area"
         android:layout_width="match_parent"
         android:layout_height="match_parent"></ListView>

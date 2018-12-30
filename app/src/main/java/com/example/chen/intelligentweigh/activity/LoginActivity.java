@@ -25,6 +25,7 @@ import com.example.chen.intelligentweigh.util.HttpUrlUtils;
 import com.example.chen.intelligentweigh.util.SharedUtils;
 import com.example.chen.intelligentweigh.util.StatusBarUtils;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.squareup.okhttp.Request;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
@@ -32,6 +33,7 @@ import com.zhy.http.okhttp.callback.StringCallback;
 import org.litepal.LitePal;
 import org.xml.sax.helpers.LocatorImpl;
 
+import java.lang.reflect.Type;
 import java.util.List;
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
@@ -114,7 +116,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 startActivity(intent);
                 break;
             case R.id.tv_lossPwd:
-                showToast("尚未开发");
+                Intent intent1 = new Intent(this, LossPwdActivity.class);
+                startActivity(intent1);
                 break;
                 default: break;
         }
@@ -190,8 +193,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
                     @Override
                     public void onResponse(String response) {
+                        Log.e(TAG,response);
                         Gson gson = new Gson();
-                        User user = gson.fromJson(response.toString(), User.class);
+                        Type type = new TypeToken<User>(){}.getType();
+                        User user = gson.fromJson(response, type);
                         if("1".equals(user.getIsSuccess())){
                             List<User> users = LitePal.where("phone = ?", user.getPhone()).find(User.class);
                             if(users == null || users.isEmpty()){
