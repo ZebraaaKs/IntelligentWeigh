@@ -33,18 +33,22 @@
         <RadioButton
             android:id="@+id/rb_man"
             android:text="公"
-            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:checked="true"
             />
-        <TextView
+        <RadioButton
+            android:id="@+id/rb_yange"
+            android:text="母"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content" />
         <RadioButton
             android:id="@+id/rb_woman"
-            android:text="母"
-            android:layout_width="wrap_content"
+            android:text="阉割"
+            android:layout_weight="1"
+            android:layout_width="0dp"
             android:layout_height="wrap_content" />
     </RadioGroup>
 

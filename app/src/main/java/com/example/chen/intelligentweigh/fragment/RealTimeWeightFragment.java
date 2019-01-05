@@ -356,7 +356,8 @@ public class RealTimeWeightFragment extends BaseFragment  {
             }
         }
         Log.e(TAG,"j====="+j);
-        return String.valueOf(Integer.parseInt(j, 16))+"."+k;
+
+        return String.valueOf(Integer.parseInt(j)+"."+k);
     }
 
     @Override

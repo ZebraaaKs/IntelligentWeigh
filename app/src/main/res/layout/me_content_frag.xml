@@ -5,6 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <include layout="@layout/rl_titlebar"></include>
+    <LinearLayout
+        android:orientation="vertical"
+        android:background="@drawable/itembackgroud"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
    <LinearLayout
        android:layout_marginTop="20dp"
        android:background="@color/white"
@@ -261,5 +266,6 @@
            android:layout_width="match_parent"
            android:layout_height="1dp"></View>
    </LinearLayout>
+    </LinearLayout>
 
 </LinearLayout>
