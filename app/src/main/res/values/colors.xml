@@ -75,4 +75,5 @@
     <color name="list_view_item_white">#ffffff</color>
     <color name="background_tab_pressed">#e5e5e5</color>
     <color name="action_sheet_blue">#037BFF</color>
+    <color name="cradviewbg">#bcfef2</color>
 </resources>

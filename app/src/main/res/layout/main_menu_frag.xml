@@ -50,10 +50,114 @@
 
     </RelativeLayout>
     <LinearLayout
+        android:padding="10dp"
+        android:layout_weight="1.1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+    <android.support.v7.widget.CardView
+        android:id="@+id/cv_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:cardCornerRadius="8dp"
+        android:elevation="5dp"
+        app:cardBackgroundColor="#bcfef2"
+        >
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:gravity="center_horizontal|center_vertical"
+                android:textSize="20sp"
+                android:textColor="@color/txt_black"
+                android:text="牧场总览"
+                android:textStyle="bold"
+                android:layout_weight="2"
+                android:layout_width="match_parent"
+                android:layout_height="0dp" />
+            <LinearLayout
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:orientation="horizontal"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp">
+                <TextView
+                    android:textColor="@color/txt_black"
+                    android:text="存栏数量："
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent" />
+                <TextView
+                    android:id="@+id/cunlannum"
+                    android:text="未知"
+                    android:textColor="@color/txt_black"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent" />
+                <TextView
+                    android:textColor="@color/txt_black"
+                    android:text="淘汰数量："
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent" />
+                <TextView
+                    android:id="@+id/taotainum"
+                    android:text="未知"
+                    android:textColor="@color/txt_black"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_marginTop="10dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:orientation="horizontal"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp">
+                <TextView
+                    android:textColor="@color/txt_black"
+                    android:text="出栏数量："
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent" />
+                <TextView
+                    android:id="@+id/chulannum"
+                    android:text="未知"
+                    android:textColor="@color/txt_black"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent" />
+                <TextView
+                    android:textColor="@color/txt_black"
+                    android:text="日均增量："
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent" />
+                <TextView
+                    android:id="@+id/tv_dayaddnum"
+                    android:text="未知"
+                    android:textColor="#30FF0D"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"></LinearLayout>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+    </LinearLayout>
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="3"
-        android:paddingTop="70dp"
+        android:paddingTop="20dp"
         >
         <GridView
             android:gravity="center_vertical"
@@ -64,21 +168,7 @@
         </GridView>
 
     </LinearLayout>
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:padding="10dp"
-        >
-        <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/iv_touxiang"
-            android:src="@drawable/iconn"
-            app:civ_border_width="2dp"
-            android:layout_centerInParent="true"
-            app:civ_border_color="@null"
-            android:layout_width="80dp"
-            android:layout_height="80dp" />
-    </RelativeLayout>
+
 
 
 </LinearLayout>

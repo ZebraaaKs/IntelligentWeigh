@@ -78,4 +78,7 @@ public class HttpUrlUtils {
 
     //修改肉牛信息
     public final static String UPDATECOWINFO = BASE_URL+"CattleModifySer";
+
+    //返回牧场概况
+    public final static String FRAMINFO = BASE_URL+"Farm";
 }

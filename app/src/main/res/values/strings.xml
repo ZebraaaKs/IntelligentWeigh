@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">云秤</string>
+    <string name="app_name">云牧</string>
     !--  BluetoothChat -->
     <string name="send">Send</string>
     <string name="not_connected">You are not connected to a device</string>
