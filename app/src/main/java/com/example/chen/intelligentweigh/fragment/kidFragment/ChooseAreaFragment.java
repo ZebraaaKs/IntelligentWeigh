@@ -2,6 +2,7 @@ package com.example.chen.intelligentweigh.fragment.kidFragment;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -58,6 +59,7 @@ public class ChooseAreaFragment extends BaseFragment {
     private String name;
     private NewCow cow;
     private List<String> listArea = new ArrayList<>();
+    public static final String BROADCAST_ACTION = "choosearea";
 
     @Nullable
     @Override
@@ -109,7 +111,11 @@ public class ChooseAreaFragment extends BaseFragment {
                 cow.setHouseName(s);
                 Intent intent = new Intent(getActivity(), NewCowActivity.class);
                 intent.putExtra("cowInfo",cow);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                Log.e(TAG,"地区选择: "+cow);
+                Intent intent1 = new Intent(BROADCAST_ACTION);
+                intent1.putExtra("cowInfos",cow);
+                getActivity().sendBroadcast(intent1);
                 startActivity(intent);
                 getActivity().finish();
             }

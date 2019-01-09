@@ -76,4 +76,5 @@
     <color name="background_tab_pressed">#e5e5e5</color>
     <color name="action_sheet_blue">#037BFF</color>
     <color name="cradviewbg">#bcfef2</color>
+    <color name="greenofnum">#30FF0D</color>
 </resources>

@@ -3,11 +3,17 @@ package com.example.chen.intelligentweigh.fragment;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.app.Dialog;
+import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothDevice;
+import android.bluetooth.BluetoothSocket;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -22,15 +28,16 @@ import android.widget.Toast;
 import com.example.chen.intelligentweigh.BaseFragment;
 import com.example.chen.intelligentweigh.R;
 import com.example.chen.intelligentweigh.activity.NewCowActivity;
-import com.example.chen.intelligentweigh.activity.kidActivity.ChooseAreaActivity;
 import com.example.chen.intelligentweigh.activity.kidActivity.ChooseHouseActivity;
 import com.example.chen.intelligentweigh.activity.kidActivity.CowTypeActivity;
-import com.example.chen.intelligentweigh.activity.kidActivity.HouseAreaActivity;
-import com.example.chen.intelligentweigh.bean.Cow;
+import com.example.chen.intelligentweigh.activity.kidActivity.DeviceList2Activity;
+import com.example.chen.intelligentweigh.activity.kidActivity.DeviceListActivity;
 import com.example.chen.intelligentweigh.bean.NewCow;
 import com.example.chen.intelligentweigh.bean.User;
+import com.example.chen.intelligentweigh.fragment.kidFragment.ChooseAreaFragment;
 import com.example.chen.intelligentweigh.fragment.kidFragment.ChooseHouseFragment;
 import com.example.chen.intelligentweigh.fragment.kidFragment.CowTypeFragment;
+import com.example.chen.intelligentweigh.fragment.kidFragment.DeviceListFragment;
 import com.example.chen.intelligentweigh.util.AlertDialog;
 import com.example.chen.intelligentweigh.util.HttpUrlUtils;
 import com.example.chen.intelligentweigh.util.NetWorkUtils;
@@ -43,9 +50,14 @@ import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.litepal.LitePal;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * author : chen
@@ -55,6 +67,7 @@ import java.util.List;
 public class NewCowFragment extends BaseFragment {
 
     private TextView tv_choose_housename;
+    private Context mcontext;
     private RelativeLayout rl_house_name;
     private TextView tv_cow_name;
     private RelativeLayout rl_cow_name;
@@ -86,12 +99,37 @@ public class NewCowFragment extends BaseFragment {
     private int mMonth;
     private int mDay;
     private NewCow cow;
+    private Handler mHandler;
+    private static final int REQUEST_ENABLE_BT = 0;
+    private static final int REQUEST_CONNECT_DEVICE = 1;
+    private BluetoothAdapter mBluetoothAdapter;
+    private List<Integer> mBuffer;
+    private static final int MSG_NEW_DATA = 3;
+    private static final int MSG_TV = 4;
+    private final int HEX = 0;
+    private final int ASCII = 2;
+    private int mCodeType = HEX;
+    private ConnectThread mConnectThread;
+    public ConnectedThread mConnectedThread;
+    private static final String SPP_UUID = "00001101-0000-1000-8000-00805F9B34FB";
+    private TextView tv_cowweight;
+    private View view;
+    private String cid = "";
+    private String cweight = "";
+    private boolean flag = false;
 
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.new_cow_frag, container, false);
+        if(view==null){
+            view = inflater.inflate(R.layout.new_cow_frag, container, false);
+        }
+        ViewGroup parent = (ViewGroup) view.getParent();
+        if (parent != null)
+        {
+            parent.removeView(view);
+        }
         initView(view);
         return view;
     }
@@ -111,16 +149,30 @@ public class NewCowFragment extends BaseFragment {
                 initViewByToOther(cow1);
             }
         }
-        if(cow!=null){
-            initViewByToOther(cow);
-        }
+        IntentFilter filter = new IntentFilter(ChooseAreaFragment.BROADCAST_ACTION);
+        getActivity().registerReceiver(broadcastReceiver, filter);
+
 
     }
+
+    BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            cow = (NewCow)intent.getSerializableExtra("cowInfos");
+            if (cow != null) {
+                Log.e(TAG,"activity 中开始了"+cow);
+                initViewByToOther(cow);
+            }
+        }
+    };
 
     /**
      * 初始化UI 从其他fragment跳转得到的新值
      */
     private void initViewByToOther(NewCow cow1) {
+        if(cow1.getCowWeight()!=null||!"".equals(cow1.getCowWeight())){
+            tv_cowweight.setText(cow1.getCowWeight());
+        }
         if (cow1.getHouseName() != null || !"".equals(cow1.getHouseName())) {
             tv_choose_housename.setText(cow1.getHouseName());
         }
@@ -157,12 +209,21 @@ public class NewCowFragment extends BaseFragment {
         if (cow1.getHouseId() != null || !"".equals(cow1.getHouseId())) {
             tv_choose_id.setText(cow1.getHouseId());
         }
-        if(cow1.getCowTypeId()!=null||!"".equals(cow1.getCowTypeId())){
+        if (cow1.getCowTypeId() != null || !"".equals(cow1.getCowTypeId())) {
             tv_cow_typeid.setText(cow1.getCowTypeId());
         }
     }
 
     private void initView(View view) {
+        mBuffer = new ArrayList<Integer>();
+        mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        // If the adapter is null, then Bluetooth is not supported
+        if (mBluetoothAdapter == null) {
+            Toast.makeText(getActivity(), "请打开蓝牙",
+                    Toast.LENGTH_LONG).show();
+            getActivity().finish();
+            return;
+        }
         tv_choose_housename = (TextView) view.findViewById(R.id.tv_choose_housename);
         rl_house_name = (RelativeLayout) view.findViewById(R.id.rl_house_name);
         tv_cow_name = (TextView) view.findViewById(R.id.tv_cow_name);
@@ -187,14 +248,40 @@ public class NewCowFragment extends BaseFragment {
         rl_mather_id = (RelativeLayout) view.findViewById(R.id.rl_mather_id);
         tv_choose_id = (TextView) view.findViewById(R.id.tv_choose_id);
         tv_cow_typeid = (TextView) view.findViewById(R.id.tv_cow_typeid);
+        tv_cowweight = (TextView) view.findViewById(R.id.tv_cowweight);
+        tv_father_id.setText("0000");
+        tv_mather_id.setText("0000");
+        tv_cow_name.setText("默认");
+        tv_cow_sex.setText("公");
         Calendar ca = Calendar.getInstance();
         mYear = ca.get(Calendar.YEAR);
         mMonth = ca.get(Calendar.MONTH);
         mDay = ca.get(Calendar.DAY_OF_MONTH);
+        tv_cow_birth.setText(formateDate());
+        tv_cow_access.setText(formateDate());
+        tv_cow_register.setText(formateDate());
         new TitleBuilder(view).setTitleText("新牛录入").setRightText("提交").setRightOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 SubmitCowInfo();
+
+            }
+        }).setLeftText("选择蓝牙设备").setLeftOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCodeType = HEX;
+                mHandler.sendEmptyMessage(MSG_NEW_DATA);
+                if (mConnectThread != null) {
+                    mConnectThread.cancel();
+                    mConnectThread = null;
+                }
+                if(isTwoPan){
+                    DeviceList2Fragment fragment = new DeviceList2Fragment();
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.other_content_frag,fragment).commit();
+                }else{
+                    Intent serverIntent = new Intent(getActivity(), DeviceList2Activity.class);
+                    startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE);
+                }
 
             }
         }).build();
@@ -209,6 +296,120 @@ public class NewCowFragment extends BaseFragment {
         ChooseAccessDate();
         ChooseRegisterDate();
         ChooseCowSex();
+
+        mHandler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                // TODO Auto-generated method stub
+                switch (msg.what) {
+                    case MSG_NEW_DATA:
+                        StringBuffer buf = new StringBuffer();
+                        String str = "";
+                        synchronized (mBuffer) {
+                            if (mCodeType == ASCII) {
+                                for (int i : mBuffer) {
+                                    buf.append((char) i);
+                                }
+
+                            } else if (mCodeType == HEX) {
+                                for (int i : mBuffer) {
+                                    if (i > 9) {
+                                        buf.append(Integer.toHexString(i));
+                                    } else {
+                                        buf.append(0);
+                                        buf.append(i);
+                                    }
+                                }
+
+                            } else {
+                                for (int i : mBuffer) {
+                                    buf.append(i);
+                                }
+                            }
+                            Log.e(TAG, "元数据" + buf.toString());
+                            String data = buf.toString();
+                            int strlength = data.length() - 1;
+                            char c[] = data.toCharArray();
+                            if (strlength > 61) {
+                                if (c[strlength] == 'e' && c[strlength - 1] == 'f' && c[strlength - 60] == 'f' && c[strlength - 61] == 'f') {
+                                    String data1 = data.substring(strlength - 61, strlength + 1);
+                                    Log.e(TAG, "新数据rrr" + data1);
+                                    String date = formatDate(data1.substring(10, 18));
+                                    Log.e(TAG, "日期rrr" + date);
+                                     cid = formatId(data1.substring(18, 48));
+                                    Log.e(TAG, "编号rrr" + cid);
+                                     cweight = hex2decimal(data1.substring(48, 56), data1.substring(58, 60));
+                                    Log.e(TAG, "重量rrr" + cweight);
+
+                                    tv_cowweight.setText(cweight);
+                                    Log.e(TAG,tv_cowweight.getText().toString());
+                                    tv_cow_id.setText(cid);
+                                    Message message = new Message();
+                                    Bundle bundle = new Bundle();
+                                    bundle.putString("weight",cweight);
+                                    bundle.putString("id",cid);
+                                    message.setData(bundle);
+                                    message.what = MSG_TV;
+                                    handler.sendMessage(message);
+                                }
+                                break;
+                            }
+
+
+                        }
+
+
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+
+        };
+
+
+
+
+
+
+
+    }
+
+    private Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            Log.e(TAG,"赋值赋值"+mcontext);
+            switch (msg.what){
+                case MSG_TV:
+                    tv_cowweight.setText(msg.getData().getString("weight"));
+            }
+        }
+    };
+
+    private String formateDate() {
+        String days;
+        if (mMonth + 1 < 10) {
+            if (mDay < 10) {
+                days = new StringBuffer().append(mYear).append("-").append("0").
+                        append(mMonth + 1).append("-").append("0").append(mDay).toString();
+            } else {
+                days = new StringBuffer().append(mYear).append("-").append("0").
+                        append(mMonth + 1).append("-").append(mDay).toString();
+            }
+
+        } else {
+            if (mDay < 10) {
+                days = new StringBuffer().append(mYear).append("-").
+                        append(mMonth + 1).append("-").append("0").append(mDay).toString();
+            } else {
+                days = new StringBuffer().append(mYear).append("-").
+                        append(mMonth + 1).append("-").append(mDay).toString();
+            }
+
+        }
+        return days;
+
     }
 
     /**
@@ -216,52 +417,52 @@ public class NewCowFragment extends BaseFragment {
      */
     private void SubmitCowInfo() {
 
-        if(tv_choose_housename.getText().toString().isEmpty()){
-            Toast.makeText(getActivity(),"请选择牧场分区",Toast.LENGTH_SHORT).show();
+        if (tv_choose_housename.getText().toString().isEmpty()) {
+            Toast.makeText(getActivity(), "请选择牧场分区", Toast.LENGTH_SHORT).show();
             return;
         }
-        if(tv_cow_name.getText().toString().isEmpty()){
-            Toast.makeText(getActivity(),"请输入肉牛名称",Toast.LENGTH_SHORT).show();
+        if (tv_cow_name.getText().toString().isEmpty()) {
+            Toast.makeText(getActivity(), "请输入肉牛名称", Toast.LENGTH_SHORT).show();
             return;
         }
-        if(tv_cow_id.getText().toString().isEmpty()){
-            Toast.makeText(getActivity(),"请输入肉牛编号",Toast.LENGTH_SHORT).show();
+        if (tv_cow_id.getText().toString().isEmpty()) {
+            Toast.makeText(getActivity(), "请输入肉牛编号", Toast.LENGTH_SHORT).show();
             return;
         }
-        if(tv_father_id.getText().toString().isEmpty()){
-            Toast.makeText(getActivity(),"请输入父牛编号",Toast.LENGTH_SHORT).show();
+        if (tv_father_id.getText().toString().isEmpty()) {
+            Toast.makeText(getActivity(), "请输入父牛编号", Toast.LENGTH_SHORT).show();
             return;
         }
-        if(tv_mather_id.getText().toString().isEmpty()){
-            Toast.makeText(getActivity(),"请输入母牛编号",Toast.LENGTH_SHORT).show();
+        if (tv_mather_id.getText().toString().isEmpty()) {
+            Toast.makeText(getActivity(), "请输入母牛编号", Toast.LENGTH_SHORT).show();
             return;
         }
-        if(tv_cow_type.getText().toString().isEmpty()){
-            Toast.makeText(getActivity(),"请选择肉牛种类",Toast.LENGTH_SHORT).show();
+        if (tv_cow_type.getText().toString().isEmpty()) {
+            Toast.makeText(getActivity(), "请选择肉牛种类", Toast.LENGTH_SHORT).show();
             return;
         }
-        if(tv_cow_sex.getText().toString().isEmpty()){
-            Toast.makeText(getActivity(),"请输入肉牛公母",Toast.LENGTH_SHORT).show();
+        if (tv_cow_sex.getText().toString().isEmpty()) {
+            Toast.makeText(getActivity(), "请输入肉牛公母", Toast.LENGTH_SHORT).show();
             return;
         }
-        if(tv_cow_birth.getText().toString().isEmpty()){
-            Toast.makeText(getActivity(),"请输入肉牛出生日期",Toast.LENGTH_SHORT).show();
+        if (tv_cow_birth.getText().toString().isEmpty()) {
+            Toast.makeText(getActivity(), "请输入肉牛出生日期", Toast.LENGTH_SHORT).show();
             return;
         }
-        if(tv_cow_access.getText().toString().isEmpty()){
-            Toast.makeText(getActivity(),"请输入肉牛进场日期",Toast.LENGTH_SHORT).show();
+        if (tv_cow_access.getText().toString().isEmpty()) {
+            Toast.makeText(getActivity(), "请输入肉牛进场日期", Toast.LENGTH_SHORT).show();
             return;
         }
-        if(tv_cow_register.getText().toString().isEmpty()){
-            Toast.makeText(getActivity(),"请输入肉牛注册日期",Toast.LENGTH_SHORT).show();
+        if (tv_cow_register.getText().toString().isEmpty()) {
+            Toast.makeText(getActivity(), "请输入肉牛注册日期", Toast.LENGTH_SHORT).show();
             return;
         }
-        if( tv_access_peice.getText().toString().isEmpty()){
-            Toast.makeText(getActivity(),"请输入肉牛价格",Toast.LENGTH_SHORT).show();
+        if (tv_access_peice.getText().toString().isEmpty()) {
+            Toast.makeText(getActivity(), "请输入肉牛价格", Toast.LENGTH_SHORT).show();
             return;
         }
 
-
+        Log.e(TAG, "cowweight" + tv_cowweight.getText().toString());
         Log.e(TAG, "past_id" + tv_choose_id.getText().toString() + "area" + tv_choose_housename.getText().toString());
         Log.e(TAG, "name" + tv_cow_name.getText().toString());
         Log.e(TAG, "id" + tv_cow_id.getText().toString());
@@ -274,22 +475,13 @@ public class NewCowFragment extends BaseFragment {
         Log.e(TAG, "registerDay" + tv_cow_register.getText().toString());
         Log.e(TAG, "enterancePrice" + tv_access_peice.getText().toString());
         Log.e(TAG, "typeId" + tv_cow_typeid.getText().toString());
-
-
+        String phone = SharedUtils.getPhone(getActivity());
         OkHttpUtils.get()
-                .url(HttpUrlUtils.CATTLEADDSERVER)
-                .addParams("past_id",tv_choose_id.getText().toString())
-                .addParams("area",tv_choose_housename.getText().toString())
-                .addParams("name",tv_cow_name.getText().toString())
-                .addParams("id",tv_cow_id.getText().toString())
-                .addParams("father_id",tv_father_id.getText().toString())
-                .addParams("mother_id",tv_mather_id.getText().toString())
-                .addParams("kind",tv_cow_type.getText().toString())
-                .addParams("sex",tv_cow_sex.getText().toString())
-                .addParams("birthday",tv_cow_birth.getText().toString())
-                .addParams("entranceDay",tv_cow_access.getText().toString())
-                .addParams("registerDay",tv_cow_register.getText().toString())
-                .addParams("enterancePrice",tv_access_peice.getText().toString())
+                .addParams("cattleid",tv_cow_id.getText().toString())
+                .addParams("phone",phone)
+                .addParams("weigh",tv_cowweight.getText().toString())
+                .addParams("datetime",formateDate())
+                .url(HttpUrlUtils.ADDONEWEIGHT)
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -299,28 +491,50 @@ public class NewCowFragment extends BaseFragment {
 
                     @Override
                     public void onResponse(String response) {
-                        if(getActivity()!=null){
-                            if("ok".equals(response)){
-                                Toast.makeText(getActivity(),"录入成功",Toast.LENGTH_SHORT).show();
+
+                    }
+                });
+
+
+        OkHttpUtils.get()
+                .url(HttpUrlUtils.CATTLEADDSERVER)
+                .addParams("past_id", tv_choose_id.getText().toString())
+                .addParams("area", tv_choose_housename.getText().toString())
+                .addParams("name", tv_cow_name.getText().toString())
+                .addParams("id", tv_cow_id.getText().toString())
+                .addParams("father_id", tv_father_id.getText().toString())
+                .addParams("mother_id", tv_mather_id.getText().toString())
+                .addParams("kind", tv_cow_type.getText().toString())
+                .addParams("sex", tv_cow_sex.getText().toString())
+                .addParams("birthday", tv_cow_birth.getText().toString())
+                .addParams("entranceDay", tv_cow_access.getText().toString())
+                .addParams("registerDay", tv_cow_register.getText().toString())
+                .addParams("enterancePrice", tv_access_peice.getText().toString())
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Request request, Exception e) {
+
+                    }
+
+                    @Override
+                    public void onResponse(String response) {
+                        if (getActivity() != null) {
+                            if ("ok".equals(response)) {
+                                Toast.makeText(getActivity(), "录入成功", Toast.LENGTH_SHORT).show();
                                 getActivity().runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        tv_cow_name.setText("");
                                         tv_access_peice.setText("");
-                                        tv_choose_housename.setText("");
-                                        tv_choose_id.setText("");
-                                        tv_cow_access.setText("");
-                                        tv_cow_birth.setText("");
-                                        tv_cow_id.setText("");
-                                        tv_cow_register.setText("");
-                                        tv_cow_sex.setText("");
                                         tv_cow_type.setText("");
-                                        tv_father_id.setText("");
-                                        tv_mather_id.setText("");
+                                        tv_choose_housename.setText("");
+                                        tv_cow_id.setText("");
+                                        tv_cowweight.setText("");
                                     }
                                 });
-                            }else{
-                                Toast.makeText(getActivity(),"录入失败",Toast.LENGTH_SHORT).show();
+                            } else {
+                                Log.e(TAG,response);
+                                Toast.makeText(mcontext, "录入失败", Toast.LENGTH_SHORT).show();
                             }
                         }
 
@@ -496,12 +710,15 @@ public class NewCowFragment extends BaseFragment {
                     getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.other_content_frag, fragment).commit();
                 } else {
                     Intent intent = new Intent(getActivity(), CowTypeActivity.class);
-                    intent.putExtra("cowsInfo",SaveStausData());
-                    startActivity(intent);
+                    intent.putExtra("cowsInfo", SaveStausData());
+                    startActivityForResult(intent,10);
+                    //startActivity(intent);
                 }
             }
         });
     }
+
+
 
     /**
      * 肉牛牧区点击事件
@@ -531,7 +748,7 @@ public class NewCowFragment extends BaseFragment {
                         if (getActivity() != null) {
                             Intent intent = new Intent(getActivity(), ChooseHouseActivity.class);
                             intent.putExtra("framid", user.getFarmids());
-                            intent.putExtra("newcow",SaveStausData());
+                            intent.putExtra("newcow", SaveStausData());
                             startActivity(intent);
                         }
                     }
@@ -578,13 +795,15 @@ public class NewCowFragment extends BaseFragment {
     }
 
 
-
     /**
      * 保存数据
      *
      * @return
      */
     private NewCow SaveStausData() {
+        if(!tv_cowweight.getText().toString().isEmpty()){
+            newCow.setCowWeight(tv_cowweight.getText().toString());
+        }
         if (!tv_cow_name.getText().toString().isEmpty()) {
             newCow.setCowName(tv_cow_name.getText().toString());
         }
@@ -621,7 +840,7 @@ public class NewCowFragment extends BaseFragment {
         if (!tv_choose_id.getText().toString().isEmpty()) {
             newCow.setHouseId(tv_choose_id.getText().toString());
         }
-        if(!tv_cow_typeid.getText().toString().isEmpty()){
+        if (!tv_cow_typeid.getText().toString().isEmpty()) {
             newCow.setCowTypeId(tv_cow_typeid.getText().toString());
         }
 
@@ -736,6 +955,7 @@ public class NewCowFragment extends BaseFragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        mcontext = context;
         onAttachToContext(context);
     }
 
@@ -747,18 +967,272 @@ public class NewCowFragment extends BaseFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+        mcontext = activity;
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             onAttachToContext(activity);
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        getActivity().unregisterReceiver(broadcastReceiver);
     }
 
     /*
      * Called when the fragment attaches to the context
      */
     protected void onAttachToContext(Context context) {
-        if(context instanceof NewCowActivity) {
+        if (context instanceof NewCowActivity) {
             cow = ((NewCowActivity) context).setData();
-            Log.e(TAG,"cow "+cow);
+            Log.e(TAG, "cow " + cow);
+        }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        // If BT is not on, request that it be enabled.
+        // setupChat() will then be called during onActivityResult
+        if (!mBluetoothAdapter.isEnabled()) {
+            Intent enableIntent = new Intent(
+                    BluetoothAdapter.ACTION_REQUEST_ENABLE);
+            startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
+            // Otherwise, setup the chat session
+        }
+
+    }
+
+
+    public String formatDate(String data) {
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        String m1 = data.substring(0, 2);
+        int i = Integer.parseInt(m1);
+        String m2 = data.substring(2, 4);
+        int i1 = Integer.parseInt(m2);
+        int month = i + i1;
+        String d1 = data.substring(4, 6);
+        int i2 = Integer.parseInt(d1);
+        String d2 = data.substring(6, 8);
+        int i3 = Integer.parseInt(d2);
+        int day = i2 + i3;
+        return year + "-" + month + "-" + day;
+    }
+
+    public String formatId(String data) {
+        String id = "";
+        for (int i = 0; i < data.length(); i++) {
+            if (i == 0 || i % 2 == 0) {
+                String d = data.substring(i, i + 2);
+                int i1 = Integer.parseInt(d);
+                Log.e(TAG, "id数据" + i1);
+                id = id + i1;
+            }
+        }
+        return id;
+    }
+
+
+    public String hex2decimal(String hex, String xiaoshu) {
+        int k = Integer.parseInt(xiaoshu);
+        String j = "";
+        for (int i = 0; i < hex.length(); i++) {
+            if (i == 0 || i % 2 == 0) {
+                String substring = hex.substring(i, i + 2);
+                int i1 = Integer.parseInt(substring);
+                j = j + i1;
+            }
+        }
+        Log.e(TAG, "j=====" + j);
+
+        return String.valueOf(Integer.parseInt(j) + "." + k);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // TODO Auto-generated method stub
+        switch (requestCode) {
+            case REQUEST_ENABLE_BT:
+                if (resultCode == Activity.RESULT_OK) {
+                    // Bluetooth is now enabled Launch the DeviceListActivity to see
+                    // devices and do scan
+                    Intent serverIntent = new Intent(getActivity(), DeviceListActivity.class);
+                    startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE);
+                } else {
+                    // User did not enable Bluetooth or an error occured
+                    Log.d(TAG, "BT not enabled");
+                    Toast.makeText(getActivity(), "BT not enabled", Toast.LENGTH_SHORT)
+                            .show();
+                    return;
+                }
+                break;
+            case REQUEST_CONNECT_DEVICE:
+                if (resultCode != Activity.RESULT_OK) {
+                    return;
+                } else {
+                    String address = data.getExtras().getString(
+                            DeviceListFragment.EXTRA_DEVICE_ADDRESS);
+                    // Get the BLuetoothDevice object
+                    BluetoothDevice device = mBluetoothAdapter
+                            .getRemoteDevice(address);
+                    // Attempt to connect to the device
+                    connect(device);
+                }
+                break;
+            case 10:
+                NewCow cow = (NewCow)data.getSerializableExtra("cowInfo");
+                initViewByToOther(cow);
+                break;
+        }
+
+    }
+
+    public void connect(BluetoothDevice device) {
+        Log.d(TAG, "connect to: " + device);
+        // Start the thread to connect with the given device
+        mConnectThread = new ConnectThread(device);
+        mConnectThread.start();
+    }
+
+    /**
+     * This thread runs while attempting to make an outgoing connection with a
+     * device. It runs straight through; the connection either succeeds or
+     * fails.
+     */
+    private class ConnectThread extends Thread {
+        private final BluetoothSocket mmSocket;
+        private final BluetoothDevice mmDevice;
+
+        public ConnectThread(BluetoothDevice device) {
+            mmDevice = device;
+            BluetoothSocket tmp = null;
+
+            // Get a BluetoothSocket for a connection with the
+            // given BluetoothDevice
+            try {
+                tmp = device.createRfcommSocketToServiceRecord(UUID
+                        .fromString(SPP_UUID));
+            } catch (IOException e) {
+                Log.e(TAG, "create() failed", e);
+            }
+            mmSocket = tmp;
+        }
+
+        public void run() {
+            Log.i(TAG, "BEGIN mConnectThread");
+            setName("ConnectThread");
+
+            // Always cancel discovery because it will slow down a connection
+            mBluetoothAdapter.cancelDiscovery();
+
+            // Make a connection to the BluetoothSocket
+            try {
+                // This is a blocking call and will only return on a
+                // successful connection or an exception
+                mmSocket.connect();
+            } catch (IOException e) {
+
+                Log.e(TAG, "unable to connect() socket", e);
+                // Close the socket
+                try {
+                    mmSocket.close();
+                } catch (IOException e2) {
+                    Log.e(TAG,
+                            "unable to close() socket during connection failure",
+                            e2);
+                }
+                return;
+            }
+
+            mConnectThread = null;
+
+            // Start the connected thread
+            // Start the thread to manage the connection and perform
+            // transmissions
+            mConnectedThread = new ConnectedThread(mmSocket);
+            mConnectedThread.start();
+
+        }
+
+        public void cancel() {
+            try {
+                mmSocket.close();
+            } catch (IOException e) {
+                Log.e(TAG, "close() of connect socket failed", e);
+            }
+        }
+    }
+
+    /**
+     * This thread runs during a connection with a remote device. It handles all
+     * incoming and outgoing transmissions.
+     */
+    private class ConnectedThread extends Thread {
+        private final BluetoothSocket mmSocket;
+        private final InputStream mmInStream;
+        private final OutputStream mmOutStream;
+
+        public ConnectedThread(BluetoothSocket socket) {
+            Log.d(TAG, "create ConnectedThread");
+            mmSocket = socket;
+            InputStream tmpIn = null;
+            OutputStream tmpOut = null;
+
+            // Get the BluetoothSocket input and output streams
+            try {
+                tmpIn = socket.getInputStream();
+                tmpOut = socket.getOutputStream();
+            } catch (IOException e) {
+                Log.e(TAG, "temp sockets not created", e);
+            }
+
+            mmInStream = tmpIn;
+            mmOutStream = tmpOut;
+        }
+
+        public void run() {
+            Log.i(TAG, "BEGIN mConnectedThread");
+            byte[] buffer = new byte[256];
+            int bytes;
+
+            // Keep listening to the InputStream while connected
+            while (true) {
+                try {
+                    // Read from the InputStream
+                    bytes = mmInStream.read(buffer);
+                    synchronized (mBuffer) {
+                        for (int i = 0; i < bytes; i++) {
+                            mBuffer.add(buffer[i] & 0xFF);
+                        }
+                    }
+                    mHandler.sendEmptyMessage(MSG_NEW_DATA);
+                } catch (IOException e) {
+                    Log.e(TAG, "disconnected", e);
+                    break;
+                }
+            }
+        }
+
+        /**
+         * Write to the connected OutStream.
+         *
+         * @param buffer The bytes to write
+         */
+        public void write(byte[] buffer) {
+            try {
+                mmOutStream.write(buffer);
+            } catch (IOException e) {
+                Log.e(TAG, "Exception during write", e);
+            }
+        }
+
+        public void cancel() {
+            try {
+                mmSocket.close();
+            } catch (IOException e) {
+                Log.e(TAG, "close() of connect socket failed", e);
+            }
         }
     }
 

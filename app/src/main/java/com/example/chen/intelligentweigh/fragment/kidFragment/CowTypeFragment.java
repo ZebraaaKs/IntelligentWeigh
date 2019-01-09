@@ -247,10 +247,10 @@ public class CowTypeFragment extends BaseFragment {
                                         }else{
                                             cows.setCowType(cowType.getName());
                                             cows.setCowTypeId(cowType.getID());
-                                            Intent intent = new Intent(getActivity(), NewCowActivity.class);
+                                            Intent intent = new Intent(getActivity(),NewCowActivity.class);
                                             intent.putExtra("cowInfo",cows);
-                                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                            startActivity(intent);
+                                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                            getActivity().setResult(11,intent);
                                             getActivity().finish();
                                         }
                                     }

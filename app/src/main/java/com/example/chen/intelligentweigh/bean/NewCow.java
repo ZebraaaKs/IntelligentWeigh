@@ -10,6 +10,7 @@ import java.io.Serializable;
 public class NewCow implements Serializable{
     private String houseId;
     private String houseName;
+    private String cowWeight;
     private String cowName;
     private String cowType;
     private String cowSex;
@@ -25,10 +26,10 @@ public class NewCow implements Serializable{
     public NewCow() {
     }
 
-    public NewCow(String cowTypeId,String houseId,String houseName, String cowName, String cowType, String cowSex, String cowBrith, String cowHouseDate, String cowRegisterDate, String cowPrice, String cowFatherId, String cowMontherId, String cowId) {
-        this.cowTypeId = cowTypeId;
+    public NewCow(String houseId, String houseName, String cowWeight, String cowName, String cowType, String cowSex, String cowBrith, String cowHouseDate, String cowRegisterDate, String cowPrice, String cowFatherId, String cowMontherId, String cowId, String cowTypeId) {
         this.houseId = houseId;
         this.houseName = houseName;
+        this.cowWeight = cowWeight;
         this.cowName = cowName;
         this.cowType = cowType;
         this.cowSex = cowSex;
@@ -39,7 +40,15 @@ public class NewCow implements Serializable{
         this.cowFatherId = cowFatherId;
         this.cowMontherId = cowMontherId;
         this.cowId = cowId;
+        this.cowTypeId = cowTypeId;
+    }
 
+    public String getCowWeight() {
+        return cowWeight;
+    }
+
+    public void setCowWeight(String cowWeight) {
+        this.cowWeight = cowWeight;
     }
 
     public String getCowTypeId() {
@@ -151,6 +160,7 @@ public class NewCow implements Serializable{
         return "NewCow{" +
                 "houseId='" + houseId + '\'' +
                 ", houseName='" + houseName + '\'' +
+                ", cowWeight='" + cowWeight + '\'' +
                 ", cowName='" + cowName + '\'' +
                 ", cowType='" + cowType + '\'' +
                 ", cowSex='" + cowSex + '\'' +

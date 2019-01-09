@@ -29,6 +29,7 @@ public class User extends LitePalSupport{
     private String touxiang;
     private String farmids;
     private String jurisdiction;
+    private String farmid;
 
     public String getIsSuccess() {
         return isSuccess;
@@ -102,6 +103,14 @@ public class User extends LitePalSupport{
         this.jurisdiction = jurisdiction;
     }
 
+    public String getFarmid() {
+        return farmid;
+    }
+
+    public void setFarmid(String farmid) {
+        this.farmid = farmid;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -114,6 +123,7 @@ public class User extends LitePalSupport{
                 ", touxiang='" + touxiang + '\'' +
                 ", farmids='" + farmids + '\'' +
                 ", jurisdiction='" + jurisdiction + '\'' +
+                ", farmid='" + farmid + '\'' +
                 '}';
     }
 }

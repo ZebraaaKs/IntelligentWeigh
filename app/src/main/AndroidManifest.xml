@@ -60,6 +60,7 @@
             android:name=".activity.NewCowActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
+            android:launchMode="singleTask"
             />
         <activity
             android:name=".activity.CowManageActivity"
@@ -146,6 +147,10 @@
             android:screenOrientation="portrait"
             ></activity>
         <activity android:name=".activity.kidActivity.DeviceListActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
+            ></activity>
+        <activity android:name=".activity.kidActivity.DeviceList2Activity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
             ></activity>

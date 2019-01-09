@@ -276,6 +276,11 @@ public class MainFragment extends BaseFragment {
                                         cunlannum.setText(data.getCunl());
                                         chulannum.setText(data.getChul());
                                         taotainum.setText(data.getTaotai());
+                                        if(data.getRizengzhong().contains("-")){
+                                            tv_dayaddnum.setTextColor(getResources().getColor(R.color.red));
+                                        }else{
+                                            tv_dayaddnum.setTextColor(getResources().getColor(R.color.greenofnum));
+                                        }
                                         tv_dayaddnum.setText(data.getRizengzhong());
                                     }
 

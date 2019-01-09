@@ -150,7 +150,7 @@ public class BindHouseFragment extends BaseFragment {
                         }
                     })
                     .setRightOnClickListener(new View.OnClickListener() {
-                        String allHouse = "";
+                        String allHouseId = "";
                         String house = "";
                         @Override
                         public void onClick(View v) {
@@ -159,13 +159,18 @@ public class BindHouseFragment extends BaseFragment {
                             for (int i = 0; i < housenameList.size(); i++) {
                                 //根据key获取对应的boolean值，没有则返回false
                                 if(checkedItemPositions.get(i)==true){
-                                    house = housenameList.get(i)+";";
-                                    allHouse += house;
+                                    house = housenameList.get(i);
+                                    for(House h:list){
+                                        if(house.equals(h.getName())){
+                                            allHouseId = h.getID();
+                                        }
+                                    }
+                                    break;
                                 }
 
                             }
-
-                            BindHouseByActivity(people.getPhone(),allHouse);
+                            Log.e(TAG,allHouseId);
+                            BindHouseByActivity(people.getPhone(),allHouseId,house);
 
                         }
                     });
@@ -178,7 +183,7 @@ public class BindHouseFragment extends BaseFragment {
      * @param phone
      * @param allHouse
      */
-    private void BindHouseByActivity(final String phone, final String allHouse) {
+    private void BindHouseByActivity(final String phone, final String allHouse, final String house) {
         OkHttpUtils.get()
                 .url(HttpUrlUtils.BING_USER_HOUSE_URL)
                 .addParams("framids",allHouse)
@@ -199,7 +204,8 @@ public class BindHouseFragment extends BaseFragment {
                                 List<User> users = LitePal.where("phone = ?", phone).find(User.class);
                                 if(!users.isEmpty()){
                                     User user = users.get(0);
-                                    user.setFarmids(allHouse);
+                                    user.setFarmids(house);
+                                    user.setFarmid(allHouse);
                                     user.updateAll("phone = ?",phone);
                                 }
                                 Intent intent = new Intent(getActivity(), PeopleMangerActivity.class);
@@ -237,7 +243,7 @@ public class BindHouseFragment extends BaseFragment {
                         }
                     })
                     .setRightOnClickListener(new View.OnClickListener() {
-                        String allHouse = "";
+                        String allHouseId = "";
                         String house = "";
                         @Override
                         public void onClick(View v) {
@@ -247,12 +253,17 @@ public class BindHouseFragment extends BaseFragment {
                             for (int i = 0; i < housenameList.size(); i++) {
                                 //根据key获取对应的boolean值，没有则返回false
                                 if(checkedItemPositions.get(i)==true){
-                                    house = housenameList.get(i)+";";
-                                    allHouse += house;
+                                    house = housenameList.get(i);
+                                    for(House h:list){
+                                        if(house.equals(h.getName())){
+                                            allHouseId = h.getID();
+                                        }
+                                    }
+                                    break;
                                 }
 
                             }
-                            BindHouseByFrag(people.getPhone(),allHouse);
+                            BindHouseByFrag(people.getPhone(),allHouseId,house);
 
                         }
                     });
@@ -265,7 +276,7 @@ public class BindHouseFragment extends BaseFragment {
      * @param phone
      * @param allHouse
      */
-    private void BindHouseByFrag(final String phone, final String allHouse) {
+    private void BindHouseByFrag(final String phone, final String allHouse, final String house) {
         OkHttpUtils.get()
                 .url(HttpUrlUtils.BING_USER_HOUSE_URL)
                 .addParams("framids",allHouse)
@@ -286,7 +297,8 @@ public class BindHouseFragment extends BaseFragment {
                                 List<User> users = LitePal.where("phone = ?", phone).find(User.class);
                                 if(!users.isEmpty()){
                                     User user = users.get(0);
-                                    user.setFarmids(allHouse);
+                                    user.setFarmids(house);
+                                    user.setFarmid(allHouse);
                                     user.updateAll("phone = ?",phone);
                                 }
                                 PeopleMangerFragment fragment = new PeopleMangerFragment();

@@ -139,7 +139,6 @@
                 <TextView
                     android:id="@+id/tv_dayaddnum"
                     android:text="未知"
-                    android:textColor="#30FF0D"
                     android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="match_parent" />
