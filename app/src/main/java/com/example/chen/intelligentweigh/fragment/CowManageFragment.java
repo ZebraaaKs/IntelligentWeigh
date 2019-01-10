@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.example.chen.intelligentweigh.BaseFragment;
 import com.example.chen.intelligentweigh.R;
 import com.example.chen.intelligentweigh.activity.kidActivity.CowMangerAreaActivity;
+import com.example.chen.intelligentweigh.adapter.ListViewHouse2Adapter;
 import com.example.chen.intelligentweigh.adapter.ListViewHouseAdapter;
 import com.example.chen.intelligentweigh.bean.House;
 import com.example.chen.intelligentweigh.bean.User;
@@ -43,7 +44,7 @@ public class CowManageFragment extends BaseFragment {
     private ListView lv_cow_manager;
     private User user;
     private List<House> list;
-    private ListViewHouseAdapter adapter;
+    private ListViewHouse2Adapter adapter;
     private boolean isTwoPan;
 
     @Nullable
@@ -97,7 +98,7 @@ public class CowManageFragment extends BaseFragment {
                                         Type type = new TypeToken<List<House>>(){}.getType();
                                         Gson gson = new Gson();
                                         list = (List<House>)gson.fromJson(response, type);
-                                        adapter = new ListViewHouseAdapter(getActivity(),R.layout.item_house,list);
+                                        adapter = new ListViewHouse2Adapter(getActivity(),R.layout.item_house,list);
                                         lv_cow_manager.setAdapter(adapter);
                                         lv_cow_manager.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                             @Override

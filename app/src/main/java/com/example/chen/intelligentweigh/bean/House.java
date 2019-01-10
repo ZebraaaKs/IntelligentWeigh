@@ -18,6 +18,7 @@ public class House implements Serializable{
     private String ID;
     private String name;
     private String areas;
+    private String addr;
 
     public String getID() {
         return ID;
@@ -43,12 +44,21 @@ public class House implements Serializable{
         this.areas = areas;
     }
 
+    public String getAddr() {
+        return addr;
+    }
+
+    public void setAddr(String addr) {
+        this.addr = addr;
+    }
+
     @Override
     public String toString() {
         return "House{" +
                 "ID='" + ID + '\'' +
                 ", name='" + name + '\'' +
                 ", areas='" + areas + '\'' +
+                ", addr='" + addr + '\'' +
                 '}';
     }
 }

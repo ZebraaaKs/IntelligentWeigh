@@ -40,7 +40,7 @@ public class AlertDialog {
     private LinearLayout lLayout_bg;
     private TextView txt_title;
     private TextView txt_msg;
-    private EditText et_msg;
+    private EditText et_msg,et_msg2;
     private Button btn_neg;
     private Button btn_pos;
     private RadioGroup rg_choose;
@@ -97,6 +97,29 @@ public class AlertDialog {
         txt_title = (TextView) view.findViewById(R.id.txt_title);
         et_msg = (EditText) view.findViewById(R.id.et_msg);
 
+        btn_neg = (Button) view.findViewById(R.id.btn_neg);
+        btn_pos = (Button) view.findViewById(R.id.btn_pos);
+        img_line = (ImageView) view.findViewById(R.id.img_line);
+        setEtGone();
+        dialog = new Dialog(context, R.style.AlertDialogStyle);
+        dialog.setContentView(view);
+        lLayout_bg.setLayoutParams(new FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+        return this;
+    }
+
+    /**
+     * 编辑信息弹框
+     *
+     * @return
+     */
+    public AlertDialog et2Builder() {
+        View view = LayoutInflater.from(context).inflate(
+                R.layout.view_alert_et2dialog, null);
+
+        lLayout_bg = (LinearLayout) view.findViewById(R.id.lLayout_bg);
+        txt_title = (TextView) view.findViewById(R.id.txt_title);
+        et_msg = (EditText) view.findViewById(R.id.et_msg);
+        et_msg2 = (EditText) view.findViewById(R.id.et_msg2);
         btn_neg = (Button) view.findViewById(R.id.btn_neg);
         btn_pos = (Button) view.findViewById(R.id.btn_pos);
         img_line = (ImageView) view.findViewById(R.id.img_line);
@@ -205,6 +228,24 @@ public class AlertDialog {
         return this;
     }
 
+
+    public AlertDialog setEt2Gone() {
+        if (lLayout_bg != null) {
+            txt_title.setVisibility(View.GONE);
+            et_msg.setVisibility(View.GONE);
+            et_msg2.setVisibility(View.GONE);
+            btn_neg.setVisibility(View.GONE);
+            btn_pos.setVisibility(View.GONE);
+            img_line.setVisibility(View.GONE);
+
+        }
+        showTitle = false;
+        showEtMsg = false;
+        showPosBtn = false;
+        showNegBtn = false;
+        return this;
+    }
+
     public String getRgChoose() {
         View view = LayoutInflater.from(context).inflate(
                 R.layout.view_alert_choosedialog, null);
@@ -275,6 +316,7 @@ public class AlertDialog {
                 }
             } else if ("3".equals(type)) {
                 et_msg.setHint("牧场名字");
+                et_msg2.setHint("牧场地址");
             } else if ("4".equals(type)) {
                 et_msg.setHint("分区名字");
             } else if ("5".equals(type)) {
@@ -396,6 +438,10 @@ public class AlertDialog {
 
     public String getEtMsg() {
         return et_msg.getText().toString();
+    }
+
+    public String getEt2Msg() {
+        return et_msg2.getText().toString();
     }
 
     /**

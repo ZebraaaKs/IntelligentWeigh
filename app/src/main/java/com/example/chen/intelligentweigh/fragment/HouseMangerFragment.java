@@ -70,15 +70,17 @@ public class HouseMangerFragment extends BaseFragment {
         new TitleBuilder(view).setTitleText("牧场管理").setRightText("添加牧场").setRightOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final AlertDialog myDialog = new AlertDialog(getActivity()).etBuilder();
+                final AlertDialog myDialog = new AlertDialog(getActivity()).et2Builder();
                 myDialog.setEtGone().setTitle("添加").setEtMsg("3").setNegativeButton("取消", null).setPositiveButton("确定", new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         String etMsg = myDialog.getEtMsg();
-                        if(!etMsg.isEmpty()){
+                        String etMsg2 = myDialog.getEt2Msg();
+                        if(!etMsg.isEmpty()&&!etMsg2.isEmpty()){
                             OkHttpUtils.get()
                                     .url(HttpUrlUtils.ADD_NEW_HOUSE)
                                     .addParams("farm",etMsg)
+                                    .addParams("addr",etMsg2)
                                     .build()
                                     .execute(new StringCallback() {
                                         @Override
@@ -160,6 +162,7 @@ public class HouseMangerFragment extends BaseFragment {
                         if("error".equals(response.toString())){
                             Toast.makeText(getActivity(),"数据出错",Toast.LENGTH_SHORT).show();
                         }else {
+                            Log.e(TAG,"牧场详情 ："+response);
                             Type type = new TypeToken<List<House>>() {
                             }.getType();
                             list = new Gson().fromJson(response.toString(), type);

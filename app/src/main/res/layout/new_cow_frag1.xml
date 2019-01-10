@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include layout="@layout/rl_titlebar"></include>
+    <ScrollView
+        android:background="@drawable/itembackgroud"
+        android:fillViewport="true"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="4dp"
+            >
+
+            <RelativeLayout
+                android:id="@+id/rl_cow_id"
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
+                <TextView
+                    android:id="@+id/tv_cowid"
+                    android:textSize="22sp"
+                    android:text="肉牛编号:"
+                    android:textColor="@color/txt_black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    />
+                <TextView
+                    android:id="@+id/tv_cow_id"
+                    android:layout_toRightOf="@id/tv_cowid"
+                    android:layout_centerVertical="true"
+                    android:hint="请输入肉牛编号"
+                    android:textSize="22sp"
+                    android:textColor="@color/txt_black"
+                    android:layout_marginLeft="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </RelativeLayout>
+            <View
+                android:background="@color/line_default_color"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"></View>
+
+            <RelativeLayout
+                android:id="@+id/rl_father_id"
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
+                <TextView
+                    android:id="@+id/tv_fatherid"
+                    android:textSize="22sp"
+                    android:text="父系编号:"
+                    android:textColor="@color/txt_black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    />
+                <TextView
+                    android:id="@+id/tv_father_id"
+                    android:layout_toRightOf="@id/tv_fatherid"
+                    android:layout_centerVertical="true"
+                    android:hint="请输入父系编号"
+                    android:textSize="22sp"
+                    android:textColor="@color/txt_black"
+                    android:layout_marginLeft="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </RelativeLayout>
+            <View
+                android:background="@color/line_default_color"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"></View>
+
+            <RelativeLayout
+                android:id="@+id/rl_mather_id"
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
+                <TextView
+                    android:id="@+id/tv_matherid"
+                    android:textSize="22sp"
+                    android:text="母系编号:"
+                    android:textColor="@color/txt_black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    />
+                <TextView
+                    android:id="@+id/tv_mather_id"
+                    android:layout_toRightOf="@id/tv_matherid"
+                    android:layout_centerVertical="true"
+                    android:hint="请输入母系编号"
+                    android:textSize="22sp"
+                    android:textColor="@color/txt_black"
+                    android:layout_marginLeft="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </RelativeLayout>
+            <View
+                android:background="@color/line_default_color"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"></View>
+            <RelativeLayout
+                android:layout_marginTop="30dp"
+                android:id="@+id/rl_house_name"
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
+                <TextView
+                    android:id="@+id/tv_housename"
+                    android:textSize="22sp"
+                    android:text="牧场名称:"
+                    android:textColor="@color/txt_black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    />
+                <TextView
+                    android:id="@+id/tv_choose_housename"
+                    android:layout_toRightOf="@id/tv_housename"
+                    android:layout_centerVertical="true"
+                    android:hint="请选择牧场"
+                    android:textSize="22sp"
+                    android:textColor="@color/txt_black"
+                    android:layout_marginLeft="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/tv_choose_id"
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <ImageView
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/right_arrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp" />
+
+            </RelativeLayout>
+            <View
+                android:background="@color/line_default_color"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"></View>
+
+            <RelativeLayout
+                android:id="@+id/rl_cow_name"
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
+                <TextView
+                    android:id="@+id/tv_cowname"
+                    android:textSize="22sp"
+                    android:text="肉牛名称:"
+                    android:textColor="@color/txt_black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    />
+                <TextView
+                    android:id="@+id/tv_cow_name"
+                    android:layout_toRightOf="@id/tv_cowname"
+                    android:layout_centerVertical="true"
+                    android:hint="请输入肉牛名称"
+                    android:textSize="22sp"
+                    android:textColor="@color/txt_black"
+                    android:layout_marginLeft="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </RelativeLayout>
+            <View
+                android:background="@color/line_default_color"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"></View>
+
+            <RelativeLayout
+                android:id="@+id/rl_cow_type"
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
+                <TextView
+                    android:id="@+id/tv_cowtype"
+                    android:textSize="22sp"
+                    android:text="肉牛品种:"
+                    android:textColor="@color/txt_black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    />
+                <TextView
+                    android:id="@+id/tv_cow_type"
+                    android:layout_toRightOf="@id/tv_cowtype"
+                    android:layout_centerVertical="true"
+                    android:hint="请选择肉牛品种"
+                    android:textSize="22sp"
+                    android:textColor="@color/txt_black"
+                    android:layout_marginLeft="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/tv_cow_typeid"
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <ImageView
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/right_arrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp" />
+
+            </RelativeLayout>
+            <View
+                android:background="@color/line_default_color"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"></View>
+
+
+            <RelativeLayout
+                android:id="@+id/rl_cow_sex"
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
+                <TextView
+                    android:id="@+id/tv_cowsex"
+                    android:textSize="22sp"
+                    android:text="肉牛性别:"
+                    android:textColor="@color/txt_black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    />
+                <TextView
+                    android:id="@+id/tv_cow_sex"
+                    android:layout_toRightOf="@id/tv_cowsex"
+                    android:layout_centerVertical="true"
+                    android:hint="请选择肉牛公母"
+                    android:textSize="22sp"
+                    android:textColor="@color/txt_black"
+                    android:layout_marginLeft="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <ImageView
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/right_arrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp" />
+
+            </RelativeLayout>
+            <View
+                android:background="@color/line_default_color"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"></View>
+
+
+            <RelativeLayout
+                android:id="@+id/rl_cow_birth"
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
+                <TextView
+                    android:id="@+id/tv_cowbirth"
+                    android:textSize="22sp"
+                    android:text="出生日期:"
+                    android:textColor="@color/txt_black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    />
+                <TextView
+                    android:id="@+id/tv_cow_birth"
+                    android:layout_toRightOf="@id/tv_cowbirth"
+                    android:layout_centerVertical="true"
+                    android:hint="请选择出生日期"
+                    android:textSize="22sp"
+                    android:textColor="@color/txt_black"
+                    android:layout_marginLeft="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <ImageView
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/right_arrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp" />
+
+            </RelativeLayout>
+            <View
+                android:background="@color/line_default_color"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"></View>
+
+            <RelativeLayout
+                android:id="@+id/rl_cow_access"
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
+                <TextView
+                    android:id="@+id/tv_cowaccess"
+                    android:textSize="22sp"
+                    android:text="入场日期:"
+                    android:textColor="@color/txt_black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    />
+                <TextView
+                    android:id="@+id/tv_cow_access"
+                    android:layout_toRightOf="@id/tv_cowaccess"
+                    android:layout_centerVertical="true"
+                    android:hint="请选择入场日期"
+                    android:textSize="22sp"
+                    android:textColor="@color/txt_black"
+                    android:layout_marginLeft="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <ImageView
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/right_arrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp" />
+
+            </RelativeLayout>
+            <View
+                android:background="@color/line_default_color"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"></View>
+
+            <RelativeLayout
+                android:id="@+id/rl_cow_register"
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
+                <TextView
+                    android:id="@+id/tv_cowregister"
+                    android:textSize="22sp"
+                    android:text="登记日期:"
+                    android:textColor="@color/txt_black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    />
+                <TextView
+                    android:id="@+id/tv_cow_register"
+                    android:layout_toRightOf="@id/tv_cowregister"
+                    android:layout_centerVertical="true"
+                    android:hint="请选择登记日期"
+                    android:textSize="22sp"
+                    android:textColor="@color/txt_black"
+                    android:layout_marginLeft="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <ImageView
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/right_arrow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp" />
+
+            </RelativeLayout>
+            <View
+                android:background="@color/line_default_color"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"></View>
+
+            <RelativeLayout
+                android:id="@+id/rl_access_price"
+                android:layout_width="match_parent"
+                android:layout_height="40dp">
+                <TextView
+                    android:id="@+id/tv_accessprice"
+                    android:textSize="22sp"
+                    android:text="进场价格:"
+                    android:textColor="@color/txt_black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    />
+                <TextView
+                    android:id="@+id/tv_access_peice"
+                    android:layout_toRightOf="@id/tv_accessprice"
+                    android:layout_centerVertical="true"
+                    android:hint="请输入进场价格"
+                    android:textSize="22sp"
+                    android:textColor="@color/txt_black"
+                    android:layout_marginLeft="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:layout_alignParentRight="true"
+                    android:textSize="22sp"
+                    android:text="(元/斤)"
+                    android:textColor="@color/txt_black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true" />
+            </RelativeLayout>
+            <View
+                android:background="@color/line_default_color"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"></View>
+
+
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

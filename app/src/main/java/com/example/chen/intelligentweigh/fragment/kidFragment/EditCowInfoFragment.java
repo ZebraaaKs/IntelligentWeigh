@@ -105,7 +105,7 @@ public class EditCowInfoFragment extends BaseFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.new_cow_frag, container, false);
+        View view = inflater.inflate(R.layout.new_cow_frag1, container, false);
         initView(view);
         return view;
     }

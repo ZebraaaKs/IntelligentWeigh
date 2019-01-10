@@ -122,7 +122,7 @@ public class BindHouseFragment extends BaseFragment {
                                 Type type = new TypeToken<List<House>>(){}.getType();
                                 list = new Gson().fromJson(response, type);
                                 for(House house:list){
-                                    housenameList.add(house.getName());
+                                    housenameList.add(house.getName()+"("+house.getAddr()+")");
                                 }
                                 ArrayAdapter adapter = new ArrayAdapter(getActivity(),android.R.layout.simple_list_item_multiple_choice,housenameList);
                                 lv_bind_house.setAdapter(adapter);
@@ -159,7 +159,7 @@ public class BindHouseFragment extends BaseFragment {
                             for (int i = 0; i < housenameList.size(); i++) {
                                 //根据key获取对应的boolean值，没有则返回false
                                 if(checkedItemPositions.get(i)==true){
-                                    house = housenameList.get(i);
+                                    house = housenameList.get(i).split("[(]")[0];
                                     for(House h:list){
                                         if(house.equals(h.getName())){
                                             allHouseId = h.getID();
@@ -253,7 +253,7 @@ public class BindHouseFragment extends BaseFragment {
                             for (int i = 0; i < housenameList.size(); i++) {
                                 //根据key获取对应的boolean值，没有则返回false
                                 if(checkedItemPositions.get(i)==true){
-                                    house = housenameList.get(i);
+                                    house = housenameList.get(i).split("[(]")[0];
                                     for(House h:list){
                                         if(house.equals(h.getName())){
                                             allHouseId = h.getID();

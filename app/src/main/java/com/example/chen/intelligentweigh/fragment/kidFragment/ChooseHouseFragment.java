@@ -22,6 +22,7 @@ import com.example.chen.intelligentweigh.activity.kidActivity.ChooseAreaActivity
 import com.example.chen.intelligentweigh.activity.kidActivity.ChooseHouseActivity;
 import com.example.chen.intelligentweigh.activity.kidActivity.PeopleInfoActivity;
 import com.example.chen.intelligentweigh.adapter.ListViewChooseHouseAdapter;
+import com.example.chen.intelligentweigh.adapter.ListViewHouse2Adapter;
 import com.example.chen.intelligentweigh.adapter.ListViewHouseAdapter;
 import com.example.chen.intelligentweigh.bean.Cow;
 import com.example.chen.intelligentweigh.bean.House;
@@ -162,7 +163,7 @@ public class ChooseHouseFragment extends BaseFragment {
                                     }.getType();
                                     Gson gson = new Gson();
                                     list = (List<House>) gson.fromJson(response.toString(), type);
-                                    ListViewHouseAdapter adapter = new ListViewHouseAdapter(getActivity(),R.layout.item_house,list);
+                                    ListViewHouse2Adapter adapter = new ListViewHouse2Adapter(getActivity(),R.layout.item_house,list);
                                     lv_choose_house.setAdapter(adapter);
                                     lv_choose_house.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                         @Override

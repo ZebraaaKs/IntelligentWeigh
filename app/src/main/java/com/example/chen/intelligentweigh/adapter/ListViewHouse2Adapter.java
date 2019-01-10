@@ -9,10 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-
 import com.example.chen.intelligentweigh.R;
 import com.example.chen.intelligentweigh.bean.House;
-
 
 import java.util.List;
 
@@ -21,12 +19,12 @@ import java.util.List;
  * @date 2018/12/6.   18:59
  * description：牧场列表
  */
-public class ListViewHouseAdapter extends ArrayAdapter<House> {
+public class ListViewHouse2Adapter extends ArrayAdapter<House> {
     private Context context;
     private int resource;
     private List<House> list;
 
-    public ListViewHouseAdapter(@NonNull Context context, int resource, @NonNull List<House> list) {
+    public ListViewHouse2Adapter(@NonNull Context context, int resource, @NonNull List<House> list) {
         super(context, resource, list);
         this.resource = resource;
         this.context = context;
@@ -44,7 +42,6 @@ public class ListViewHouseAdapter extends ArrayAdapter<House> {
             viewHolder = new ViewHolder();
             viewHolder.tv_house_name = (TextView) view.findViewById(R.id.tv_house_name);
             viewHolder.tv_house_id = (TextView) view.findViewById(R.id.tv_house_id);
-            viewHolder.tv_house_addr = (TextView) view.findViewById(R.id.tv_house_addr);
             view.setTag(viewHolder);
         } else {
             view = convertView;
@@ -52,7 +49,6 @@ public class ListViewHouseAdapter extends ArrayAdapter<House> {
         }
         viewHolder.tv_house_id.setText(house.getID());
         viewHolder.tv_house_name.setText(house.getName());
-        viewHolder.tv_house_addr.setText("(" + house.getAddr() + ")");
         return view;
     }
 
