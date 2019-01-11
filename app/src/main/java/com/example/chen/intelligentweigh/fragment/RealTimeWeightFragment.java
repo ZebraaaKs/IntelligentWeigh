@@ -22,10 +22,12 @@ import android.widget.Toast;
 import com.android.tu.loadingdialog.LoadingDailog;
 import com.example.chen.intelligentweigh.BaseFragment;
 import com.example.chen.intelligentweigh.R;
+import com.example.chen.intelligentweigh.activity.LoginActivity;
 import com.example.chen.intelligentweigh.activity.kidActivity.DeviceListActivity;
 import com.example.chen.intelligentweigh.bean.CowWeight;
 import com.example.chen.intelligentweigh.bean.WeighData;
 import com.example.chen.intelligentweigh.fragment.kidFragment.DeviceListFragment;
+import com.example.chen.intelligentweigh.util.AlertDialog;
 import com.example.chen.intelligentweigh.util.HttpUrlUtils;
 import com.example.chen.intelligentweigh.util.NetWorkUtils;
 import com.example.chen.intelligentweigh.util.SharedUtils;
@@ -137,6 +139,7 @@ public class RealTimeWeightFragment extends BaseFragment  {
                                     .addParams("phone", cowWeight.getPhone())
                                     .addParams("weigh",cowWeight.getWeight())
                                     .addParams("datetime",cowWeight.getDate())
+                                    .addParams("kind",cowWeight.getKind())
                                     .url(HttpUrlUtils.ADDONEWEIGHT)
                                     .build()
                                     .execute(new StringCallback() {
@@ -170,14 +173,28 @@ public class RealTimeWeightFragment extends BaseFragment  {
             @Override
             public void onClick(View v) {
                 if(getActivity()!=null) {
-                    SubMitData();
+                    // SubMitData();
+                    AlertDialog myDialog = new AlertDialog(getActivity()).choosebuilder();
+                    myDialog.setChooseGone().setTitle("选择称重类型").setChooseButton("取消", null).setChoose2Button("日常称重", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            SubMitData("1");
+
+                        }
+                    }).setChoose3Button("出栏称重", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            SubMitData("2");
+                        }
+                    }).show();
                 }
             }
+
         });
 
     }
 
-    private void SubMitData() {
+    private void SubMitData(String type) {
         if(tv_real_id.getText().toString().isEmpty()){
             Toast.makeText(getActivity(),"请称重",Toast.LENGTH_SHORT).show();
             return;
@@ -192,6 +209,7 @@ public class RealTimeWeightFragment extends BaseFragment  {
                     .addParams("phone", SharedUtils.getPhone(getActivity()))
                     .addParams("weigh",tv_real_weight.getText().toString())
                     .addParams("datetime",tv_real_date.getText().toString())
+                    .addParams("kind",type)
                     .url(HttpUrlUtils.ADDONEWEIGHT)
                     .build()
                     .execute(new StringCallback() {
@@ -216,6 +234,7 @@ public class RealTimeWeightFragment extends BaseFragment  {
             cowWeight.setPhone(SharedUtils.getPhone(getActivity()));
             cowWeight.setDate(tv_real_date.getText().toString());
             cowWeight.setWeight(tv_real_weight.getText().toString());
+            cowWeight.setKind(type);
             Log.e(TAG,cowWeight.toString());
             cowWeight.save();
             Toast.makeText(getActivity(),"保存本地成功",Toast.LENGTH_SHORT).show();

@@ -14,9 +14,18 @@ public class CowWeight extends LitePalSupport {
     private String weight;
     private String phone;
     private String date;
+    private String kind;
 
     public String getWeid() {
         return weid;
+    }
+
+    public String getKind() {
+        return kind;
+    }
+
+    public void setKind(String kind) {
+        this.kind = kind;
     }
 
     public void setWeid(String weid) {
@@ -50,10 +59,11 @@ public class CowWeight extends LitePalSupport {
     @Override
     public String toString() {
         return "CowWeight{" +
-                "id='" + weid + '\'' +
+                "weid='" + weid + '\'' +
                 ", weight='" + weight + '\'' +
                 ", phone='" + phone + '\'' +
                 ", date='" + date + '\'' +
+                ", kind='" + kind + '\'' +
                 '}';
     }
 }

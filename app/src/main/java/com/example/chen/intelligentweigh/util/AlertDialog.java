@@ -42,7 +42,7 @@ public class AlertDialog {
     private TextView txt_msg;
     private EditText et_msg,et_msg2;
     private Button btn_neg;
-    private Button btn_pos;
+    private Button btn_pos,btn_choose,btn_choose2,btn_choose3;
     private RadioGroup rg_choose;
     private ImageView img_line;
     private Display display;
@@ -52,6 +52,9 @@ public class AlertDialog {
     private boolean showNegBtn = false;
     private boolean showEtMsg = false;
     private boolean showRg = false;
+    private boolean showChoose = false;
+    private boolean showChoose2 = false;
+    private boolean showChoose3 = false;
     private User user = null;
 
 
@@ -82,6 +85,39 @@ public class AlertDialog {
         lLayout_bg.setLayoutParams(new FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 
         return this;
+    }
+
+
+    public AlertDialog choosebuilder() {
+        View view = LayoutInflater.from(context).inflate(
+                R.layout.view_alert_choose_dialog, null);
+        lLayout_bg = (LinearLayout) view.findViewById(R.id.lLayout_bg);
+        txt_title = (TextView) view.findViewById(R.id.txt_title);
+        btn_choose = (Button) view.findViewById(R.id.btn_choose);
+        btn_choose2 = (Button) view.findViewById(R.id.btn_choose2);
+        btn_choose3 = (Button) view.findViewById(R.id.btn_choose3);
+        setChooseGone();
+        dialog = new Dialog(context, R.style.AlertDialogStyle);
+        dialog.setContentView(view);
+        lLayout_bg.setLayoutParams(new FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+
+        return this;
+    }
+
+    public AlertDialog setChooseGone() {
+        if (lLayout_bg != null) {
+            txt_title.setVisibility(View.GONE);
+            btn_choose.setVisibility(View.GONE);
+            btn_choose2.setVisibility(View.GONE);
+            btn_choose3.setVisibility(View.GONE);
+
+        }
+        showTitle = false;
+        showChoose = false;
+        showChoose2 = false;
+        showChoose3 = false;
+        return this;
+
     }
 
     /**
@@ -389,6 +425,9 @@ public class AlertDialog {
         return this;
     }
 
+
+
+
     /**
      * 设置点击外部是否消失
      *
@@ -443,6 +482,104 @@ public class AlertDialog {
     public String getEt2Msg() {
         return et_msg2.getText().toString();
     }
+
+    /**
+     * 取消按钮
+     */
+    public AlertDialog setChooseButton(String text,
+                                         final OnClickListener listener) {
+        return setChooseButton(text, -1, listener);
+    }
+
+    public AlertDialog setChooseButton(String text, int color,
+                                         final OnClickListener listener) {
+        showChoose = true;
+        if ("".equals(text)) {
+            btn_choose.setText("");
+        } else {
+            btn_choose.setText(text);
+        }
+        if (color == -1) {
+            color = R.color.action_sheet_blue;
+        }
+        btn_choose.setTextColor(ContextCompat.getColor(context, color));
+        btn_choose.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null)
+                    listener.onClick(v);
+                dismiss();
+            }
+        });
+        return this;
+    }
+
+
+    /**
+     * 日常按钮
+     */
+
+    public AlertDialog setChoose2Button(String text,
+                                       final OnClickListener listener) {
+        return setChoose2Button(text, -1, listener);
+    }
+
+    public AlertDialog setChoose2Button(String text, int color,
+                                       final OnClickListener listener) {
+        showChoose2 = true;
+        if ("".equals(text)) {
+            btn_choose2.setText("");
+        } else {
+            btn_choose2.setText(text);
+        }
+        if (color == -1) {
+            color = R.color.action_sheet_blue;
+        }
+        btn_choose2.setTextColor(ContextCompat.getColor(context, color));
+        btn_choose2.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null)
+                    listener.onClick(v);
+                dismiss();
+            }
+        });
+        return this;
+    }
+
+    /**
+     * 出栏按钮
+     */
+    public AlertDialog setChoose3Button(String text,
+                                        final OnClickListener listener) {
+        return setChoose3Button(text, -1, listener);
+    }
+
+    public AlertDialog setChoose3Button(String text, int color,
+                                        final OnClickListener listener) {
+        showChoose3 = true;
+        if ("".equals(text)) {
+            btn_choose3.setText("");
+        } else {
+            btn_choose3.setText(text);
+        }
+        if (color == -1) {
+            color = R.color.action_sheet_blue;
+        }
+        btn_choose3.setTextColor(ContextCompat.getColor(context, color));
+        btn_choose3.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null)
+                    listener.onClick(v);
+                dismiss();
+            }
+        });
+        return this;
+    }
+
+
+
 
     /**
      * 左侧按钮
@@ -505,7 +642,7 @@ public class AlertDialog {
             rg_choose.setVisibility(View.VISIBLE);
         }
 
-        if (!showPosBtn && !showNegBtn) {
+       /* if (!showPosBtn && !showNegBtn) {
             btn_pos.setText("");
             btn_pos.setVisibility(View.VISIBLE);
             btn_pos.setBackgroundResource(R.drawable.alert_dialog_selector);
@@ -515,7 +652,7 @@ public class AlertDialog {
                     dismiss();
                 }
             });
-        }
+        }*/
 
         if (showPosBtn && showNegBtn) {
             btn_pos.setVisibility(View.VISIBLE);
@@ -534,6 +671,30 @@ public class AlertDialog {
             btn_neg.setVisibility(View.VISIBLE);
             btn_neg.setBackgroundResource(R.drawable.alert_dialog_selector);
         }
+
+        if(showChoose && showChoose2 && showChoose3){
+            btn_choose.setVisibility(View.VISIBLE);
+            btn_choose2.setVisibility(View.VISIBLE);
+            btn_choose3.setVisibility(View.VISIBLE);
+            btn_choose3.setBackgroundResource(R.drawable.alert_dialog_center_selector);
+        }
+        if(showChoose && !showChoose2 && !showChoose3){
+            btn_choose.setVisibility(View.VISIBLE);
+        }
+
+        if(!showChoose && showChoose2 && showChoose3){
+            btn_choose2.setVisibility(View.VISIBLE);
+            btn_choose3.setVisibility(View.VISIBLE);
+            btn_choose3.setBackgroundResource(R.drawable.alert_dialog_center_selector);
+        }
+
+        if(showChoose && !showChoose2 && showChoose3){
+            btn_choose.setVisibility(View.VISIBLE);
+            btn_choose3.setVisibility(View.VISIBLE);
+            btn_choose3.setBackgroundResource(R.drawable.alert_dialog_center_selector);
+        }
+
+
     }
 
     public void show() {
