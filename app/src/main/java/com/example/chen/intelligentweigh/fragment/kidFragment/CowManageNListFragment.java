@@ -47,10 +47,11 @@ public class CowManageNListFragment extends BaseFragment {
     private ListView lv_n_list;
     private Boolean isTwoPan;
     private String Nidd;
-    private String Nname;
+    private String Tname;
     private List<Cow> list ;
     private ListViewCowInfoAdapter adapter;
     private String TAG = "CowManageNListFragment";
+    String type1 = "";
 
     @Nullable
     @Override
@@ -70,12 +71,11 @@ public class CowManageNListFragment extends BaseFragment {
         }
     }
 
-    public static CowManageNListFragment newInstances(String yid,String yname,String tName){
+    public static CowManageNListFragment newInstances(String yid,String tName){
         CowManageNListFragment  fragment = new CowManageNListFragment();
         Bundle bundle = new Bundle();
         bundle.putString("nid",yid);
-        bundle.putString("nname",yname);
-        bundle.putString("tName",tName);
+        bundle.putString("type",tName);
         fragment.setArguments(bundle);
         return  fragment;
     }
@@ -87,14 +87,14 @@ public class CowManageNListFragment extends BaseFragment {
     }
 
     private void initActivityView(View view) {
-        if(Nidd!=null&&Nname!=null&&getActivity()!=null){
-            new TitleBuilder(view).setTitleText("淘汰牛").setLeftImage(R.drawable.arrowleft).setLeftOnClickListener(new View.OnClickListener() {
+        if(Nidd!=null&&Tname!=null){
+            new TitleBuilder(view).setTitleText(Tname).setLeftImage(R.drawable.arrowleft).setLeftOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                          getActivity().finish();
                 }
             });
-            initListView(Nidd,Nname);
+            initListView(Nidd,Tname);
         }
 
 
@@ -104,27 +104,30 @@ public class CowManageNListFragment extends BaseFragment {
     private void initFragView(View view) {
         if(getArguments()!=null&&getActivity()!=null){
             final String nid = getArguments().getString("nid");
-            final String nname = getArguments().getString("nname");
-            final String tName = getArguments().getString("tName");
-            new TitleBuilder(view).setTitleText("淘汰牛").setLeftImage(R.drawable.arrowleft).setLeftOnClickListener(new View.OnClickListener() {
+            final String tName = getArguments().getString("type");
+            new TitleBuilder(view).setTitleText(tName).setLeftImage(R.drawable.arrowleft).setLeftOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    CowManageExitsFragment fragment = CowManageExitsFragment.newInstance(nid,nname,tName);
-                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.other_content_frag,fragment).commit();
+                   CattleFramKindFragment framKindFragment = new CattleFramKindFragment();
+                   getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.other_content_frag,framKindFragment).commit();
                 }
             });
-
-            initListView(nid,nname);
+            initListView(nid,tName);
         }
 
     }
 
-    private void initListView(final String nnnid, String name) {
+    private void initListView(final String nnnid, final String name) {
+
+        if("出栏牛".equals(name)){
+            type1 = "2";
+        }else{
+            type1 = "0";
+        }
         OkHttpUtils.get()
                 .url(HttpUrlUtils.CATTLEBACKBYFRAMAREA)
                 .addParams("farmid", nnnid)
-                .addParams("area", name)
-                .addParams("exist", "0")
+                .addParams("exist", type1)
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -147,7 +150,7 @@ public class CowManageNListFragment extends BaseFragment {
                             lv_n_list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                 @Override
                                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                    initListData(list.get(position).getID(),list.get(position),nnnid);
+                                    initListData(list.get(position).getID(),list.get(position),nnnid,name);
                                 }
                             });
 
@@ -156,7 +159,7 @@ public class CowManageNListFragment extends BaseFragment {
                 });
     }
 
-    private void initListData(final String id, final Cow cow, final String nnnid) {
+    private void initListData(final String id, final Cow cow, final String nnnid, final String name) {
         OkHttpUtils.get()
                 .url(HttpUrlUtils.CATTLEBACKWEIGHRECORD)
                 .addParams("cattleid",id)
@@ -199,7 +202,7 @@ public class CowManageNListFragment extends BaseFragment {
 
                             }
                             if(isTwoPan) {
-                                ShowCowInfoFragment fragment = ShowCowInfoFragment.newInstances(cow, nnnid, xValues, yValues,"0");
+                                ShowCowInfoFragment fragment = ShowCowInfoFragment.newInstances(cow, nnnid, xValues, yValues,"0",name);
                                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.other_content_frag, fragment).commit();
                             }else{
                                 Intent intent = new Intent(getActivity(),ShowCowInfoActivity.class);
@@ -241,7 +244,7 @@ public class CowManageNListFragment extends BaseFragment {
     protected void onAttachToContext(Context context) {
         if(context instanceof CowManageNListActivity) {
             Nidd = ((CowManageNListActivity) context).setIdData();
-            Nname = ((CowManageNListActivity) context).setNameData();
+            Tname = ((CowManageNListActivity) context).setNameData();
 
         }
     }

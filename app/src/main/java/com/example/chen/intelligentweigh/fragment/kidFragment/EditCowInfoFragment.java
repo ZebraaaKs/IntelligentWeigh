@@ -22,11 +22,13 @@ import com.example.chen.intelligentweigh.BaseFragment;
 import com.example.chen.intelligentweigh.R;
 import com.example.chen.intelligentweigh.activity.CowManageActivity;
 import com.example.chen.intelligentweigh.activity.NewCowActivity;
+import com.example.chen.intelligentweigh.activity.kidActivity.CattleFramKindActivity;
 import com.example.chen.intelligentweigh.activity.kidActivity.ChooseHouseActivity;
 import com.example.chen.intelligentweigh.activity.kidActivity.CowTypeActivity;
 import com.example.chen.intelligentweigh.activity.kidActivity.EditCowInfoActivty;
 import com.example.chen.intelligentweigh.activity.kidActivity.EditHouseActivity;
 import com.example.chen.intelligentweigh.activity.kidActivity.EditTypeActivity;
+import com.example.chen.intelligentweigh.bean.CattleFramKind;
 import com.example.chen.intelligentweigh.bean.Cow;
 import com.example.chen.intelligentweigh.bean.NewCow;
 import com.example.chen.intelligentweigh.bean.User;
@@ -278,11 +280,13 @@ public class EditCowInfoFragment extends BaseFragment {
                         if("ok".equals(response)){
                             Toast.makeText(getActivity(),"修改信息成功",Toast.LENGTH_SHORT).show();
                             if(isTwoPan){
-                                CowManageFragment fragment = new CowManageFragment();
+                                CattleFramKindFragment fragment = new CattleFramKindFragment();
                                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.other_content_frag,fragment).commit();
                             }else{
-                                Intent intent = new Intent(getActivity(), CowManageActivity.class);
+                                Intent intent = new Intent(getActivity(), CattleFramKindActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(intent);
+                                getActivity().finish();
                             }
                         }else{
                             Toast.makeText(getActivity(),"数据错误",Toast.LENGTH_SHORT).show();

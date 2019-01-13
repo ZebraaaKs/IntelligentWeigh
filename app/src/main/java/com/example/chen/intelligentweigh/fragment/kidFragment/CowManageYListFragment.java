@@ -131,7 +131,7 @@ public class CowManageYListFragment extends BaseFragment {
 
     private void initActivityView(View view) {
         if(Yidd!=null&&Yname!=null){
-            new TitleBuilder(view).setTitleText("健在牛").setLeftImage(R.drawable.arrowleft).setLeftOnClickListener(new View.OnClickListener() {
+            new TitleBuilder(view).setTitleText("存栏牛").setLeftImage(R.drawable.arrowleft).setLeftOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     getActivity().finish();
@@ -149,10 +149,10 @@ public class CowManageYListFragment extends BaseFragment {
             final String yid = getArguments().getString("yid");
             final String yname = getArguments().getString("yname");
             final String tName = getArguments().getString("tName");
-            new TitleBuilder(view).setTitleText("健在牛").setLeftImage(R.drawable.arrowleft).setLeftOnClickListener(new View.OnClickListener() {
+            new TitleBuilder(view).setTitleText("存栏牛").setLeftImage(R.drawable.arrowleft).setLeftOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    CowManageExitsFragment fragment = CowManageExitsFragment.newInstance(yid,yname,tName);
+                    CowManagerAreaFragment fragment = CowManagerAreaFragment.newInstance(yid,yname);
                     getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.other_content_frag,fragment).commit();
                 }
             }).build();
@@ -372,7 +372,7 @@ public class CowManageYListFragment extends BaseFragment {
 
                             }
                             if(isTwoPan) {
-                                ShowCowInfoFragment fragment = ShowCowInfoFragment.newInstances(cow, yid, xValues, yValues,"1");
+                                ShowCowInfoFragment fragment = ShowCowInfoFragment.newInstances(cow, yid, xValues, yValues,"1","");
                                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.other_content_frag, fragment).commit();
                             }else{
                                 Intent intent = new Intent(getActivity(),ShowCowInfoActivity.class);

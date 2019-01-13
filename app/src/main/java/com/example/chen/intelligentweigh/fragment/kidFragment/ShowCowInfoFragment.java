@@ -65,7 +65,7 @@ public class ShowCowInfoFragment extends BaseFragment {
         return view;
     }
 
-    public static ShowCowInfoFragment newInstances(Cow cow, String framid,ArrayList<String> xList,ArrayList<Float> yList,String YN) {
+    public static ShowCowInfoFragment newInstances(Cow cow, String framid,ArrayList<String> xList,ArrayList<Float> yList,String YN,String type1) {
         ShowCowInfoFragment fragment = new ShowCowInfoFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable("cowInfo", cow);
@@ -73,6 +73,7 @@ public class ShowCowInfoFragment extends BaseFragment {
         bundle.putSerializable("xlist",xList);
         bundle.putSerializable("ylist",yList);
         bundle.putSerializable("YN",YN);
+        bundle.putString("type1",type1);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -131,6 +132,7 @@ public class ShowCowInfoFragment extends BaseFragment {
             ArrayList<String> xlist = (ArrayList<String>)getArguments().getSerializable("xlist");
             ArrayList<Float> ylist = (ArrayList<Float>)getArguments().getSerializable("ylist");
             final String yn = getArguments().getString("YN");
+            final String type1 = getArguments().getString("type1");
             new TitleBuilder(view).setTitleText("详情").setLeftImage(R.drawable.arrowleft).setLeftOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -138,7 +140,8 @@ public class ShowCowInfoFragment extends BaseFragment {
                         CowManageYListFragment fragment = CowManageYListFragment.newInstances(framid, newInfo.getArea(), newInfo.getFarmname());
                         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.other_content_frag, fragment).commit();
                     }else{
-                        CowManageNListFragment fragment = CowManageNListFragment.newInstances(framid, newInfo.getArea(), newInfo.getFarmname());
+
+                        CowManageNListFragment fragment = CowManageNListFragment.newInstances(framid,type1);
                         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.other_content_frag, fragment).commit();
 
                     }

@@ -34,7 +34,7 @@ import java.util.List;
  */
 public class CowManageExitsFragment extends BaseFragment {
 
-    private ListView lv_cow_manage_exits;
+    /*private ListView lv_cow_manage_exits;
     private boolean isTwoPan;
     private String tmanageId;
     private String tmanageName;
@@ -165,10 +165,10 @@ public class CowManageExitsFragment extends BaseFragment {
         onAttachToContext(context);
     }
 
-    /*
+    *//*
      * Deprecated on API 23
      * Use onAttachToContext instead
-     */
+     *//*
     @SuppressWarnings("deprecation")
     @Override
     public void onAttach(Activity activity) {
@@ -178,14 +178,14 @@ public class CowManageExitsFragment extends BaseFragment {
         }
     }
 
-    /*
+    *//*
      * Called when the fragment attaches to the context
-     */
+     *//*
     protected void onAttachToContext(Context context) {
         if(context instanceof CowManageExitsActivity) {
             tidd = ((CowManageExitsActivity) context).setIdData();
             tname = ((CowManageExitsActivity) context).setNameData();
             tname2 = ((CowManageExitsActivity) context).setName2Data();
         }
-    }
+    }*/
 }

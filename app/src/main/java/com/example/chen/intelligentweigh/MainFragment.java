@@ -26,6 +26,7 @@ import com.example.chen.intelligentweigh.activity.NewCowActivity;
 import com.example.chen.intelligentweigh.activity.PeopleMangerActivity;
 import com.example.chen.intelligentweigh.activity.RealTimeWeightActivity;
 import com.example.chen.intelligentweigh.activity.SetTouXiangActivity;
+import com.example.chen.intelligentweigh.activity.kidActivity.CattleFramKindActivity;
 import com.example.chen.intelligentweigh.adapter.GridViewAdapter;
 import com.example.chen.intelligentweigh.bean.CardData;
 import com.example.chen.intelligentweigh.bean.Items;
@@ -37,6 +38,7 @@ import com.example.chen.intelligentweigh.fragment.MeInfoFragment;
 import com.example.chen.intelligentweigh.fragment.NewCowFragment;
 import com.example.chen.intelligentweigh.fragment.PeopleMangerFragment;
 import com.example.chen.intelligentweigh.fragment.RealTimeWeightFragment;
+import com.example.chen.intelligentweigh.fragment.kidFragment.CattleFramKindFragment;
 import com.example.chen.intelligentweigh.util.HttpUrlUtils;
 import com.example.chen.intelligentweigh.util.NetWorkUtils;
 import com.example.chen.intelligentweigh.util.SharedUtils;
@@ -121,10 +123,14 @@ public class MainFragment extends BaseFragment {
                         break;
                     case 1:
                         if (isTwoPan) {
-                            CowManageFragment fragment = new CowManageFragment();
-                            getFragmentManager().beginTransaction().replace(R.id.other_content_frag, fragment).commit();
+                            CattleFramKindFragment fragment = new CattleFramKindFragment();
+                            getFragmentManager().beginTransaction().replace(R.id.other_content_frag,fragment).commit();
+                          /*  CowManageFragment fragment = new CowManageFragment();
+                            getFragmentManager().beginTransaction().replace(R.id.other_content_frag, fragment).commit();*/
                         } else {
-                            Intent intent = new Intent(getActivity(), CowManageActivity.class);
+                            /*Intent intent = new Intent(getActivity(), CowManageActivity.class);
+                            startActivity(intent);*/
+                            Intent intent = new Intent(getActivity(), CattleFramKindActivity.class);
                             startActivity(intent);
                         }
                         break;

@@ -21,6 +21,7 @@ import com.example.chen.intelligentweigh.BaseFragment;
 import com.example.chen.intelligentweigh.R;
 import com.example.chen.intelligentweigh.activity.kidActivity.ChooseAreaActivity;
 import com.example.chen.intelligentweigh.activity.kidActivity.CowManageExitsActivity;
+import com.example.chen.intelligentweigh.activity.kidActivity.CowManageYListActivity;
 import com.example.chen.intelligentweigh.activity.kidActivity.CowMangerAreaActivity;
 import com.example.chen.intelligentweigh.bean.Area;
 import com.example.chen.intelligentweigh.fragment.CowManageFragment;
@@ -108,8 +109,8 @@ public class CowManagerAreaFragment extends BaseFragment {
                 new TitleBuilder(view).setTitleText(cowmName+"的分区").setLeftImage(R.drawable.arrowleft).setLeftOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        CowManageFragment fragment = new CowManageFragment();
-                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.other_content_frag,fragment).commit();
+                       CattleFramKindFragment fragment = new CattleFramKindFragment();
+                       getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.other_content_frag,fragment).commit();
                     }
                 }).build();
             }
@@ -133,7 +134,6 @@ public class CowManagerAreaFragment extends BaseFragment {
                     public void onError(Request request, Exception e) {
                         Toast.makeText(getActivity(),"请检查网络连接",Toast.LENGTH_SHORT).show();
                     }
-
                     @Override
                     public void onResponse(String response) {
                         if("error".equals(response.toString())){
@@ -142,24 +142,22 @@ public class CowManagerAreaFragment extends BaseFragment {
                             Type type = new TypeToken<List<Area>>(){}.getType();
                             List<Area> list = new Gson().fromJson(response, type);
                             for(Area area:list){
-                                listArea.add(area.getArea());
+                                listArea.add(area.getArea()+"("+area.getNum()+"头)");
                             }
                             ArrayAdapter adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,listArea);
                             lv_cow_manger_area.setAdapter(adapter);
                             lv_cow_manger_area.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                 @Override
                                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                    String[] split = listArea.get(position).split("[(]");
                                     if(isTwoPan){
-                                        Log.e(TAG,"framid"+cowmId+" area"+listArea.get(position));
-                                        CowManageExitsFragment fragment = CowManageExitsFragment.newInstance(cowmId,listArea.get(position),cowmName);
+                                        CowManageYListFragment fragment = CowManageYListFragment.newInstances(cowmId,split[0],cowmName);
                                         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.other_content_frag,fragment).commit();
                                     }else{
-                                        Log.e(TAG,"framid"+idd+" area"+listArea.get(position));
-                                        Intent intent = new Intent(getActivity(), CowManageExitsActivity.class);
-                                        intent.putExtra("tidd",idd);
-                                        intent.putExtra("tname",listArea.get(position));
-                                        intent.putExtra("tname2",name);
-                                        startActivity(intent);
+                                       Intent intent = new Intent(getActivity(), CowManageYListActivity.class);
+                                       intent.putExtra("Yidd",idd);
+                                       intent.putExtra("Yname",split[0]);
+                                       startActivity(intent);
                                     }
                                 }
                             });

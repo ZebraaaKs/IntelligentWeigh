@@ -52,7 +52,7 @@ public class ListViewCowInfoAdapter extends ArrayAdapter<Cow> {
             view = convertView;
             viewHolder = (ViewHolder) view.getTag();
         }
-        viewHolder.tv_namearea.setText(cow.getName()+"·"+cow.getArea());
+        viewHolder.tv_namearea.setText(cow.getName()+"·"+cow.getFarmname());
         viewHolder.tv_type.setText(cow.getKind());
         Glide.with(context).load(R.drawable.cow).into(viewHolder.iv_cow_icon);
         viewHolder.tv_id.setText("编号:"+cow.getID());
