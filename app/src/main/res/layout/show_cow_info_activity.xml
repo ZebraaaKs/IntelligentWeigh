@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <fragment
-        android:id="@+id/show_cow_info_frag"
+        android:id="@+id/showcowinfo_frag"
         android:name="com.example.chen.intelligentweigh.fragment.kidFragment.ShowCowInfoFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"></fragment>

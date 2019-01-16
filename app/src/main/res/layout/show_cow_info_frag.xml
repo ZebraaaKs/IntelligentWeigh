@@ -6,7 +6,7 @@
     <include layout="@layout/rl_titlebar"></include>
     <LinearLayout
         android:padding="4dp"
-        android:layout_weight="5"
+        android:layout_weight="2.5"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="0dp">
@@ -37,7 +37,8 @@
                     <TextView
                         android:textColor="@color/txt_black"
                         android:text="编    号:"
-                        android:textSize="20sp"
+                        android:textSize="12sp"
+                        android:layout_gravity="center"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                     <TextView
@@ -45,7 +46,8 @@
                         android:text="123"
                         android:layout_marginLeft="20dp"
                         android:textColor="@color/txt_black"
-                        android:textSize="20sp"
+                        android:textSize="12sp"
+                        android:layout_gravity="center"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                 </LinearLayout>
@@ -57,7 +59,8 @@
                     <TextView
                         android:textColor="@color/txt_black"
                         android:text="牛    名:"
-                        android:textSize="20sp"
+                        android:textSize="12sp"
+                        android:layout_gravity="center"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                     <TextView
@@ -65,7 +68,8 @@
                         android:text="哥斯拉"
                         android:layout_marginLeft="20dp"
                         android:textColor="@color/txt_black"
-                        android:textSize="20sp"
+                        android:textSize="12sp"
+                        android:layout_gravity="center"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
 
@@ -78,7 +82,8 @@
                     <TextView
                         android:textColor="@color/txt_black"
                         android:text="牧    场:"
-                        android:textSize="20sp"
+                        android:textSize="12sp"
+                        android:layout_gravity="center"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                     <TextView
@@ -86,7 +91,8 @@
                         android:text="江苏农牧·南京牧场"
                         android:layout_marginLeft="20dp"
                         android:textColor="@color/txt_black"
-                        android:textSize="14sp"
+                        android:textSize="12sp"
+                        android:layout_gravity="center"
                         android:maxLength="7"
                         android:singleLine="true"
                         android:layout_width="wrap_content"
@@ -101,7 +107,8 @@
                     <TextView
                         android:textColor="@color/txt_black"
                         android:text="牧场编号:"
-                        android:textSize="15sp"
+                        android:textSize="12sp"
+                        android:layout_gravity="center"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                     <TextView
@@ -109,7 +116,8 @@
                         android:text="12"
                         android:layout_marginLeft="20dp"
                         android:textColor="@color/txt_black"
-                        android:textSize="20sp"
+                        android:textSize="12sp"
+                        android:layout_gravity="center"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                 </LinearLayout>
@@ -133,7 +141,7 @@
                     <TextView
                         android:textColor="@color/txt_gray"
                         android:text="品        种:"
-                        android:textSize="15sp"
+                        android:textSize="12sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                     <TextView
@@ -141,7 +149,7 @@
                         android:text="河南牛"
                         android:layout_marginLeft="20dp"
                         android:textColor="@color/txt_gray"
-                        android:textSize="15sp"
+                        android:textSize="12sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                 </LinearLayout>
@@ -153,7 +161,7 @@
                     <TextView
                         android:textColor="@color/txt_gray"
                         android:text="出生日期:"
-                        android:textSize="15sp"
+                        android:textSize="12sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                     <TextView
@@ -161,7 +169,7 @@
                         android:text="2018-12-12"
                         android:layout_marginLeft="20dp"
                         android:textColor="@color/txt_gray"
-                        android:textSize="15sp"
+                        android:textSize="12sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
 
@@ -174,7 +182,7 @@
                     <TextView
                         android:textColor="@color/txt_gray"
                         android:text="登记日期:"
-                        android:textSize="15sp"
+                        android:textSize="12sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                     <TextView
@@ -182,7 +190,7 @@
                         android:text="2018-12-12"
                         android:layout_marginLeft="20dp"
                         android:textColor="@color/txt_gray"
-                        android:textSize="15sp"
+                        android:textSize="12sp"
                         android:singleLine="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
@@ -195,8 +203,8 @@
 
                     <TextView
                         android:textColor="@color/txt_gray"
-                        android:text="父牛编号:"
-                        android:textSize="15sp"
+                        android:text="父系编号:"
+                        android:textSize="12sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                     <TextView
@@ -204,7 +212,7 @@
                         android:text="12"
                         android:layout_marginLeft="20dp"
                         android:textColor="@color/txt_gray"
-                        android:textSize="15sp"
+                        android:textSize="12sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                 </LinearLayout>
@@ -223,7 +231,7 @@
                     <TextView
                         android:textColor="@color/txt_gray"
                         android:text="性        别:"
-                        android:textSize="15sp"
+                        android:textSize="12sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                     <TextView
@@ -231,7 +239,7 @@
                         android:text="公"
                         android:layout_marginLeft="20dp"
                         android:textColor="@color/txt_gray"
-                        android:textSize="15sp"
+                        android:textSize="12sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                 </LinearLayout>
@@ -243,7 +251,7 @@
                     <TextView
                         android:textColor="@color/txt_gray"
                         android:text="入场日期:"
-                        android:textSize="15sp"
+                        android:textSize="12sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                     <TextView
@@ -251,7 +259,7 @@
                         android:text="2018-12-12"
                         android:layout_marginLeft="20dp"
                         android:textColor="@color/txt_gray"
-                        android:textSize="15sp"
+                        android:textSize="12sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
 
@@ -264,7 +272,7 @@
                     <TextView
                         android:textColor="@color/txt_gray"
                         android:text="入场价格:"
-                        android:textSize="15sp"
+                        android:textSize="12sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                     <TextView
@@ -272,7 +280,7 @@
                         android:text="20.57 (元/斤)"
                         android:layout_marginLeft="20dp"
                         android:textColor="@color/txt_gray"
-                        android:textSize="15sp"
+                        android:textSize="12sp"
                         android:singleLine="true"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
@@ -285,8 +293,8 @@
 
                     <TextView
                         android:textColor="@color/txt_gray"
-                        android:text="母牛编号:"
-                        android:textSize="15sp"
+                        android:text="母系编号:"
+                        android:textSize="12sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                     <TextView
@@ -294,7 +302,7 @@
                         android:text="12"
                         android:layout_marginLeft="20dp"
                         android:textColor="@color/txt_gray"
-                        android:textSize="15sp"
+                        android:textSize="12sp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
                 </LinearLayout>
@@ -318,11 +326,37 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"></View>
     <LinearLayout
-        android:layout_weight="7"
+        android:layout_weight="3"
         android:layout_width="match_parent"
         android:layout_height="0dp">
         <com.example.chen.intelligentweigh.util.MyLineChartView
             android:id="@+id/cv_chart"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            >
+        </com.example.chen.intelligentweigh.util.MyLineChartView>
+    </LinearLayout>
+    <View
+        android:background="@color/txt_gray"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"></View>
+    <TextView
+        android:background="@color/txt_ty_no"
+        android:textColor="@color/txt_black"
+        android:gravity="center_vertical"
+        android:text="    日增重趋势图"
+        android:layout_width="match_parent"
+        android:layout_height="30dp" />
+    <View
+        android:background="@color/txt_gray"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"></View>
+    <LinearLayout
+        android:layout_weight="3"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+        <com.example.chen.intelligentweigh.util.MyLineChartView
+            android:id="@+id/cv_chart_b"
             android:layout_height="match_parent"
             android:layout_width="match_parent"
             >

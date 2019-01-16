@@ -31,7 +31,9 @@ import com.example.chen.intelligentweigh.activity.kidActivity.CowManageYListActi
 import com.example.chen.intelligentweigh.activity.kidActivity.EditCowInfoActivty;
 import com.example.chen.intelligentweigh.activity.kidActivity.ShowCowInfoActivity;
 import com.example.chen.intelligentweigh.adapter.ListViewCowInfoAdapter;
+import com.example.chen.intelligentweigh.bean.ChenZhong;
 import com.example.chen.intelligentweigh.bean.Cow;
+import com.example.chen.intelligentweigh.bean.RiZeng;
 import com.example.chen.intelligentweigh.bean.WeighData;
 import com.example.chen.intelligentweigh.util.AlertDialog;
 import com.example.chen.intelligentweigh.util.HttpUrlUtils;
@@ -333,6 +335,7 @@ public class CowManageYListFragment extends BaseFragment {
         OkHttpUtils.get()
                 .url(HttpUrlUtils.CATTLEBACKWEIGHRECORD)
                 .addParams("cattleid",id)
+                .addParams("pastid",String.valueOf(cow.getPast_id()))
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -345,18 +348,26 @@ public class CowManageYListFragment extends BaseFragment {
                         if("error".equals(response)){
                             Toast.makeText(getActivity(),"数据出错",Toast.LENGTH_SHORT).show();
                         }else{
-                            Type type = new TypeToken<List<WeighData>>(){}.getType();
+                            Type type = new TypeToken<WeighData>(){}.getType();
                             Gson gson = new Gson();
-                            List<WeighData> list = (List<WeighData>)gson.fromJson(response, type);
+                            WeighData weighData = (WeighData)gson.fromJson(response, type);
+                            Type cztype = new TypeToken<List<ChenZhong>>(){}.getType();
+                            List<ChenZhong> list = (List<ChenZhong>)gson.fromJson(weighData.getCz(), cztype);
+                            Type rztype = new TypeToken<List<RiZeng>>(){}.getType();
+                            List<RiZeng> list2 = (List<RiZeng>)gson.fromJson(weighData.getZw(),rztype);
+
+
                             ArrayList<String> xValues = null;
                             ArrayList<Float> yValues = null;
+                            ArrayList<String> xValues2 = null;
+                            ArrayList<Float> yValues2 = null;
                             if(!list.isEmpty()) {
                                 xValues = new ArrayList<>();   //x轴数据集合
-                                for (WeighData data : list) {
+                                for (ChenZhong data : list) {
                                     xValues.add(data.getWtime().substring(6));
                                 }
                                 yValues = new ArrayList<>();  //y轴数据集合
-                                for (WeighData data : list) {
+                                for (ChenZhong data : list) {
                                     yValues.add((float) data.getWeight());
                                 }
                             }else{
@@ -371,14 +382,38 @@ public class CowManageYListFragment extends BaseFragment {
                                 }
 
                             }
+
+                            if(!list2.isEmpty()) {
+                                xValues2 = new ArrayList<>();   //x轴数据集合
+                                for (RiZeng data : list2) {
+                                    xValues2.add(data.getWtime().substring(6));
+                                }
+                                yValues2 = new ArrayList<>();  //y轴数据集合
+                                for (RiZeng data : list2) {
+                                    yValues2.add((float) data.getDzengzhong());
+                                }
+                            }else{
+                                xValues2 = new ArrayList<>();   //x轴数据集合
+                                yValues2 = new ArrayList<>();  //y轴数据集合
+                                for(int i=1;i<=5;i++){
+
+                                    xValues2.add("无数据");
+                                }
+                                for(int i=1;i<=5;i++){
+                                    yValues2.add(0f);
+                                }
+
+                            }
                             if(isTwoPan) {
-                                ShowCowInfoFragment fragment = ShowCowInfoFragment.newInstances(cow, yid, xValues, yValues,"1","");
+                                ShowCowInfoFragment fragment = ShowCowInfoFragment.newInstances(cow, yid, xValues, yValues,"1","",xValues2,yValues2);
                                 getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.other_content_frag, fragment).commit();
                             }else{
                                 Intent intent = new Intent(getActivity(),ShowCowInfoActivity.class);
                                 intent.putExtra("cowsInfo",cow);
                                 intent.putExtra("xData",xValues);
                                 intent.putExtra("yData",yValues);
+                                intent.putExtra("xData2",xValues2);
+                                intent.putExtra("yData2",yValues2);
                                 startActivity(intent);
 
                             }

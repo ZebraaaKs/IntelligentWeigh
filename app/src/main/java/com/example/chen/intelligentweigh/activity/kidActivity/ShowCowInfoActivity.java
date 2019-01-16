@@ -68,4 +68,26 @@ public class ShowCowInfoActivity extends BaseActivity {
             return null;
         }
     }
+
+    public ArrayList<String> setXData2(){
+        Intent intent = getIntent();
+        if(intent!=null) {
+            Bundle data = intent.getExtras();
+            ArrayList<String> xdata = (ArrayList<String>) data.getSerializable("xData2");
+            return xdata;
+        }else{
+            return null;
+        }
+    }
+
+    public ArrayList<Float> setYData2(){
+        Intent intent = getIntent();
+        if(intent!=null) {
+            Bundle data = intent.getExtras();
+            ArrayList<Float> ydata = (ArrayList<Float>) data.getSerializable("yData2");
+            return ydata;
+        }else{
+            return null;
+        }
+    }
 }

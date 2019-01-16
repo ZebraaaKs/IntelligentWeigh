@@ -100,6 +100,10 @@ public class CowTypeFragment extends BaseFragment {
             }).setLeftImage(R.drawable.arrowleft).setLeftOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Intent intent = new Intent(getActivity(),NewCowActivity.class);
+                    intent.putExtra("cowInfo",cows);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    getActivity().setResult(11,intent);
                     getActivity().finish();
                 }
             })
@@ -131,6 +135,8 @@ public class CowTypeFragment extends BaseFragment {
             ;
         }
     }
+
+
 
     /**
      * 添加牛的品种
@@ -169,6 +175,7 @@ public class CowTypeFragment extends BaseFragment {
 
 
     }
+
 
 
     /**

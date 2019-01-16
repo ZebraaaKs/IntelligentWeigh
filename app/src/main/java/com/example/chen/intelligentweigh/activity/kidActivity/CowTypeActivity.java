@@ -3,11 +3,13 @@ package com.example.chen.intelligentweigh.activity.kidActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.KeyEvent;
 import android.view.Window;
 import android.view.WindowManager;
 
 import com.example.chen.intelligentweigh.BaseActivity;
 import com.example.chen.intelligentweigh.R;
+import com.example.chen.intelligentweigh.activity.NewCowActivity;
 import com.example.chen.intelligentweigh.bean.NewCow;
 import com.example.chen.intelligentweigh.util.CommonAction;
 import com.example.chen.intelligentweigh.util.StatusBarUtils;
@@ -42,5 +44,15 @@ public class CowTypeActivity extends BaseActivity {
         }
     }
 
-
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(keyCode == KeyEvent.KEYCODE_BACK){
+            Intent intent = new Intent(this,NewCowActivity.class);
+            intent.putExtra("cowInfo",setData());
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            setResult(11,intent);
+            finish();
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 }

@@ -13,24 +13,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.chen.intelligentweigh.BaseFragment;
 import com.example.chen.intelligentweigh.R;
-import com.example.chen.intelligentweigh.activity.kidActivity.PeopleInfoActivity;
 import com.example.chen.intelligentweigh.activity.kidActivity.ShowCowInfoActivity;
 import com.example.chen.intelligentweigh.bean.Cow;
-import com.example.chen.intelligentweigh.util.HttpUrlUtils;
 import com.example.chen.intelligentweigh.util.MyLineChartView;
 import com.example.chen.intelligentweigh.util.TitleBuilder;
-import com.squareup.okhttp.Request;
-import com.zhy.http.okhttp.OkHttpUtils;
-import com.zhy.http.okhttp.callback.StringCallback;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * @author chen
@@ -54,8 +46,9 @@ public class ShowCowInfoFragment extends BaseFragment {
     private MyLineChartView cv_chart;
     private String TAG = "TAG";
     private Cow cows;
-    private ArrayList<String> xListData;
-    private ArrayList<Float> yListData;
+    private ArrayList<String> xListData, xListData2;
+    private ArrayList<Float> yListData, yListData2;
+    private MyLineChartView cv_chart_b;
 
     @Nullable
     @Override
@@ -65,15 +58,17 @@ public class ShowCowInfoFragment extends BaseFragment {
         return view;
     }
 
-    public static ShowCowInfoFragment newInstances(Cow cow, String framid,ArrayList<String> xList,ArrayList<Float> yList,String YN,String type1) {
+    public static ShowCowInfoFragment newInstances(Cow cow, String framid, ArrayList<String> xList, ArrayList<Float> yList, String YN, String type1, ArrayList<String> xList2, ArrayList<Float> yList2) {
         ShowCowInfoFragment fragment = new ShowCowInfoFragment();
         Bundle bundle = new Bundle();
         bundle.putSerializable("cowInfo", cow);
         bundle.putSerializable("framid", framid);
-        bundle.putSerializable("xlist",xList);
-        bundle.putSerializable("ylist",yList);
-        bundle.putSerializable("YN",YN);
-        bundle.putString("type1",type1);
+        bundle.putSerializable("xlist", xList);
+        bundle.putSerializable("ylist", yList);
+        bundle.putSerializable("xlist2", xList2);
+        bundle.putSerializable("ylist2", yList2);
+        bundle.putSerializable("YN", YN);
+        bundle.putString("type1", type1);
         fragment.setArguments(bundle);
         return fragment;
     }
@@ -93,12 +88,15 @@ public class ShowCowInfoFragment extends BaseFragment {
         tv_access_price = (TextView) view.findViewById(R.id.tv_access_price);
         tv_mother_id = (TextView) view.findViewById(R.id.tv_mother_id);
         cv_chart = (MyLineChartView) view.findViewById(R.id.cv_chart);
+        cv_chart_b = (MyLineChartView) view.findViewById(R.id.cv_chart_b);
         initFragView(view);
         initActivityView(view);
+
+
     }
 
     private void initActivityView(View view) {
-        if(cows!=null&&getActivity()!=null&&xListData!=null&&yListData!=null){
+        if (cows != null && getActivity() != null && xListData != null && yListData != null && xListData2 != null && yListData2 != null) {
             new TitleBuilder(view).setTitleText("详情").setLeftImage(R.drawable.arrowleft).setLeftOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -106,9 +104,9 @@ public class ShowCowInfoFragment extends BaseFragment {
                 }
             });
             Glide.with(getActivity()).load(R.drawable.cowphoto).into(iv_cow_photo);
-            tv_cow_id.setText(""+cows.getID());
+            tv_cow_id.setText("" + cows.getID());
             tv_access_date.setText(cows.getEntranceDay());
-            tv_access_price.setText("" + cows.getEnterancePrice()+" (元/斤)");
+            tv_access_price.setText("" + cows.getEnterancePrice() + " (元/斤)");
             tv_cow_birth.setText(cows.getBirthday());
             tv_cow_name.setText(cows.getName());
             tv_cow_sex.setText(cows.getSex());
@@ -120,6 +118,10 @@ public class ShowCowInfoFragment extends BaseFragment {
             tv_register_date.setText(cows.getRegisterDay());
             cv_chart.setXValues(xListData);
             cv_chart.setYValues(yListData);
+            cv_chart_b.setXValues(xListData2);
+            cv_chart_b.setYValues(yListData2);
+            cv_chart_b.setLegendTitle("肉牛日增(日增重/斤--日期)");
+
 
         }
     }
@@ -128,20 +130,22 @@ public class ShowCowInfoFragment extends BaseFragment {
 
         if (getArguments() != null && getActivity() != null) {
             final Cow newInfo = (Cow) getArguments().getSerializable("cowInfo");
-            final String framid =  getArguments().getString("framid");
-            ArrayList<String> xlist = (ArrayList<String>)getArguments().getSerializable("xlist");
-            ArrayList<Float> ylist = (ArrayList<Float>)getArguments().getSerializable("ylist");
+            final String framid = getArguments().getString("framid");
+            ArrayList<String> xlist = (ArrayList<String>) getArguments().getSerializable("xlist");
+            ArrayList<Float> ylist = (ArrayList<Float>) getArguments().getSerializable("ylist");
+            ArrayList<String> xlist2 = (ArrayList<String>) getArguments().getSerializable("xlist2");
+            ArrayList<Float> ylist2 = (ArrayList<Float>) getArguments().getSerializable("ylist2");
             final String yn = getArguments().getString("YN");
             final String type1 = getArguments().getString("type1");
             new TitleBuilder(view).setTitleText("详情").setLeftImage(R.drawable.arrowleft).setLeftOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if("1".equals(yn)) {
+                    if ("1".equals(yn)) {
                         CowManageYListFragment fragment = CowManageYListFragment.newInstances(framid, newInfo.getArea(), newInfo.getFarmname());
                         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.other_content_frag, fragment).commit();
-                    }else{
+                    } else {
 
-                        CowManageNListFragment fragment = CowManageNListFragment.newInstances(framid,type1);
+                        CowManageNListFragment fragment = CowManageNListFragment.newInstances(framid, type1);
                         getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.other_content_frag, fragment).commit();
 
                     }
@@ -149,9 +153,9 @@ public class ShowCowInfoFragment extends BaseFragment {
             });
 
             Glide.with(getActivity()).load(R.drawable.cow).into(iv_cow_photo);
-            tv_cow_id.setText(""+newInfo.getID());
+            tv_cow_id.setText("" + newInfo.getID());
             tv_access_date.setText(newInfo.getEntranceDay());
-            tv_access_price.setText("" + newInfo.getEnterancePrice()+" (元/斤)");
+            tv_access_price.setText("" + newInfo.getEnterancePrice() + " (元/斤)");
             tv_cow_birth.setText(newInfo.getBirthday());
             tv_cow_name.setText(newInfo.getName());
             tv_cow_sex.setText(newInfo.getSex());
@@ -161,9 +165,12 @@ public class ShowCowInfoFragment extends BaseFragment {
             tv_house_name.setText(newInfo.getFarmname() + "·" + newInfo.getArea());
             tv_mother_id.setText(newInfo.getMother_id());
             tv_register_date.setText(newInfo.getRegisterDay());
-            Log.e(TAG,ylist.toString());
+            Log.e(TAG, ylist.toString());
             cv_chart.setXValues(xlist);
             cv_chart.setYValues(ylist);
+            cv_chart_b.setXValues(xlist2);
+            cv_chart_b.setYValues(ylist2);
+            cv_chart_b.setLegendTitle("肉牛日增(日增重/斤--日期)");
 
 
         }
@@ -194,10 +201,12 @@ public class ShowCowInfoFragment extends BaseFragment {
      * Called when the fragment attaches to the context
      */
     protected void onAttachToContext(Context context) {
-        if(context instanceof ShowCowInfoActivity) {
+        if (context instanceof ShowCowInfoActivity) {
             cows = ((ShowCowInfoActivity) context).setData();
             xListData = ((ShowCowInfoActivity) context).setXData();
             yListData = ((ShowCowInfoActivity) context).setYData();
+            xListData2 = ((ShowCowInfoActivity) context).setXData2();
+            yListData2 = ((ShowCowInfoActivity) context).setYData2();
             Log.e(TAG, "activity传递来的数据" + cows);
         }
     }

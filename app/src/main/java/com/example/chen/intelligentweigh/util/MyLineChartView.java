@@ -41,7 +41,7 @@ public class MyLineChartView extends View {
 
     private int intervalX = 130; // 坐标刻度的间隔
 
-    private int intervalY = 80; // y轴刻度的间隔
+    private int intervalY = 60; // y轴刻度的间隔
 
     private List<String> xValues;
 
@@ -61,7 +61,7 @@ public class MyLineChartView extends View {
 
     private int paddingRight = 100;
 
-    private int paddingDown = 150;
+    private int paddingDown = 100;
 
     private int scaleHeight = 10; // x轴刻度线高度
 
@@ -69,7 +69,7 @@ public class MyLineChartView extends View {
 
     private int leftRightExtra = intervalX / 3; //x轴左右向外延伸的长度
 
-    private int lableCountY = 6; // Y轴刻度个数
+    private int lableCountY = 5; // Y轴刻度个数
 
     private int bigCircleR = 7;
 
@@ -381,6 +381,12 @@ public class MyLineChartView extends View {
 
     public void setYValues(List<Float> values) {
         this.yValues = values;
+    }
+
+
+
+    public void setLegendTitle(String legendTitle){
+        this.legendTitle = legendTitle;
     }
 
     /**
