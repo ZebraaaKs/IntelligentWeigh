@@ -3,6 +3,12 @@ package com.example.chen.intelligentweigh.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.example.chen.intelligentweigh.bean.User;
+
+import org.litepal.LitePal;
+
+import java.util.List;
+
 import static android.content.Context.MODE_PRIVATE;
 
 /**
@@ -25,5 +31,16 @@ public class SharedUtils {
         SharedPreferences sharedPreferences = context.getSharedPreferences(phone,MODE_PRIVATE);
         String time = sharedPreferences.getString("icontime", "");
         return time;
+    }
+
+    public static User getMyInfo(Context context){
+        SharedPreferences sharedPreferences = context.getSharedPreferences("login",MODE_PRIVATE);
+        String phone = sharedPreferences.getString("phone", "");
+        List<User> users = LitePal.where("phone = ?", phone).find(User.class);
+        if(!users.isEmpty()){
+            return users.get(0);
+        }else{
+            return null;
+        }
     }
 }

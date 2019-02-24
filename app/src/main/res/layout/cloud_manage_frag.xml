@@ -4,6 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <include layout="@layout/rl_titlebar"></include>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
     <LinearLayout
         android:padding="10dp"
         android:orientation="vertical"
@@ -66,7 +75,6 @@
     </LinearLayout>
     <LinearLayout
         android:padding="10dp"
-        android:background="@drawable/itembackgroud"
         android:layout_marginTop="10dp"
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -82,13 +90,13 @@
             <TextView
                 android:textColor="@color/txt_black"
                 android:textSize="22sp"
-                android:text="登记总头数:"
+                android:text="存栏总量:"
                 android:layout_gravity="center_vertical"
                 android:layout_width="0dp"
-                android:layout_weight="2"
+                android:layout_weight="2.5"
                 android:layout_height="wrap_content" />
             <TextView
-                android:id="@+id/tv_cownum"
+                android:id="@+id/tv_cunlannum"
                 android:text="0"
                 android:textSize="22sp"
                 android:textColor="@color/txt_black"
@@ -117,13 +125,13 @@
             <TextView
                 android:textColor="@color/txt_black"
                 android:textSize="22sp"
-                android:text="平均日增量:"
+                android:text="出栏总量:"
                 android:layout_gravity="center_vertical"
                 android:layout_width="0dp"
-                android:layout_weight="2"
+                android:layout_weight="2.5"
                 android:layout_height="wrap_content" />
             <TextView
-                android:id="@+id/tv_dayadd"
+                android:id="@+id/tv_chulannum"
                 android:text="0"
                 android:textSize="22sp"
                 android:textColor="@color/txt_black"
@@ -135,7 +143,7 @@
             <TextView
                 android:textSize="22sp"
                 android:layout_gravity="center_vertical"
-                android:text="斤/天"
+                android:text="头"
                 android:textColor="@color/txt_black"
                 android:layout_width="0dp"
                 android:layout_weight="1"
@@ -152,13 +160,13 @@
             <TextView
                 android:textColor="@color/txt_black"
                 android:textSize="22sp"
-                android:text="折算     成本:"
+                android:text="淘汰总量:"
                 android:layout_gravity="center_vertical"
                 android:layout_width="0dp"
-                android:layout_weight="2"
+                android:layout_weight="2.5"
                 android:layout_height="wrap_content" />
             <TextView
-                android:id="@+id/tv_reducecost"
+                android:id="@+id/tv_taotai"
                 android:text="0"
                 android:textSize="22sp"
                 android:textColor="@color/txt_black"
@@ -170,7 +178,7 @@
             <TextView
                 android:textSize="22sp"
                 android:layout_gravity="center_vertical"
-                android:text="元/斤"
+                android:text="头"
                 android:textColor="@color/txt_black"
                 android:layout_width="0dp"
                 android:layout_weight="1"
@@ -180,40 +188,316 @@
             android:background="@color/txt_gray"
             android:layout_width="match_parent"
             android:layout_height="1dp"></View>
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="60dp">
-            <TextView
-                android:textColor="@color/txt_black"
-                android:textSize="22sp"
-                android:text="盈利     情况:"
-                android:layout_gravity="center_vertical"
-                android:layout_width="0dp"
-                android:layout_weight="2"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:id="@+id/tv_earnings"
-                android:text="0"
-                android:textSize="22sp"
-                android:textColor="@color/txt_black"
-                android:layout_gravity="center_vertical"
-                android:gravity="center_horizontal"
-                android:layout_width="0dp"
-                android:layout_weight="3"
-                android:layout_height="wrap_content" />
-            <TextView
-                android:textSize="22sp"
-                android:layout_gravity="center_vertical"
-                android:text="元"
-                android:textColor="@color/txt_black"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
-        <View
-            android:background="@color/txt_gray"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"></View>
+
     </LinearLayout>
+        <LinearLayout
+            android:padding="10dp"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <View
+                android:background="@color/txt_gray"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"></View>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="60dp">
+                <TextView
+                    android:textColor="@color/txt_black"
+                    android:textSize="22sp"
+                    android:text="存栏总重量:"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="0dp"
+                    android:layout_weight="2.5"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/tv_cunlanweight"
+                    android:text="0"
+                    android:textSize="22sp"
+                    android:textColor="@color/txt_black"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_width="0dp"
+                    android:layout_weight="3"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:textSize="22sp"
+                    android:layout_gravity="center_vertical"
+                    android:text="斤"
+                    android:textColor="@color/txt_black"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <View
+                android:background="@color/txt_gray"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"></View>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="60dp">
+                <TextView
+                    android:textColor="@color/txt_black"
+                    android:textSize="22sp"
+                    android:text="存栏总价值:"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="0dp"
+                    android:layout_weight="2.5"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/tv_cunlanmoney"
+                    android:text="0"
+                    android:textSize="22sp"
+                    android:textColor="@color/txt_black"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_width="0dp"
+                    android:layout_weight="3"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:textSize="22sp"
+                    android:layout_gravity="center_vertical"
+                    android:text="元"
+                    android:textColor="@color/txt_black"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <View
+                android:background="@color/txt_gray"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"></View>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="60dp">
+                <TextView
+                    android:textColor="@color/txt_black"
+                    android:textSize="22sp"
+                    android:text="存栏初始价值:"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="0dp"
+                    android:layout_weight="2.5"
+                    android:singleLine="true"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/tv_cunlanstartvalue"
+                    android:text="0"
+                    android:textSize="22sp"
+                    android:textColor="@color/txt_black"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_width="0dp"
+                    android:layout_weight="3"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:textSize="22sp"
+                    android:layout_gravity="center_vertical"
+                    android:text="元"
+                    android:textColor="@color/txt_black"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <View
+                android:background="@color/txt_gray"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"></View>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="60dp">
+                <TextView
+                    android:textColor="@color/txt_black"
+                    android:textSize="22sp"
+                    android:text="存栏总成本:"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="0dp"
+                    android:layout_weight="2.5"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/tv_cunlanallvalue"
+                    android:text="0"
+                    android:textSize="22sp"
+                    android:textColor="@color/txt_black"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_width="0dp"
+                    android:layout_weight="3"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:textSize="22sp"
+                    android:layout_gravity="center_vertical"
+                    android:text="元"
+                    android:textColor="@color/txt_black"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <View
+                android:background="@color/txt_gray"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"></View>
+        </LinearLayout>
+
+        <LinearLayout
+            android:padding="10dp"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <View
+                android:background="@color/txt_gray"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"></View>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="60dp">
+                <TextView
+                    android:textColor="@color/txt_black"
+                    android:textSize="22sp"
+                    android:text="存栏净利润:"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="0dp"
+                    android:layout_weight="2.5"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/tv_cunlanprofits"
+                    android:text="0"
+                    android:textSize="22sp"
+                    android:textColor="@color/txt_black"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_width="0dp"
+                    android:layout_weight="3"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:textSize="22sp"
+                    android:layout_gravity="center_vertical"
+                    android:text="元"
+                    android:textColor="@color/txt_black"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <View
+                android:background="@color/txt_gray"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"></View>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="60dp">
+                <TextView
+                    android:textColor="@color/txt_black"
+                    android:textSize="22sp"
+                    android:text="盈利平衡天数:"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="0dp"
+                    android:layout_weight="2.5"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/tv_valueday"
+                    android:text="0"
+                    android:textSize="22sp"
+                    android:textColor="@color/txt_black"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_width="0dp"
+                    android:layout_weight="3"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:textSize="22sp"
+                    android:layout_gravity="center_vertical"
+                    android:text="天"
+                    android:textColor="@color/txt_black"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <View
+                android:background="@color/txt_gray"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"></View>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="60dp">
+                <TextView
+                    android:textColor="@color/txt_black"
+                    android:textSize="22sp"
+                    android:text="盈利平衡指数:"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="0dp"
+                    android:layout_weight="2.5"
+                    android:singleLine="true"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/tv_kpi"
+                    android:text="0"
+                    android:textSize="22sp"
+                    android:textColor="@color/txt_black"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_width="0dp"
+                    android:layout_weight="3"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:textSize="22sp"
+                    android:layout_gravity="center_vertical"
+                    android:text=""
+                    android:textColor="@color/txt_black"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <View
+                android:background="@color/txt_gray"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"></View>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="60dp">
+                <TextView
+                    android:textColor="@color/txt_black"
+                    android:textSize="22sp"
+                    android:text="平均日增重:  "
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="0dp"
+                    android:layout_weight="2.5"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:id="@+id/tv_dayweight"
+                    android:text="0"
+                    android:textSize="22sp"
+                    android:textColor="@color/txt_black"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_horizontal"
+                    android:layout_width="0dp"
+                    android:layout_weight="3"
+                    android:layout_height="wrap_content" />
+                <TextView
+                    android:textSize="22sp"
+                    android:layout_gravity="center_vertical"
+                    android:text="斤/天"
+                    android:textColor="@color/txt_black"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <View
+                android:background="@color/txt_gray"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"></View>
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+    </ScrollView>
 </LinearLayout>

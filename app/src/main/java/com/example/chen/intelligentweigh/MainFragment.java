@@ -259,9 +259,9 @@ public class MainFragment extends BaseFragment {
                 Log.e(TAG,"phone"+phone);
                 List<User> users = LitePal.where("phone = ?", phone).find(User.class);
                 Log.e(TAG,users.toString());
-                if (!users.isEmpty()&&users.get(0).getFarmids()!=null) {
+                if (!users.isEmpty()&&users.get(0).getFarmid()!=null) {
                     OkHttpUtils.get()
-                            .addParams("pastid", users.get(0).getFarmids())
+                            .addParams("pastid", users.get(0).getFarmid())
                             .url(HttpUrlUtils.FRAMINFO)
                             .build()
                             .execute(new StringCallback() {
