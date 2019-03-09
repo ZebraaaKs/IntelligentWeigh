@@ -85,5 +85,11 @@ public class HttpUrlUtils {
     //返回出栏、存栏、淘汰情况
     public final static String CATTLEFRAMKIND = BASE_URL+"CattleFarmKind";
 
+    //修改牧场信息
+    public final static String FARMMODIFYINFO = BASE_URL+"FarmModifyInfo";
+
+    //迁移牛
+    public final static String CATTLESMOVEAREABYOLDAREA = BASE_URL+"CattlesMoveAreaByOldArea";
+
 
 }

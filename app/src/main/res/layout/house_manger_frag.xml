@@ -5,9 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <include layout="@layout/rl_titlebar"></include>
-    <ListView
+    <com.baoyz.swipemenulistview.SwipeMenuListView
         android:background="@drawable/itembackgroud"
         android:id="@+id/lv_house"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></ListView>
+        android:layout_height="match_parent"></com.baoyz.swipemenulistview.SwipeMenuListView>
 </LinearLayout>

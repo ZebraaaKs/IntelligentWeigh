@@ -314,6 +314,17 @@ public class AlertDialog {
         return this;
     }
 
+
+    public AlertDialog setMsg1(String info){
+        et_msg.setText(info);
+        return this;
+    }
+
+    public AlertDialog setMsg2(String info){
+        et_msg2.setText(info);
+        return this;
+    }
+
     /**
      * 设置输入Message
      * 1 姓名  2 年龄   3牧场  4牧场分区 5肉牛名字
@@ -368,6 +379,8 @@ public class AlertDialog {
                 et_msg.setHint("母牛编号");
             }else if("10".equals(type)){
                 et_msg.setHint("肉牛种类");
+            }else if("11".equals(type)){
+
             }
 
         }

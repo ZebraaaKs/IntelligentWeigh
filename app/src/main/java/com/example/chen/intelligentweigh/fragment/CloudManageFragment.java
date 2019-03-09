@@ -1,5 +1,6 @@
 package com.example.chen.intelligentweigh.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -8,6 +9,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,7 +46,6 @@ public class CloudManageFragment extends BaseFragment {
     private TextView tv_cunlanstartvalue;
     private TextView tv_cunlanallvalue;
     private TextView tv_cunlanprofits;
-    private TextView tv_valueday;
     private TextView tv_kpi;
     private TextView tv_dayweight;
 
@@ -70,13 +71,16 @@ public class CloudManageFragment extends BaseFragment {
         tv_cunlanstartvalue = (TextView) view.findViewById(R.id.tv_cunlanstartvalue);
         tv_cunlanallvalue = (TextView) view.findViewById(R.id.tv_cunlanallvalue);
         tv_cunlanprofits = (TextView) view.findViewById(R.id.tv_cunlanprofits);
-        tv_valueday = (TextView) view.findViewById(R.id.tv_valueday);
         tv_kpi = (TextView) view.findViewById(R.id.tv_kpi);
         tv_dayweight = (TextView) view.findViewById(R.id.tv_dayweight);
         new TitleBuilder(view).setTitleText("牧场云统计").setRightText("统计").setRightOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 submit();
+                InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+
+
             }
         }).build();
 
@@ -135,7 +139,6 @@ public class CloudManageFragment extends BaseFragment {
                                                 tv_cunlanstartvalue.setText(cloudManage.getCl_org_price());
                                                 tv_cunlanallvalue.setText(cloudManage.getCl_total_cb());
                                                 tv_cunlanprofits.setText(cloudManage.getCl_profit());
-                                                tv_valueday.setText(cloudManage.getKP());
                                                 tv_kpi.setText(cloudManage.getKPI());
                                                 tv_dayweight.setText(cloudManage.getCl_pj_zz());
 

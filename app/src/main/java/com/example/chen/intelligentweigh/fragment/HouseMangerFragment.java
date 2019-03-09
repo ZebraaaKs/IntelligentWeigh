@@ -1,10 +1,13 @@
 package com.example.chen.intelligentweigh.fragment;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +16,10 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.baoyz.swipemenulistview.SwipeMenu;
+import com.baoyz.swipemenulistview.SwipeMenuCreator;
+import com.baoyz.swipemenulistview.SwipeMenuItem;
+import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.example.chen.intelligentweigh.BaseFragment;
 import com.example.chen.intelligentweigh.R;
 import com.example.chen.intelligentweigh.activity.kidActivity.HouseAreaActivity;
@@ -40,7 +47,7 @@ import java.util.List;
  */
 public class HouseMangerFragment extends BaseFragment {
 
-    private ListView lv_house;
+    private SwipeMenuListView lv_house;
     private List<House> list = null;
     private House house = null;
     private boolean isTwoPan;
@@ -114,7 +121,28 @@ public class HouseMangerFragment extends BaseFragment {
 
             }
         });
-        lv_house = (ListView) view.findViewById(R.id.lv_house);
+        lv_house = (SwipeMenuListView) view.findViewById(R.id.lv_house);
+        SwipeMenuCreator creator = new SwipeMenuCreator() {
+            @Override
+            public void create(SwipeMenu menu) {
+                // create "edit" item
+                SwipeMenuItem editItem = new SwipeMenuItem(
+                        getActivity());
+
+                // set item background
+                editItem.setBackground(new ColorDrawable(Color.rgb(255,
+                        170, 37)));
+                // set item width
+                editItem.setWidth(dp2px(90));
+
+                editItem.setIcon(R.drawable.ic_edit);
+                // add to menu
+                menu.addMenuItem(editItem);
+
+
+            }
+        };
+        lv_house.setMenuCreator(creator);
         initHouseListView();
         lv_house.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -139,6 +167,52 @@ public class HouseMangerFragment extends BaseFragment {
                }
 
 
+            }
+        });
+
+        lv_house.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(final int position, final SwipeMenu menu, int index) {
+                switch (index){
+                    case 0:
+                        final AlertDialog myDialog1 = new AlertDialog(getActivity()).et2Builder();
+                        myDialog1.setEtGone().setTitle("修改信息").setEtMsg("3").setNegativeButton("取消", null).setPositiveButton("确定", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                House house = list.get(position);
+                                if (!myDialog1.getEtMsg().isEmpty()&&!myDialog1.getEt2Msg().isEmpty()){
+                                OkHttpUtils.get()
+                                        .addParams("farmid",house.getID())
+                                        .addParams("name",myDialog1.getEtMsg().toString())
+                                        .addParams("addr",myDialog1.getEt2Msg().toString())
+                                        .url(HttpUrlUtils.FARMMODIFYINFO)
+                                        .build()
+                                        .execute(new StringCallback() {
+                                            @Override
+                                            public void onError(Request request, Exception e) {
+                                                Toast.makeText(getContext(),"网络连接失败",Toast.LENGTH_SHORT).show();
+
+                                            }
+
+                                            @Override
+                                            public void onResponse(String response) {
+                                                if("ok".equals(response)){
+                                                    Toast.makeText(getContext(),"修改成功",Toast.LENGTH_SHORT).show();
+                                                    list.clear();
+                                                    initHouseListView();
+                                                }else{
+                                                    Toast.makeText(getContext(),"修改失败",Toast.LENGTH_SHORT).show();
+                                                }
+
+                                            }
+                                        });
+                                }
+                            }
+                        }).show();
+                        break;
+
+                }
+                return false;
             }
         });
 
@@ -185,5 +259,10 @@ public class HouseMangerFragment extends BaseFragment {
 
                     }
                 });
+    }
+
+    private int dp2px(int dp) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
+                getResources().getDisplayMetrics());
     }
 }
