@@ -480,7 +480,8 @@ public class NewCowFragment extends BaseFragment {
                 .addParams("cattleid",tv_cow_id.getText().toString())
                 .addParams("phone",phone)
                 .addParams("weigh",tv_cowweight.getText().toString())
-                .addParams("datetime",formateDate())
+                .addParams("datetime",tv_cow_access.getText().toString())
+                .addParams("kind","1")
                 .url(HttpUrlUtils.ADDONEWEIGHT)
                 .build()
                 .execute(new StringCallback() {
