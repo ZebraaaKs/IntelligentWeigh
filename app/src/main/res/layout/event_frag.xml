@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include layout="@layout/rl_titlebar"></include>
+    <LinearLayout
+        android:background="@color/line_default_color"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ListView
+            android:id="@+id/lv_noexcute"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@color/text_grey_color"
+            ></ListView>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -77,4 +77,7 @@
     <color name="action_sheet_blue">#037BFF</color>
     <color name="cradviewbg">#bcfef2</color>
     <color name="greenofnum">#30FF0D</color>
+    <color name="rb_focus_color">#E59C68</color>
+    <color name="rb_normal_color">#CCCCCC</color>
+    <color name="text_grey_color">#c8c8c8</color>
 </resources>

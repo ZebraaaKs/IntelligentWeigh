@@ -91,5 +91,13 @@ public class HttpUrlUtils {
     //迁移牛
     public final static String CATTLESMOVEAREABYOLDAREA = BASE_URL+"CattlesMoveAreaByOldArea";
 
+    //返回未处理事件
+    public final static String NOEXECUTEEVENT = BASE_URL+"NoExcuteEvents";
+
+    //返回未处理事件的详情
+    public final static String BACKNOEXCUTEDETAILS = BASE_URL+"BackNoexcuteDetail";
+
+    //处理未处理事件的肉价
+    public final static String EXCUTEWEIHPRICEEVENT = BASE_URL+"ExcuteWeihPriceEvent";
 
 }

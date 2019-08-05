@@ -59,6 +59,7 @@ public class MeInfoFragment extends Fragment {
     private ImageView iv_item_touxiang;
     private String TAG = "MeInfoFragment";
     private TextView tv_house;
+    public static final String action = "jason.broadcast.name.action";
 
     @Nullable
     @Override
@@ -251,6 +252,10 @@ public class MeInfoFragment extends Fragment {
                                                             tv_item_age.setText(msg);
                                                         }
                                                     });
+
+                                                    Intent intent = new Intent(action);
+                                                    getActivity().sendBroadcast(intent);
+                                                    getActivity().finish();
 
                                                 } else {
                                                     getActivity().runOnUiThread(new Runnable() {

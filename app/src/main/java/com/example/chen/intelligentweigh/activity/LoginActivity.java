@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.chen.intelligentweigh.BaseActivity;
+import com.example.chen.intelligentweigh.Main2Activity;
 import com.example.chen.intelligentweigh.MainActivity;
 import com.example.chen.intelligentweigh.R;
 import com.example.chen.intelligentweigh.bean.User;
@@ -158,7 +159,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             SharedPreferences.Editor editor=sharedPreferences.edit();
             editor.putString("phone",phone);
             editor.commit();
-            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            Intent intent = new Intent(LoginActivity.this, Main2Activity.class);
             startActivity(intent);
             finish();
         }else{
@@ -212,7 +213,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                             editor.commit();
                             //更新数据库
                             user.updateAll("phone = ?",phone);
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            Intent intent = new Intent(LoginActivity.this, Main2Activity.class);
                             startActivity(intent);
                             finish();
                         }else{

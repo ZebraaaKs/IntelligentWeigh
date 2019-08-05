@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:background="@color/white"
+    android:padding="10dp"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    >
+    <ImageView
+        android:src="@drawable/chengzhong"
+        android:layout_width="60dp"
+        android:layout_height="60dp" />
+    <LinearLayout
+        android:layout_marginLeft="10dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="60dp">
+        <TextView
+            android:text="称重未处理"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:layout_weight="1.5"
+            android:layout_width="match_parent"
+            android:layout_height="0dp" />
+        <TextView
+            android:id="@+id/tv_eventdate"
+            android:gravity="bottom"
+            android:text="2019-08-05 称重未处理今日肉价!"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:textSize="18sp"
+            android:textColor="@color/txt_gray"
+            />
+    </LinearLayout>
+
+</LinearLayout>

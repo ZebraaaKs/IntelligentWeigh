@@ -47,6 +47,9 @@
         <activity android:name=".MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             />
+        <activity android:name=".Main2Activity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            />
         <activity
             android:name=".activity.RegisterActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
