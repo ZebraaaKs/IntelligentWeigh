@@ -1,8 +1,13 @@
 package com.example.chen.intelligentweigh.fragment2;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,9 +17,12 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.chen.intelligentweigh.R;
+import com.example.chen.intelligentweigh.activity2.EventDetailActivity;
 import com.example.chen.intelligentweigh.adapter.EventDateAdapter;
 import com.example.chen.intelligentweigh.bean.EventDate;
+import com.example.chen.intelligentweigh.bean.EventDetail;
 import com.example.chen.intelligentweigh.bean.User;
+import com.example.chen.intelligentweigh.fragment2.kidFragment.EventDetailFragment;
 import com.example.chen.intelligentweigh.util.HttpUrlUtils;
 import com.example.chen.intelligentweigh.util.SharedUtils;
 import com.example.chen.intelligentweigh.util.TitleBuilder;
@@ -73,18 +81,8 @@ public class EventFragment extends BaseFragment {
     private void initView(View rootView) {
         lv_noexcute = (ListView) rootView.findViewById(R.id.lv_noexcute);
         new TitleBuilder(rootView).setTitleText("事件");
-        lv_noexcute.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                EventDate eventDate = list.get(position);
-                Log.e(TAG,"点击的事件是 "+eventDate.getWtime());
-                if(isTwoPan){
+        receiveRefuseEvent();
 
-                }else{
-
-                }
-            }
-        });
 
     }
 
@@ -98,9 +96,30 @@ public class EventFragment extends BaseFragment {
     @Override
     protected void onFragmentVisibleChange(boolean isVisible) {
         if(isVisible){
-            //doGetData();
+            doGetData();
         }
     }
+
+    LocalBroadcastManager broadcastManager;
+
+    /**
+     * 注册广播接收器
+     */
+    private void receiveRefuseEvent() {
+        broadcastManager = LocalBroadcastManager.getInstance(getActivity());
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(EventDetailFragment.REFUSE_EVENT);
+        broadcastManager.registerReceiver(mAdDownLoadReceiver, intentFilter);
+    }
+
+    BroadcastReceiver mAdDownLoadReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.e(TAG,"接收到了");
+            doGetData();
+        }
+    };
+
 
     private void doGetData(){
         if(getActivity()!=null) {
@@ -120,18 +139,41 @@ public class EventFragment extends BaseFragment {
                             public void onResponse(String response) {
                                 if(!TextUtils.isEmpty(response)){
                                     Map map = new Gson().fromJson(response, Map.class);
-                                    String wtime = (String)map.get("wtime");
+                                    final String wtime = (String)map.get("wtime");
                                     if(!TextUtils.isEmpty(wtime)) {
                                         Log.e(TAG, response + wtime);
                                         list = new ArrayList<EventDate>();
                                         list.add(new EventDate(wtime));
                                         EventDateAdapter adapter = new EventDateAdapter(getActivity(), R.layout.item_events, list);
                                         lv_noexcute.setAdapter(adapter);
+                                        lv_noexcute.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                            @Override
+                                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                                EventDate eventDate = list.get(position);
+                                                Log.e(TAG,"点击的事件是 "+eventDate.getWtime());
+                                                if(isTwoPan){
+                                                    EventDetailFragment fragment =  EventDetailFragment.newInstance(wtime);
+                                                    getFragmentManager().beginTransaction().replace(R.id.other_content_frag, fragment).commit();
+                                                }else{
+                                                    Intent intent = new Intent(getActivity(), EventDetailActivity.class);
+                                                    Bundle bundle = new Bundle();
+                                                    bundle.putString("AeventDate",wtime);
+                                                    intent.putExtras(bundle);
+                                                    startActivity(intent);
+                                                }
+                                            }
+                                        });
                                     }
                                 }
                             }
                         });
             }
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        broadcastManager.unregisterReceiver(mAdDownLoadReceiver);
     }
 }

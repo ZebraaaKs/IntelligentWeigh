@@ -12,7 +12,7 @@
             android:id="@+id/lv_noexcute"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:divider="@color/text_grey_color"
+            android:divider="@color/line_default_color"
             ></ListView>
 
     </LinearLayout>

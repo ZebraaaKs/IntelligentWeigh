@@ -253,9 +253,7 @@ public class MeInfoFragment extends Fragment {
                                                         }
                                                     });
 
-                                                    Intent intent = new Intent(action);
-                                                    getActivity().sendBroadcast(intent);
-                                                    getActivity().finish();
+
 
                                                 } else {
                                                     getActivity().runOnUiThread(new Runnable() {
@@ -341,6 +339,8 @@ public class MeInfoFragment extends Fragment {
                                                         tv_item_username.setText(msg);
                                                     }
                                                 });
+                                                Intent intent = new Intent(action);
+                                                getActivity().sendBroadcast(intent);
                                             } else {
                                                 getActivity().runOnUiThread(new Runnable() {
                                                     @Override

@@ -36,4 +36,6 @@
     <dimen name="common_item_margin">16dp</dimen>
 
     <dimen name="dialog_radius">15dp</dimen>
+    <dimen name="line_height">1dp</dimen>
+    <dimen name="line_width">-1dp</dimen>
 </resources>

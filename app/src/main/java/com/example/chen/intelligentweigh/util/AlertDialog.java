@@ -380,7 +380,8 @@ public class AlertDialog {
             }else if("10".equals(type)){
                 et_msg.setHint("肉牛种类");
             }else if("11".equals(type)){
-
+                et_msg.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+                et_msg.setHint("今日肉价");
             }
 
         }
