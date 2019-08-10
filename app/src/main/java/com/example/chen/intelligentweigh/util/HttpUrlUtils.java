@@ -100,4 +100,7 @@ public class HttpUrlUtils {
     //处理未处理事件的肉价
     public final static String EXCUTEWEIHPRICEEVENT = BASE_URL+"ExcuteWeihPriceEvent";
 
+    //返回称重记录
+    public final static String CATTLEBACKDAYWEIGHRECORD = BASE_URL+"CattleBackDayWeighRecord";
+
 }

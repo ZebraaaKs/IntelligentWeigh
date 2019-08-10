@@ -3,6 +3,10 @@
     android:layout_width="match_parent"
     android:padding="4dp"
     android:layout_height="wrap_content">
+    <LinearLayout
+        android:id="@+id/ll_cowinfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
     <ImageView
         android:id="@+id/iv_cow_icon"
         android:src="@drawable/cow"
@@ -52,6 +56,12 @@
                 android:layout_height="wrap_content" />
         </LinearLayout>
     </LinearLayout>
+    </LinearLayout>
+    <View
+        android:layout_below="@id/ll_cowinfo"
+        android:background="@color/line_default_color"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"/>
 
 
 

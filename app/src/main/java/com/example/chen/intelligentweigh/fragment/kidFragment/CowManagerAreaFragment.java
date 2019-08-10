@@ -25,6 +25,7 @@ import com.example.chen.intelligentweigh.activity.kidActivity.CowManageYListActi
 import com.example.chen.intelligentweigh.activity.kidActivity.CowMangerAreaActivity;
 import com.example.chen.intelligentweigh.bean.Area;
 import com.example.chen.intelligentweigh.fragment.CowManageFragment;
+import com.example.chen.intelligentweigh.fragment2.BlankFragment;
 import com.example.chen.intelligentweigh.util.HttpUrlUtils;
 import com.example.chen.intelligentweigh.util.TitleBuilder;
 import com.google.gson.Gson;
@@ -90,7 +91,7 @@ public class CowManagerAreaFragment extends BaseFragment {
     }
 
     private void initActivityView(View view) {
-        if(idd!=null&&name!=null){
+        if(idd!=null){
             new TitleBuilder(view).setTitleText(name+"的分区").setLeftImage(R.drawable.arrowleft).setLeftOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -104,16 +105,12 @@ public class CowManagerAreaFragment extends BaseFragment {
     private void initFragView(View view) {
         if (getArguments() != null) {
             cowmId = getArguments().getString("cowmId");
-            cowmName = getArguments().getString("cowmName");
-            if (!cowmName.isEmpty()) {
-                new TitleBuilder(view).setTitleText(cowmName+"的分区").setLeftImage(R.drawable.arrowleft).setLeftOnClickListener(new View.OnClickListener() {
+            new TitleBuilder(view).setTitleText("肉牛管理").setLeftImage(R.drawable.arrowleft).setLeftOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View v) {
-                       CattleFramKindFragment fragment = new CattleFramKindFragment();
-                       getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.other_content_frag,fragment).commit();
-                    }
+                    public void onClick(View v) { BlankFragment fragment = new BlankFragment();
+                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.other_content_frag,fragment).commit(); }
                 }).build();
-            }
+
             if(!cowmId.isEmpty()){
                 initAreaList(cowmId);
             }

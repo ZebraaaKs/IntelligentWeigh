@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -103,6 +104,7 @@ public class EditCowInfoFragment extends BaseFragment {
     private String etname;
     private String eyid;
     private String eetname;
+    public  final  static String  NOTICE_REFRESH_ACTION = "notice.brodecast,action";
 
     @Nullable
     @Override
@@ -280,12 +282,12 @@ public class EditCowInfoFragment extends BaseFragment {
                         if("ok".equals(response)){
                             Toast.makeText(getActivity(),"修改信息成功",Toast.LENGTH_SHORT).show();
                             if(isTwoPan){
-                                CattleFramKindFragment fragment = new CattleFramKindFragment();
-                                getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.other_content_frag,fragment).commit();
+                                CowManageYListFragment cowManageYListFragment = CowManageYListFragment.newInstances(SharedUtils.getUserFarmId(getActivity()), "", "");
+                                getFragmentManager().beginTransaction().replace(R.id.other_content_frag, cowManageYListFragment).commit();
+
                             }else{
-                                Intent intent = new Intent(getActivity(), CattleFramKindActivity.class);
-                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                                startActivity(intent);
+                                Intent intent = new Intent(NOTICE_REFRESH_ACTION);
+                                LocalBroadcastManager.getInstance(getActivity()).sendBroadcast(intent);
                                 getActivity().finish();
                             }
                         }else{

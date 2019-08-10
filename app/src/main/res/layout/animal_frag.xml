@@ -1,13 +1,140 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <include layout="@layout/rl_titlebar"></include>
-    <TextView
-        android:gravity="center_horizontal|center_vertical"
-        android:text="动物"
+    <LinearLayout
+        android:id="@+id/ll_showfrag"
+        android:visibility="gone"
+        android:background="@color/line_default_color"
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tb_tab"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:background="@color/line_default_color"
+            app:tabSelectedTextColor="@color/red"
+            app:tabTextColor="@color/black"
+            app:tabIndicatorColor="@color/red"
+            />
+        <com.example.chen.intelligentweigh.viewpagerutil.NoSrcollViewPage
+            android:id="@+id/vp_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        </com.example.chen.intelligentweigh.viewpagerutil.NoSrcollViewPage>
+
+    </LinearLayout>
+    <RelativeLayout
+        android:visibility="gone"
+        android:background="@color/line_default_color"
+        android:id="@+id/ll_showactivity"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="60dp"
+        android:paddingBottom="60dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        >
+        <LinearLayout
+            android:id="@+id/ll_weight"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+        <ImageView
+            android:layout_alignParentLeft="true"
+            android:id="@+id/iv_cowweightlog"
+            android:src="@drawable/chengzhong"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <TextView
+            android:text="称重记录"
+            android:textSize="20sp"
+            android:paddingTop="20dp"
+            android:id="@+id/tv_cowweightlog"
+            android:layout_below="@+id/iv_cowweightlog"
+            android:layout_alignParentLeft="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/ll_cunlan"
+            android:layout_alignParentRight="true"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_alignParentLeft="true"
+                android:id="@+id/iv_cunlan"
+                android:src="@drawable/allcow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:text="存栏牛"
+                android:textSize="20sp"
+                android:paddingTop="20dp"
+                android:id="@+id/tv_cunlan"
+                android:layout_below="@+id/iv_cowweightlog"
+                android:layout_alignParentLeft="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/ll_chulan"
+            android:layout_below="@+id/ll_weight"
+            android:orientation="vertical"
+            android:layout_marginTop="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_alignParentLeft="true"
+                android:id="@+id/iv_chulan"
+                android:src="@drawable/allcow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:text="出栏牛"
+                android:textSize="20sp"
+                android:paddingTop="20dp"
+                android:id="@+id/tv_chulan"
+                android:layout_below="@+id/iv_cowweightlog"
+                android:layout_alignParentLeft="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/ll_taotai"
+            android:layout_below="@+id/ll_cunlan"
+            android:orientation="vertical"
+            android:layout_marginTop="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:layout_alignParentRight="true"
+                android:id="@+id/iv_taotai"
+                android:src="@drawable/allcow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:text="淘汰牛"
+                android:textSize="20sp"
+                android:paddingTop="20dp"
+                android:id="@+id/tv_taotai"
+                android:layout_below="@+id/iv_cowweightlog"
+                android:layout_alignParentLeft="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+    </RelativeLayout>
 
 </LinearLayout>

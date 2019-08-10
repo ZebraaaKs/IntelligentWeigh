@@ -43,4 +43,27 @@ public class SharedUtils {
             return null;
         }
     }
+
+    public static String getUserFarmId(Context context){
+        SharedPreferences sharedPreferences = context.getSharedPreferences("login",MODE_PRIVATE);
+        String phone = sharedPreferences.getString("phone", "");
+        List<User> users = LitePal.where("phone = ?", phone).find(User.class);
+        if(!users.isEmpty()){
+            return users.get(0).getFarmid();
+        }else{
+            return null;
+        }
+    }
+
+
+    public static String getUserFarms(Context context){
+        SharedPreferences sharedPreferences = context.getSharedPreferences("login",MODE_PRIVATE);
+        String phone = sharedPreferences.getString("phone", "");
+        List<User> users = LitePal.where("phone = ?", phone).find(User.class);
+        if(!users.isEmpty()){
+            return users.get(0).getFarmids();
+        }else{
+            return null;
+        }
+    }
 }

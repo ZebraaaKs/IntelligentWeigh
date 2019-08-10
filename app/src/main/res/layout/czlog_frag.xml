@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
     android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <include layout="@layout/rl_titlebar"></include>
     <com.scwang.smartrefresh.layout.SmartRefreshLayout
-        android:id="@+id/srl_ylist"
+        android:id="@+id/srl_czlog"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    <com.yanzhenjie.recyclerview.SwipeRecyclerView
-        android:background="@drawable/itembackgroud"
-        android:id="@+id/lv_y_list"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"></com.yanzhenjie.recyclerview.SwipeRecyclerView>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/lv_czlog"
+            android:dividerHeight="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </android.support.v7.widget.RecyclerView>
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
 </LinearLayout>
