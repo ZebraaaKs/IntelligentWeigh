@@ -45,6 +45,7 @@ public class AnimalFragment extends BaseFragment {
     private LinearLayout ll_cunlan;
     private LinearLayout ll_chulan;
     private LinearLayout ll_taotai;
+    private RelativeLayout rl_black_show;
 
     @Nullable
     @Override
@@ -80,6 +81,8 @@ public class AnimalFragment extends BaseFragment {
         ll_showactivity = (RelativeLayout) rootView.findViewById(R.id.ll_showactivity);
         new TitleBuilder(rootView).setTitleText("动物档案").build();
 
+
+        rl_black_show = (RelativeLayout) rootView.findViewById(R.id.rl_black_show);
 
     }
 
@@ -152,6 +155,9 @@ public class AnimalFragment extends BaseFragment {
                     TabVpAdapter adapter = new TabVpAdapter(getChildFragmentManager(), list);
                     vp_content.setAdapter(adapter);
                     tb_tab.setupWithViewPager(vp_content);
+                }else{
+                    ll_showfrag.setVisibility(View.GONE);
+                    rl_black_show.setVisibility(View.VISIBLE);
                 }
             }
 

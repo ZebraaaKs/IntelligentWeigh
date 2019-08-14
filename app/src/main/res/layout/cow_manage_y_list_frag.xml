@@ -14,4 +14,5 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"></com.yanzhenjie.recyclerview.SwipeRecyclerView>
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+    <include layout="@layout/nodata_show" ></include>
 </LinearLayout>

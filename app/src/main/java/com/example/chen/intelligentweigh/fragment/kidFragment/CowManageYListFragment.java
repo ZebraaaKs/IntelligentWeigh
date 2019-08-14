@@ -22,6 +22,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.chen.intelligentweigh.BaseFragment;
@@ -48,7 +49,6 @@ import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.squareup.okhttp.Request;
-import com.yanzhenjie.recyclerview.OnItemClickListener;
 import com.yanzhenjie.recyclerview.OnItemMenuClickListener;
 import com.yanzhenjie.recyclerview.SwipeMenu;
 import com.yanzhenjie.recyclerview.SwipeMenuBridge;
@@ -79,6 +79,7 @@ public class CowManageYListFragment extends BaseFragment {
     private LinearLayout rl_titlebar;
     private SmartRefreshLayout srl_ylist;
     private LocalBroadcastManager broadcastManager;
+    private RelativeLayout rl_nodata_show;
 
     @Nullable
     @Override
@@ -165,6 +166,8 @@ public class CowManageYListFragment extends BaseFragment {
                 srl_ylist.finishLoadMore(2000);
             }
         });
+        rl_nodata_show = (RelativeLayout) view.findViewById(R.id.rl_nodata_show);
+
     }
 
     private void initActivityView(View view) {
@@ -223,55 +226,60 @@ public class CowManageYListFragment extends BaseFragment {
                                 }.getType();
                                 Gson gson = new Gson();
                                 list = (List<Cow>) gson.fromJson(response, type);
-                                adapter = new ListViewCowInfoAdapter(list, getActivity());
-                                lv_y_list.setLayoutManager(new LinearLayoutManager(getActivity()));
-                                OnItemMenuClickListener mItemMenuClickListener = new OnItemMenuClickListener() {
-                                    @Override
-                                    public void onItemClick(SwipeMenuBridge menuBridge, int position) {
-                                        // 任何操作必须先关闭菜单，否则可能出现Item菜单打开状态错乱。
-                                        menuBridge.closeMenu();
+                                if (list != null && list.size() > 0) {
+                                    adapter = new ListViewCowInfoAdapter(list, getActivity());
+                                    lv_y_list.setLayoutManager(new LinearLayoutManager(getActivity()));
+                                    OnItemMenuClickListener mItemMenuClickListener = new OnItemMenuClickListener() {
+                                        @Override
+                                        public void onItemClick(SwipeMenuBridge menuBridge, int position) {
+                                            // 任何操作必须先关闭菜单，否则可能出现Item菜单打开状态错乱。
+                                            menuBridge.closeMenu();
 
-                                        // 左侧还是右侧菜单：
-                                        int direction = menuBridge.getDirection();
-                                        // 菜单在Item中的Position：
-                                        int menuPosition = menuBridge.getPosition();
-                                        switch (menuPosition) {
-                                            case 0:
-                                                if (isTwoPan) {
-                                                    EditCowInfoFragment fragment = EditCowInfoFragment.newInsatnces(list.get(position), yid, null);
-                                                    getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.other_content_frag, fragment).commit();
-                                                } else {
-                                                    Intent intent = new Intent(getActivity(), EditCowInfoActivty.class);
-                                                    intent.putExtra("eeidd", yid);
-                                                    intent.putExtra("eename", yname);
-                                                    intent.putExtra("eetname", tname);
-                                                    intent.putExtra("eeCow", list.get(position));
-                                                    Log.e(TAG, "eeidd" + yid + " eename" + yname + " eetname" + tname + " cow" + list.get(position));
-                                                    startActivity(intent);
-                                                }
-                                                break;
-                                            case 1:
-                                                Showdelete(list.get(position).getID(), yid, yname);
-                                                break;
+                                            // 左侧还是右侧菜单：
+                                            int direction = menuBridge.getDirection();
+                                            // 菜单在Item中的Position：
+                                            int menuPosition = menuBridge.getPosition();
+                                            switch (menuPosition) {
+                                                case 0:
+                                                    if (isTwoPan) {
+                                                        EditCowInfoFragment fragment = EditCowInfoFragment.newInsatnces(list.get(position), yid, null);
+                                                        getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.other_content_frag, fragment).commit();
+                                                    } else {
+                                                        Intent intent = new Intent(getActivity(), EditCowInfoActivty.class);
+                                                        intent.putExtra("eeidd", yid);
+                                                        intent.putExtra("eename", yname);
+                                                        intent.putExtra("eetname", tname);
+                                                        intent.putExtra("eeCow", list.get(position));
+                                                        Log.e(TAG, "eeidd" + yid + " eename" + yname + " eetname" + tname + " cow" + list.get(position));
+                                                        startActivity(intent);
+                                                    }
+                                                    break;
+                                                case 1:
+                                                    Showdelete(list.get(position).getID(), yid, yname);
+                                                    break;
+                                            }
+
                                         }
+                                    };
+                                    try {
+                                        lv_y_list.setOnItemMenuClickListener(mItemMenuClickListener);
 
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
                                     }
-                                };
-                                try {
-                                    lv_y_list.setOnItemMenuClickListener(mItemMenuClickListener);
+                                    lv_y_list.setAdapter(adapter);
+                                    adapter.setOnItemClickListener(new ListViewCowInfoAdapter.OnItemClickListener() {
+                                        @Override
+                                        public void onItemClick(View v, Cow cow, int position) {
+                                            initListData(list.get(position).getID(), list.get(position), yid);
+                                        }
+                                    });
 
-                                } catch (Exception e) {
-                                    e.printStackTrace();
+                                } else {
+                                    srl_ylist.setVisibility(View.GONE);
+                                    lv_y_list.setVisibility(View.GONE);
+                                    rl_nodata_show.setVisibility(View.VISIBLE);
                                 }
-                                lv_y_list.setAdapter(adapter);
-                                adapter.setOnItemClickListener(new ListViewCowInfoAdapter.OnItemClickListener() {
-                                    @Override
-                                    public void onItemClick(View v, Cow cow, int position) {
-                                        initListData(list.get(position).getID(), list.get(position), yid);
-                                    }
-                                });
-
-
                             }
 
                         }
@@ -561,17 +569,17 @@ public class CowManageYListFragment extends BaseFragment {
         @Override
         public void onReceive(Context context, Intent intent) {
             String userFarmId = SharedUtils.getUserFarmId(context);
-            if(!TextUtils.isEmpty(userFarmId)){
-                loadMoreList(userFarmId,"0");
+            if (!TextUtils.isEmpty(userFarmId)) {
+                loadMoreList(userFarmId, "0");
             }
 
         }
     };
 
 
-
     @Override
     public void onDestroy() {
         super.onDestroy();
+        broadcastManager.unregisterReceiver(mrefrshReceiver);
     }
 }

@@ -88,6 +88,24 @@ public class AlertDialog {
     }
 
 
+    public AlertDialog onebuilder(){
+        View view = LayoutInflater.from(context).inflate(
+                R.layout.view_alert_onedialog, null);
+        lLayout_bg = (LinearLayout) view.findViewById(R.id.lLayout_bg);
+        txt_title = (TextView) view.findViewById(R.id.txt_title);
+        txt_msg = (TextView) view.findViewById(R.id.txt_msg);
+        btn_neg = (Button) view.findViewById(R.id.btn_neg);
+        setOneGone();
+        dialog = new Dialog(context, R.style.AlertDialogStyle);
+        dialog.setContentView(view);
+        lLayout_bg.setLayoutParams(new FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+
+        return this;
+
+
+    }
+
+
     public AlertDialog choosebuilder() {
         View view = LayoutInflater.from(context).inflate(
                 R.layout.view_alert_choose_dialog, null);
@@ -246,6 +264,20 @@ public class AlertDialog {
         showPosBtn = false;
         showNegBtn = false;
         return this;
+    }
+
+
+    public AlertDialog setOneGone(){
+        if (lLayout_bg != null) {
+            txt_title.setVisibility(View.GONE);
+            txt_msg.setVisibility(View.GONE);
+            btn_neg.setVisibility(View.GONE);
+        }
+        showTitle = false;
+        showMsg = false;
+        showNegBtn = false;
+        return this;
+
     }
 
     public AlertDialog setEtGone() {

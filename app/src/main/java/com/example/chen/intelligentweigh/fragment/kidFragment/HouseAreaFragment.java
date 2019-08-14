@@ -101,13 +101,7 @@ public class HouseAreaFragment extends BaseFragment {
         if(getArguments()!=null){
             final House house = (House) getArguments().getSerializable("HouseInfo");
             initAreaList(house);
-            new TitleBuilder(view).setTitleText(house.getName()+"分区").setLeftText("返回").setLeftOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    HouseMangerFragment fragment = new HouseMangerFragment();
-                    getFragmentManager().beginTransaction().replace(R.id.other_content_frag, fragment).commit();
-                }
-            }).setRightText("添加分区").setRightOnClickListener(new View.OnClickListener() {
+            new TitleBuilder(view).setTitleText(house.getName()+"分区").setRightText("添加分区").setRightOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if(getActivity()!=null){

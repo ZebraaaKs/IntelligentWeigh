@@ -15,9 +15,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.chen.intelligentweigh.BaseFragment;
@@ -65,6 +64,7 @@ public class CowManageNListFragment extends BaseFragment {
     String type1 = "";
     private LinearLayout rl_titlebar;
     private SmartRefreshLayout srl_nlist;
+    private RelativeLayout rl_nodata_show;
 
     @Nullable
     @Override
@@ -99,7 +99,7 @@ public class CowManageNListFragment extends BaseFragment {
     private void initView(View view) {
         lv_n_list = (RecyclerView) view.findViewById(R.id.lv_n_list);
         srl_nlist = (SmartRefreshLayout) view.findViewById(R.id.srl_nlist);
-        if(getActivity()!=null){
+        if (getActivity() != null) {
             srl_nlist.setRefreshHeader(new ClassicsHeader(getActivity()));
             srl_nlist.setRefreshFooter(new ClassicsFooter(getActivity()));
         }
@@ -108,9 +108,7 @@ public class CowManageNListFragment extends BaseFragment {
         initActivityView(view);
 
 
-
-
-
+        rl_nodata_show = (RelativeLayout) view.findViewById(R.id.rl_nodata_show);
 
     }
 
@@ -124,11 +122,11 @@ public class CowManageNListFragment extends BaseFragment {
             });
             initListView(Nidd, Tname);
 
-            try{
+            try {
                 srl_nlist.setOnRefreshListener(new OnRefreshListener() {
                     @Override
                     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                        loadMoreDataListView(Nidd,Tname,"0");
+                        loadMoreDataListView(Nidd, Tname, "0");
                         srl_nlist.finishRefresh(2000);
                     }
                 });
@@ -136,14 +134,14 @@ public class CowManageNListFragment extends BaseFragment {
                 srl_nlist.setOnLoadMoreListener(new OnLoadMoreListener() {
                     @Override
                     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                        Log.e(TAG,"长度"+(list.size()));
-                        if(list.size()>0&&list!=null){
-                            loadMoreDataListView(Nidd,Tname,String.valueOf((list.size())));
+                        Log.e(TAG, "长度" + (list.size()));
+                        if (list.size() > 0 && list != null) {
+                            loadMoreDataListView(Nidd, Tname, String.valueOf((list.size())));
                         }
                         srl_nlist.finishLoadMore(2000);
                     }
                 });
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
@@ -164,11 +162,11 @@ public class CowManageNListFragment extends BaseFragment {
                 }
             });
             initListView(nid, tName);
-            try{
+            try {
                 srl_nlist.setOnRefreshListener(new OnRefreshListener() {
                     @Override
                     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                        loadMoreDataListView(nid,tName,"0");
+                        loadMoreDataListView(nid, tName, "0");
                         srl_nlist.finishRefresh(2000);
                     }
                 });
@@ -176,15 +174,15 @@ public class CowManageNListFragment extends BaseFragment {
                 srl_nlist.setOnLoadMoreListener(new OnLoadMoreListener() {
                     @Override
                     public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                        Log.e(TAG,"长度"+(list.size()));
-                        if(list.size()>0&&list!=null) {
+                        Log.e(TAG, "长度" + (list.size()));
+                        if (list.size() > 0 && list != null) {
                             loadMoreDataListView(nid, tName, String.valueOf((list.size() + 1)));
                         }
                         srl_nlist.finishLoadMore(2000);
                     }
                 });
 
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
@@ -220,18 +218,23 @@ public class CowManageNListFragment extends BaseFragment {
                             }.getType();
                             Gson gson = new Gson();
                             list = (List<Cow>) gson.fromJson(response, type);
-                            adapter = new ListViewCowInfoAdapter(list, getActivity());
-                            lv_n_list.setLayoutManager(new LinearLayoutManager(getActivity()));
-                            lv_n_list.setAdapter(adapter);
+                            if(list!=null&&list.size()>0) {
+                                adapter = new ListViewCowInfoAdapter(list, getActivity());
+                                lv_n_list.setLayoutManager(new LinearLayoutManager(getActivity()));
+                                lv_n_list.setAdapter(adapter);
 
-                            adapter.setOnItemClickListener(new ListViewCowInfoAdapter.OnItemClickListener() {
-                                @Override
-                                public void onItemClick(View v, Cow cow, int position) {
-                                    initListData(list.get(position).getID(), list.get(position), nnnid, name);
+                                adapter.setOnItemClickListener(new ListViewCowInfoAdapter.OnItemClickListener() {
+                                    @Override
+                                    public void onItemClick(View v, Cow cow, int position) {
+                                        initListData(list.get(position).getID(), list.get(position), nnnid, name);
 
-                                }
-                            });
-
+                                    }
+                                });
+                            }else{
+                                srl_nlist.setVisibility(View.GONE);
+                                lv_n_list.setVisibility(View.GONE);
+                                rl_nodata_show.setVisibility(View.VISIBLE);
+                            }
 
                         }
                     }
@@ -239,7 +242,7 @@ public class CowManageNListFragment extends BaseFragment {
     }
 
 
-    private void loadMoreDataListView(String farmid, String name, final String index){
+    private void loadMoreDataListView(String farmid, String name, final String index) {
         if ("出栏牛".equals(name)) {
             type1 = "2";
         } else {
@@ -249,22 +252,23 @@ public class CowManageNListFragment extends BaseFragment {
                 .url(HttpUrlUtils.CATTLEBACKBYFRAMAREA)
                 .addParams("farmid", farmid)
                 .addParams("exist", type1)
-                .addParams("index",index)
+                .addParams("index", index)
                 .build()
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Request request, Exception e) {
-                        Log.e(TAG,e.toString());
+                        Log.e(TAG, e.toString());
                     }
 
                     @Override
                     public void onResponse(String response) {
-                        if(!TextUtils.isEmpty(response)){
-                            Type type = new TypeToken<List<Cow>>(){}.getType();
-                            List<Cow> mlist  = new Gson().fromJson(response,type);
-                            if("0".equals(index)){
+                        if (!TextUtils.isEmpty(response)) {
+                            Type type = new TypeToken<List<Cow>>() {
+                            }.getType();
+                            List<Cow> mlist = new Gson().fromJson(response, type);
+                            if ("0".equals(index)) {
                                 adapter.refresh(mlist);
-                            }else{
+                            } else {
                                 adapter.add(mlist);
                             }
                         }

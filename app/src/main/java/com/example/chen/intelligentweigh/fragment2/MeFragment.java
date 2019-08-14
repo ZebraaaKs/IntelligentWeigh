@@ -7,7 +7,9 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,25 +17,37 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.signature.StringSignature;
 import com.example.chen.intelligentweigh.R;
 import com.example.chen.intelligentweigh.activity.HouseMangerActivity;
+import com.example.chen.intelligentweigh.activity.LoginActivity;
 import com.example.chen.intelligentweigh.activity.MeInfoActivity;
 import com.example.chen.intelligentweigh.activity.PeopleMangerActivity;
 import com.example.chen.intelligentweigh.activity.SetTouXiangActivity;
+import com.example.chen.intelligentweigh.activity.kidActivity.HouseAreaActivity;
+import com.example.chen.intelligentweigh.bean.House;
 import com.example.chen.intelligentweigh.bean.User;
 import com.example.chen.intelligentweigh.fragment.HouseMangerFragment;
 import com.example.chen.intelligentweigh.fragment.MeInfoFragment;
 import com.example.chen.intelligentweigh.fragment.PeopleMangerFragment;
+import com.example.chen.intelligentweigh.fragment.kidFragment.HouseAreaFragment;
+import com.example.chen.intelligentweigh.util.AlertDialog;
 import com.example.chen.intelligentweigh.util.HttpUrlUtils;
 import com.example.chen.intelligentweigh.util.SharedUtils;
 import com.example.chen.intelligentweigh.util.TitleBuilder;
 import com.example.chen.intelligentweigh.viewpagerutil.BaseFragment;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import com.squareup.okhttp.Request;
+import com.zhy.http.okhttp.OkHttpUtils;
+import com.zhy.http.okhttp.callback.StringCallback;
 
 import org.litepal.LitePal;
 
+import java.lang.reflect.Type;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -238,8 +252,16 @@ public class MeFragment extends BaseFragment implements View.OnClickListener{
                 }
                 break;
             case R.id.ll_team:
+                loadFramInfo();
                 break;
             case R.id.ll_aboutus:
+                try{
+                    AlertDialog myDialog = new AlertDialog(getActivity()).onebuilder();
+                    myDialog.setOneGone().setTitle("关于我们").setMsg("欢迎来电合作:xxxxxxxxxxx").setNegativeButton("好的", null).show();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+
                 break;
             case R.id.ll_usermanage:
                 if (isTwoPan) {
@@ -262,6 +284,55 @@ public class MeFragment extends BaseFragment implements View.OnClickListener{
             default:
                 break;
         }
+
+    }
+
+    private  void loadFramInfo() {
+        OkHttpUtils.get()
+                .url(HttpUrlUtils.ALL_HOUSE_URL)
+                .build()
+                .execute(new StringCallback() {
+                    @Override
+                    public void onError(Request request, Exception e) {
+                        Log.e(TAG,e.toString());
+                    }
+
+                    @Override
+                    public void onResponse(String response) {
+                        if(!TextUtils.isEmpty(response)){
+                            Type type = new TypeToken<List<House>>(){}.getType();
+                            List<House> list = new Gson().fromJson(response,type);
+                            if(list!=null&&list.size()>0){
+                                String userFarmId = SharedUtils.getUserFarmId(getActivity());
+                                for(House house:list){
+                                    if(!TextUtils.isEmpty(userFarmId)){
+                                        if(userFarmId.equals(house.getID())){
+                                            Log.e(TAG,"服务端数据:"+house.toString());
+                                                Bundle bundle = new Bundle();
+                                                bundle.putSerializable("houseInfo", house);
+                                                Log.e(TAG, "传递农场" +house );
+                                                if(isTwoPan){
+                                                    HouseAreaFragment fragment = HouseAreaFragment.newInstance(house);
+                                                    getFragmentManager().beginTransaction().replace(R.id.other_content_frag, fragment).commit();
+                                                }else{
+                                                    Intent intent = new Intent(getActivity(), HouseAreaActivity.class);
+                                                    intent.putExtras(bundle);
+                                                    startActivity(intent);
+                                                }
+                                            }
+                                        }else{
+                                        Toast.makeText(getActivity(),"未绑定牧场,稍后再试",Toast.LENGTH_SHORT).show();
+                                        return;
+                                    }
+
+                                    }
+
+                                }
+                            }
+                        }
+
+
+                });
 
     }
 

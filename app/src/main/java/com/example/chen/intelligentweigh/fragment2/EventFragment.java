@@ -15,12 +15,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 import com.example.chen.intelligentweigh.R;
 import com.example.chen.intelligentweigh.activity2.EventDetailActivity;
 import com.example.chen.intelligentweigh.adapter.EventDateAdapter;
 import com.example.chen.intelligentweigh.bean.EventDate;
-import com.example.chen.intelligentweigh.bean.EventDetail;
 import com.example.chen.intelligentweigh.bean.User;
 import com.example.chen.intelligentweigh.fragment2.kidFragment.EventDetailFragment;
 import com.example.chen.intelligentweigh.util.HttpUrlUtils;
@@ -28,12 +28,10 @@ import com.example.chen.intelligentweigh.util.SharedUtils;
 import com.example.chen.intelligentweigh.util.TitleBuilder;
 import com.example.chen.intelligentweigh.viewpagerutil.BaseFragment;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.squareup.okhttp.Request;
 import com.zhy.http.okhttp.OkHttpUtils;
 import com.zhy.http.okhttp.callback.StringCallback;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -50,6 +48,7 @@ public class EventFragment extends BaseFragment {
     private boolean isTwoPan;
     private List<EventDate> list;
     private final String TAG = "EventFragment";
+    private RelativeLayout rl_black_show;
 
     @Nullable
     @Override
@@ -84,18 +83,20 @@ public class EventFragment extends BaseFragment {
         receiveRefuseEvent();
 
 
+        rl_black_show = (RelativeLayout) rootView.findViewById(R.id.rl_black_show);
+
     }
 
     @Override
     protected void onFragmentFirstVisible() {
-        Log.e(TAG,"未处理数据初始化");
+        Log.e(TAG, "未处理数据初始化");
         doGetData();
 
     }
 
     @Override
     protected void onFragmentVisibleChange(boolean isVisible) {
-        if(isVisible){
+        if (isVisible) {
             doGetData();
         }
     }
@@ -115,32 +116,32 @@ public class EventFragment extends BaseFragment {
     BroadcastReceiver mAdDownLoadReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.e(TAG,"接收到了");
+            Log.e(TAG, "接收到了");
             doGetData();
         }
     };
 
 
-    private void doGetData(){
-        if(getActivity()!=null) {
+    private void doGetData() {
+        if (getActivity() != null) {
             User user = SharedUtils.getMyInfo(getActivity());
-            if(user!=null){
+            if (user != null) {
                 OkHttpUtils.get()
-                        .addParams("farmid",user.getFarmid())
+                        .addParams("farmid", user.getFarmid())
                         .url(HttpUrlUtils.NOEXECUTEEVENT)
                         .build()
                         .execute(new StringCallback() {
                             @Override
                             public void onError(Request request, Exception e) {
-                                Log.e(TAG,e.toString());
+                                Log.e(TAG, e.toString());
                             }
 
                             @Override
                             public void onResponse(String response) {
-                                if(!TextUtils.isEmpty(response)){
+                                if (!TextUtils.isEmpty(response)) {
                                     Map map = new Gson().fromJson(response, Map.class);
-                                    final String wtime = (String)map.get("wtime");
-                                    if(!TextUtils.isEmpty(wtime)) {
+                                    final String wtime = (String) map.get("wtime");
+                                    if (!TextUtils.isEmpty(wtime)) {
                                         Log.e(TAG, response + wtime);
                                         list = new ArrayList<EventDate>();
                                         list.add(new EventDate(wtime));
@@ -150,19 +151,22 @@ public class EventFragment extends BaseFragment {
                                             @Override
                                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                                                 EventDate eventDate = list.get(position);
-                                                Log.e(TAG,"点击的事件是 "+eventDate.getWtime());
-                                                if(isTwoPan){
-                                                    EventDetailFragment fragment =  EventDetailFragment.newInstance(wtime);
+                                                Log.e(TAG, "点击的事件是 " + eventDate.getWtime());
+                                                if (isTwoPan) {
+                                                    EventDetailFragment fragment = EventDetailFragment.newInstance(wtime);
                                                     getFragmentManager().beginTransaction().replace(R.id.other_content_frag, fragment).commit();
-                                                }else{
+                                                } else {
                                                     Intent intent = new Intent(getActivity(), EventDetailActivity.class);
                                                     Bundle bundle = new Bundle();
-                                                    bundle.putString("AeventDate",wtime);
+                                                    bundle.putString("AeventDate", wtime);
                                                     intent.putExtras(bundle);
                                                     startActivity(intent);
                                                 }
                                             }
                                         });
+                                    }else{
+                                        lv_noexcute.setVisibility(View.GONE);
+                                        rl_black_show.setVisibility(View.VISIBLE);
                                     }
                                 }
                             }

@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.signature.StringSignature;
+import com.example.chen.intelligentweigh.BaseFragment;
 import com.example.chen.intelligentweigh.R;
 import com.example.chen.intelligentweigh.activity.LoginActivity;
 import com.example.chen.intelligentweigh.activity.SetTouXiangActivity;
@@ -45,7 +46,7 @@ import static android.content.Context.MODE_PRIVATE;
  * date   : 2018/11/27  15:59
  * desc   : 用户信息的展示
  */
-public class MeInfoFragment extends Fragment {
+public class MeInfoFragment extends BaseFragment {
 
 
     private RelativeLayout rl_touxiang;

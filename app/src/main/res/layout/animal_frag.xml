@@ -136,5 +136,27 @@
         </LinearLayout>
 
     </RelativeLayout>
+    <RelativeLayout
+        android:visibility="gone"
+        android:id="@+id/rl_black_show"
+        android:background="@color/line_default_color"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/iv_nodata"
+            android:layout_centerInParent="true"
+            android:src="@drawable/nodata"
+            android:layout_width="80dp"
+            android:layout_height="80dp" />
+        <TextView
+            android:layout_below="@+id/iv_nodata"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="暂无数据"
+            android:textSize="18sp"
+            android:textColor="@color/text_nodata_color"
+            />
+    </RelativeLayout>
 
 </LinearLayout>

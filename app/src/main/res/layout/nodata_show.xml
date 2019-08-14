@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+android:background="@color/line_default_color"
+android:id="@+id/rl_nodata_show" android:visibility="gone"
+android:layout_width="match_parent"
+android:layout_height="match_parent">
+<ImageView
+    android:id="@+id/iv_nodata"
+    android:layout_centerInParent="true"
+    android:src="@drawable/nodata"
+    android:layout_width="80dp"
+    android:layout_height="80dp" />
+<TextView
+    android:layout_below="@+id/iv_nodata"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_centerInParent="true"
+    android:text="暂无数据"
+    android:textSize="18sp"
+    android:textColor="@color/text_nodata_color"
+    />
+</RelativeLayout>

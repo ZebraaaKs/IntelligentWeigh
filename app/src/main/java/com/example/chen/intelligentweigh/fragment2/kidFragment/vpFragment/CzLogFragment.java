@@ -1,7 +1,6 @@
 package com.example.chen.intelligentweigh.fragment2.kidFragment.vpFragment;
 
 import android.content.pm.ActivityInfo;
-import android.graphics.Canvas;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,13 +12,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.example.chen.intelligentweigh.BaseFragment;
 import com.example.chen.intelligentweigh.R;
 import com.example.chen.intelligentweigh.adapter.CowWightLogAdapter;
 import com.example.chen.intelligentweigh.bean.WeightLogData;
 import com.example.chen.intelligentweigh.util.HttpUrlUtils;
-import com.example.chen.intelligentweigh.util.RecycleViewDivider;
 import com.example.chen.intelligentweigh.util.SharedUtils;
 import com.example.chen.intelligentweigh.util.TitleBuilder;
 import com.google.gson.Gson;
@@ -52,7 +51,8 @@ public class CzLogFragment extends BaseFragment {
     private List<WeightLogData> list;
     private CowWightLogAdapter adapter;
 
-    private final static String TAG = "CzLogFragment" ;
+    private final static String TAG = "CzLogFragment";
+    private RelativeLayout rl_nodata_show;
 
     @Nullable
     @Override
@@ -86,33 +86,39 @@ public class CzLogFragment extends BaseFragment {
     private void initView(View rootView) {
         rl_titlebar = (LinearLayout) rootView.findViewById(R.id.rl_titlebar);
         lv_czlog = (RecyclerView) rootView.findViewById(R.id.lv_czlog);
-        if(getActivity()!=null){
+        if (getActivity() != null) {
             lv_czlog.setLayoutManager(new LinearLayoutManager(getActivity()));
         }
         srl_czlog = (SmartRefreshLayout) rootView.findViewById(R.id.srl_czlog);
 
 
+        rl_nodata_show = (RelativeLayout) rootView.findViewById(R.id.rl_nodata_show);
+
     }
 
     private void initDiffentView(View rootView) {
-        if(isTwoPan){
+        if (isTwoPan) {
             new TitleBuilder(rootView).setTitleText("称重记录").build();
-        }else{
+        } else {
             rl_titlebar.setVisibility(View.GONE);
         }
-        if(getActivity()!=null){
+        if (getActivity() != null) {
             srl_czlog.setRefreshHeader(new ClassicsHeader(getActivity()));
             srl_czlog.setRefreshFooter(new ClassicsFooter(getActivity()));
             final String farmId = SharedUtils.getUserFarmId(getActivity());
-            if(!TextUtils.isEmpty(farmId)){
+            if (!TextUtils.isEmpty(farmId)) {
                 getWightLogData(farmId);
+            }else{
+                srl_czlog.setVisibility(View.GONE);
+                lv_czlog.setVisibility(View.GONE);
+                rl_nodata_show.setVisibility(View.VISIBLE);
             }
 
             srl_czlog.setOnRefreshListener(new OnRefreshListener() {
                 @Override
                 public void onRefresh(@NonNull RefreshLayout refreshLayout) {
-                    if(!TextUtils.isEmpty(farmId)){
-                        getMoreWightLogData(farmId,"1");
+                    if (!TextUtils.isEmpty(farmId)) {
+                        getMoreWightLogData(farmId, "1");
                     }
                     srl_czlog.finishRefresh(2000);
                 }
@@ -121,8 +127,8 @@ public class CzLogFragment extends BaseFragment {
             srl_czlog.setOnLoadMoreListener(new OnLoadMoreListener() {
                 @Override
                 public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
-                    if(list.size()>0&&list!=null) {
-                        Log.e(TAG,"长度"+list.size());
+                    if (list.size() > 0 && list != null) {
+                        Log.e(TAG, "长度" + list.size());
                         getMoreWightLogData(farmId, String.valueOf((list.size() + 1)));
                     }
                     srl_czlog.finishLoadMore(2000);
@@ -135,54 +141,59 @@ public class CzLogFragment extends BaseFragment {
 
     private void getWightLogData(String farmId) {
         OkHttpUtils.get()
-                .addParams("farmid",farmId)
-                .addParams("index","1")
+                .addParams("farmid", farmId)
+                .addParams("index", "1")
                 .url(HttpUrlUtils.CATTLEBACKDAYWEIGHRECORD)
                 .build()
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Request request, Exception e) {
-                        Log.e(TAG,e.toString());
+                        Log.e(TAG, e.toString());
                     }
 
                     @Override
                     public void onResponse(String response) {
-                        if(!TextUtils.isEmpty(response)){
-                            Log.e(TAG,response);
-                            Type type = new TypeToken<List<WeightLogData>>(){}.getType();
-                            list = new Gson().fromJson(response,type);
-                            adapter = new CowWightLogAdapter(list);
-
-
-
-                            lv_czlog.setAdapter(adapter);
+                        if (!TextUtils.isEmpty(response)) {
+                            Log.e(TAG, response);
+                            Type type = new TypeToken<List<WeightLogData>>() {
+                            }.getType();
+                            list = new Gson().fromJson(response, type);
+                            if(list!=null&&list.size()>0) {
+                                adapter = new CowWightLogAdapter(list);
+                                lv_czlog.setAdapter(adapter);
+                            }else{
+                                srl_czlog.setVisibility(View.GONE);
+                                lv_czlog.setVisibility(View.GONE);
+                                rl_nodata_show.setVisibility(View.VISIBLE);
+                            }
 
                         }
                     }
                 });
     }
 
-    private void getMoreWightLogData(String farmId, final String index){
+    private void getMoreWightLogData(String farmId, final String index) {
         OkHttpUtils.get()
-                .addParams("farmid",farmId)
-                .addParams("index",index)
+                .addParams("farmid", farmId)
+                .addParams("index", index)
                 .url(HttpUrlUtils.CATTLEBACKDAYWEIGHRECORD)
                 .build()
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Request request, Exception e) {
-                        Log.e(TAG,e.toString());
+                        Log.e(TAG, e.toString());
                     }
 
                     @Override
                     public void onResponse(String response) {
-                        if(!TextUtils.isEmpty(response)){
-                            Type type = new TypeToken<List<WeightLogData>>(){}.getType();
-                            List<WeightLogData> mList = new Gson().fromJson(response,type);
-                            if("1".equals(index)){
+                        if (!TextUtils.isEmpty(response)) {
+                            Type type = new TypeToken<List<WeightLogData>>() {
+                            }.getType();
+                            List<WeightLogData> mList = new Gson().fromJson(response, type);
+                            if ("1".equals(index)) {
                                 adapter.refresh(mList);
-                            }else{
-                            adapter.add(mList);
+                            } else {
+                                adapter.add(mList);
                             }
                         }
                     }

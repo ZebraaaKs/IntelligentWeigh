@@ -80,4 +80,5 @@
     <color name="rb_focus_color">#E59C68</color>
     <color name="rb_normal_color">#CCCCCC</color>
     <color name="text_grey_color">#c8c8c8</color>
+    <color name="text_nodata_color">#8b97a3</color>
 </resources>
