@@ -212,6 +212,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener{
                 tv_userphone.setText("手机号:" + user.getPhone());
                 if (getContext() != null) {
                     if (user.getTouxiang() != null && !"".equals(user.getTouxiang())) {
+                        Log.e(TAG,"加载头像");
                         Glide.with(getContext()).load(HttpUrlUtils.TOUXIANG_URL + user.getTouxiang()).signature(new StringSignature(SharedUtils.getTime(getActivity()))).into(iv_touxiang);
                     } else {
                         iv_touxiang.setImageResource(R.drawable.moren);

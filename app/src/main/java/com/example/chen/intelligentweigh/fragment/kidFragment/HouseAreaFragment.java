@@ -15,16 +15,14 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.chen.intelligentweigh.BaseFragment;
 import com.example.chen.intelligentweigh.R;
 import com.example.chen.intelligentweigh.activity.kidActivity.HouseAreaActivity;
-import com.example.chen.intelligentweigh.activity.kidActivity.PeopleInfoActivity;
 import com.example.chen.intelligentweigh.bean.Area;
 import com.example.chen.intelligentweigh.bean.House;
-import com.example.chen.intelligentweigh.bean.People;
-import com.example.chen.intelligentweigh.fragment.HouseMangerFragment;
 import com.example.chen.intelligentweigh.util.AlertDialog;
 import com.example.chen.intelligentweigh.util.HttpUrlUtils;
 import com.example.chen.intelligentweigh.util.TitleBuilder;
@@ -49,9 +47,10 @@ public class HouseAreaFragment extends BaseFragment {
     private House house;
     private String TAG = "HouseAreaFragment";
     private boolean isTwoPan;
-    private  List<Area> list;
+    private List<Area> list;
     private List<String> listArea = new ArrayList<>();
     private ArrayAdapter<String> adapter;
+    private RelativeLayout rl_nodata_show;
 
 
     @Nullable
@@ -75,55 +74,59 @@ public class HouseAreaFragment extends BaseFragment {
     }
 
     /**
-     *  提前加载
+     * 提前加载
+     *
      * @param house
      * @return
      */
-    public static HouseAreaFragment newInstance(House house){
+    public static HouseAreaFragment newInstance(House house) {
         HouseAreaFragment fragment = new HouseAreaFragment();
         Bundle bundle = new Bundle();
-        bundle.putSerializable("HouseInfo",house);
+        bundle.putSerializable("HouseInfo", house);
         fragment.setArguments(bundle);
-        return  fragment;
+        return fragment;
     }
 
     private void initView(View view) {
         lv_house_area = (ListView) view.findViewById(R.id.lv_house_area);
         onFragmentUI(view);
         onActivityUI(view);
+        rl_nodata_show = (RelativeLayout) view.findViewById(R.id.rl_nodata_show);
+
     }
 
     /**
      * 在双屏模式下，fragment下
+     *
      * @param view
      */
     private void onFragmentUI(View view) {
-        if(getArguments()!=null){
+        if (getArguments() != null) {
             final House house = (House) getArguments().getSerializable("HouseInfo");
             initAreaList(house);
-            new TitleBuilder(view).setTitleText(house.getName()+"分区").setRightText("添加分区").setRightOnClickListener(new View.OnClickListener() {
+            new TitleBuilder(view).setTitleText(house.getName() + "分区").setRightText("添加分区").setRightOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(getActivity()!=null){
-                    final AlertDialog myDialog = new AlertDialog(getActivity()).etBuilder();
+                    if (getActivity() != null) {
+                        final AlertDialog myDialog = new AlertDialog(getActivity()).etBuilder();
 
-                    myDialog.setEtGone().setTitle("添加").setEtMsg("4").setNegativeButton("取消", null).setPositiveButton("确定", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            String etMsg = myDialog.getEtMsg();
-                            if(!etMsg.isEmpty()){
-                                AddHouseArea(house,etMsg);
-                                new Handler().postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        initCrashAreaList(house.getID());
-                                    }
-                                },1000);
+                        myDialog.setEtGone().setTitle("添加").setEtMsg("4").setNegativeButton("取消", null).setPositiveButton("确定", new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                String etMsg = myDialog.getEtMsg();
+                                if (!etMsg.isEmpty()) {
+                                    AddHouseArea(house, etMsg);
+                                    new Handler().postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            initCrashAreaList(house.getID());
+                                        }
+                                    }, 1000);
+                                }
                             }
-                        }
-                    }).show();
+                        }).show();
 
-                }
+                    }
                 }
             }).build();
 
@@ -131,56 +134,56 @@ public class HouseAreaFragment extends BaseFragment {
             lv_house_area.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                 @Override
                 public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-                        AlertDialog myDialog = new AlertDialog(getActivity()).builder();
-                        myDialog.setGone().setTitle("提示").setMsg("删除分区" + listArea.get(position)).setNegativeButton("取消", null).setPositiveButton("确定", new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                final String s = listArea.get(position);
-                                OkHttpUtils.get()
-                                        .addParams("farmid",house.getID())
-                                        .addParams("area",listArea.get(position))
-                                        .addParams("exist","1")
-                                        .url(HttpUrlUtils.CATTLEBACKBYFRAMAREA)
-                                        .build()
-                                        .execute(new StringCallback() {
-                                            @Override
-                                            public void onError(Request request, Exception e) {
+                    AlertDialog myDialog = new AlertDialog(getActivity()).builder();
+                    myDialog.setGone().setTitle("提示").setMsg("删除分区" + listArea.get(position)).setNegativeButton("取消", null).setPositiveButton("确定", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            final String s = listArea.get(position);
+                            OkHttpUtils.get()
+                                    .addParams("farmid", house.getID())
+                                    .addParams("area", listArea.get(position))
+                                    .addParams("exist", "1")
+                                    .url(HttpUrlUtils.CATTLEBACKBYFRAMAREA)
+                                    .build()
+                                    .execute(new StringCallback() {
+                                        @Override
+                                        public void onError(Request request, Exception e) {
 
+                                        }
+
+                                        @Override
+                                        public void onResponse(String response) {
+                                            if (response.contains("past_id")) {
+                                                Toast.makeText(getContext(), "分区有牛，需选择新的分区", Toast.LENGTH_SHORT).show();
+                                                lv_house_area.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                                    @Override
+                                                    public void onItemClick(AdapterView<?> parent, View view, int position1, long id) {
+                                                        if (position1 == position) {
+                                                            Toast.makeText(getContext(), "请选择正确分区", Toast.LENGTH_LONG).show();
+                                                        } else {
+                                                            String s1 = listArea.get(position1);
+                                                            MoveCows(house.getID(), s, s1);
+                                                        }
+                                                    }
+                                                });
+
+                                            } else {
+                                                DeleteHouseArea(house.getID(), listArea.get(position));
+                                                new Handler().postDelayed(new Runnable() {
+                                                    @Override
+                                                    public void run() {
+                                                        initCrashAreaList(house.getID());
+                                                    }
+                                                }, 1000);
                                             }
 
-                                            @Override
-                                            public void onResponse(String response) {
-                                                if(response.contains("past_id")){
-                                                    Toast.makeText(getContext(),"分区有牛，需选择新的分区",Toast.LENGTH_SHORT).show();
-                                                    lv_house_area.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                                        @Override
-                                                        public void onItemClick(AdapterView<?> parent, View view, int position1, long id) {
-                                                            if(position1==position){
-                                                                Toast.makeText(getContext(),"请选择正确分区",Toast.LENGTH_LONG).show();
-                                                            }else{
-                                                                String s1 = listArea.get(position1);
-                                                                MoveCows(house.getID(),s,s1);
-                                                            }
-                                                        }
-                                                    });
+                                        }
+                                    });
 
-                                                }else{
-                                                    DeleteHouseArea(house.getID(),listArea.get(position));
-                                                    new Handler().postDelayed(new Runnable() {
-                                                        @Override
-                                                        public void run() {
-                                                            initCrashAreaList(house.getID());
-                                                        }
-                                                    },1000);
-                                                }
-
-                                            }
-                                        });
-
-                            }
-                        }).show();
-                        return false;
-                    }
+                        }
+                    }).show();
+                    return false;
+                }
 
             });
 
@@ -191,14 +194,15 @@ public class HouseAreaFragment extends BaseFragment {
 
     /**
      * 删除牧场分区
-     * @param id  牧场ID
-     * @param s   分区名字
+     *
+     * @param id 牧场ID
+     * @param s  分区名字
      */
     private void DeleteHouseArea(String id, String s) {
         OkHttpUtils.get()
                 .url(HttpUrlUtils.DELETE_HOUSE_AREA_URL)
-                .addParams("farmid",id)
-                .addParams("area",s)
+                .addParams("farmid", id)
+                .addParams("area", s)
                 .build()
                 .execute(new StringCallback() {
                     @Override
@@ -210,7 +214,7 @@ public class HouseAreaFragment extends BaseFragment {
 
                     @Override
                     public void onResponse(String response) {
-                        if(getActivity()!=null) {
+                        if (getActivity() != null) {
                             if ("ok".equals(response.toString())) {
                                 Toast.makeText(getActivity(), "删除分区成功", Toast.LENGTH_SHORT).show();
                             } else {
@@ -223,27 +227,28 @@ public class HouseAreaFragment extends BaseFragment {
     }
 
     /**
-     *  添加牧场分区
+     * 添加牧场分区
+     *
      * @param house
      */
-    private void AddHouseArea(House house,String msg) {
+    private void AddHouseArea(House house, String msg) {
         OkHttpUtils.get()
                 .url(HttpUrlUtils.ADD_HOUSE_AREA_URL)
-                .addParams("farmid",house.getID())
-                .addParams("area",msg)
+                .addParams("farmid", house.getID())
+                .addParams("area", msg)
                 .build()
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Request request, Exception e) {
-                        Toast.makeText(getActivity(),"请检查网络连接",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "请检查网络连接", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onResponse(String response) {
-                        if("ok".equals(response.toString())){
-                            Toast.makeText(getActivity(),"添加成功",Toast.LENGTH_SHORT).show();
-                        }else{
-                            Toast.makeText(getActivity(),"添加失败",Toast.LENGTH_SHORT).show();
+                        if ("ok".equals(response.toString())) {
+                            Toast.makeText(getActivity(), "添加成功", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(getActivity(), "添加失败", Toast.LENGTH_SHORT).show();
 
                         }
 
@@ -253,32 +258,39 @@ public class HouseAreaFragment extends BaseFragment {
 
     /**
      * 展示分区listview
+     *
      * @param house
      */
     private void initAreaList(House house) {
         OkHttpUtils.get()
                 .url(HttpUrlUtils.ALL_HOUSE_AREA_URL)
-                .addParams("farmid",house.getID())
+                .addParams("farmid", house.getID())
                 .build()
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Request request, Exception e) {
-                        Toast.makeText(getActivity(),"请检查网络连接",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "请检查网络连接", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onResponse(String response) {
-                        if("error".equals(response.toString())){
-                            Toast.makeText(getActivity(),"数据出错",Toast.LENGTH_SHORT).show();
-                        }else{
-                            Type type = new TypeToken<List<Area>>(){}.getType();
+                        if ("error".equals(response.toString())) {
+                            Toast.makeText(getActivity(), "数据出错", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Type type = new TypeToken<List<Area>>() {
+                            }.getType();
                             list = new Gson().fromJson(response, type);
-                            for(Area area:list){
-                                listArea.add(area.getArea());
+                            if (list != null && list.size() > 0) {
+                                for (Area area : list) {
+                                    listArea.add(area.getArea());
+                                }
+                                Log.e(TAG, "更新前的list" + listArea.size());
+                                adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, listArea);
+                                lv_house_area.setAdapter(adapter);
+                            }else{
+                                lv_house_area.setVisibility(View.GONE);
+                                rl_nodata_show.setVisibility(View.VISIBLE);
                             }
-                            Log.e(TAG,"更新前的list"+listArea.size());
-                            adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,listArea);
-                            lv_house_area.setAdapter(adapter);
                         }
                     }
                 });
@@ -286,34 +298,34 @@ public class HouseAreaFragment extends BaseFragment {
 
 
     /**
-     *  刷新展示
-     *
+     * 刷新展示
      */
     private void initCrashAreaList(String id) {
         OkHttpUtils.get()
                 .url(HttpUrlUtils.ALL_HOUSE_AREA_URL)
-                .addParams("farmid",id)
+                .addParams("farmid", id)
                 .build()
                 .execute(new StringCallback() {
                     @Override
                     public void onError(Request request, Exception e) {
-                        Toast.makeText(getActivity(),"请检查网络连接",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "请检查网络连接", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onResponse(String response) {
-                        if("error".equals(response.toString())){
-                            Toast.makeText(getActivity(),"数据出错",Toast.LENGTH_SHORT).show();
-                        }else{
-                            Type type = new TypeToken<List<Area>>(){}.getType();
+                        if ("error".equals(response.toString())) {
+                            Toast.makeText(getActivity(), "数据出错", Toast.LENGTH_SHORT).show();
+                        } else {
+                            Type type = new TypeToken<List<Area>>() {
+                            }.getType();
                             list = new Gson().fromJson(response, type);
-                            Log.e(TAG,"原始数据"+list.toString());
+                            Log.e(TAG, "原始数据" + list.toString());
                             listArea.clear();
-                            for(Area area:list){
+                            for (Area area : list) {
                                 listArea.add(area.getArea());
                             }
-                            Log.e(TAG,"更新后的list"+listArea.size()+listArea.toString());
-                            adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_1,listArea);
+                            Log.e(TAG, "更新后的list" + listArea.size() + listArea.toString());
+                            adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, listArea);
                             adapter.notifyDataSetChanged();
                             lv_house_area.setAdapter(adapter);
 
@@ -324,12 +336,13 @@ public class HouseAreaFragment extends BaseFragment {
 
     /**
      * 在Activity中，单屏模式下
+     *
      * @param view
      */
     private void onActivityUI(View view) {
-        if(house!=null){
+        if (house != null) {
             initAreaList(house);
-            new TitleBuilder(view).setTitleText(house.getName()+"分区").setLeftText("返回").setLeftOnClickListener(new View.OnClickListener() {
+            new TitleBuilder(view).setTitleText(house.getName() + "分区").setLeftText("返回").setLeftOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     getActivity().finish();
@@ -342,14 +355,14 @@ public class HouseAreaFragment extends BaseFragment {
                         @Override
                         public void onClick(View v) {
                             String etMsg = myDialog.getEtMsg();
-                            if(!etMsg.isEmpty()){
-                                AddHouseArea(house,etMsg);
+                            if (!etMsg.isEmpty()) {
+                                AddHouseArea(house, etMsg);
                                 new Handler().postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
                                         initCrashAreaList(house.getID());
                                     }
-                                },1000);
+                                }, 1000);
                             }
                         }
                     }).show();
@@ -361,14 +374,14 @@ public class HouseAreaFragment extends BaseFragment {
                 @Override
                 public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
                     AlertDialog myDialog = new AlertDialog(getActivity()).builder();
-                    myDialog.setGone().setTitle("提示").setMsg("删除分区"+listArea.get(position)).setNegativeButton("取消", null).setPositiveButton("确定", new View.OnClickListener() {
+                    myDialog.setGone().setTitle("提示").setMsg("删除分区" + listArea.get(position)).setNegativeButton("取消", null).setPositiveButton("确定", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             final String s = listArea.get(position);
                             OkHttpUtils.get()
-                                    .addParams("farmid",house.getID())
-                                    .addParams("area",listArea.get(position))
-                                    .addParams("exist","1")
+                                    .addParams("farmid", house.getID())
+                                    .addParams("area", listArea.get(position))
+                                    .addParams("exist", "1")
                                     .url(HttpUrlUtils.CATTLEBACKBYFRAMAREA)
                                     .build()
                                     .execute(new StringCallback() {
@@ -379,28 +392,28 @@ public class HouseAreaFragment extends BaseFragment {
 
                                         @Override
                                         public void onResponse(String response) {
-                                            if(response.contains("past_id")){
-                                                Toast.makeText(getContext(),"分区有牛，需选择新的分区",Toast.LENGTH_SHORT).show();
+                                            if (response.contains("past_id")) {
+                                                Toast.makeText(getContext(), "分区有牛，需选择新的分区", Toast.LENGTH_SHORT).show();
                                                 lv_house_area.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                                     @Override
                                                     public void onItemClick(AdapterView<?> parent, View view, int position1, long id) {
-                                                        if(position1==position){
-                                                            Toast.makeText(getContext(),"请选择正确分区",Toast.LENGTH_LONG).show();
-                                                        }else{
+                                                        if (position1 == position) {
+                                                            Toast.makeText(getContext(), "请选择正确分区", Toast.LENGTH_LONG).show();
+                                                        } else {
                                                             String s1 = listArea.get(position1);
-                                                            MoveCows(house.getID(),s,s1);
+                                                            MoveCows(house.getID(), s, s1);
                                                         }
                                                     }
                                                 });
 
-                                            }else{
-                                                DeleteHouseArea(house.getID(),listArea.get(position));
+                                            } else {
+                                                DeleteHouseArea(house.getID(), listArea.get(position));
                                                 new Handler().postDelayed(new Runnable() {
                                                     @Override
                                                     public void run() {
                                                         initCrashAreaList(house.getID());
                                                     }
-                                                },1000);
+                                                }, 1000);
                                             }
                                         }
                                     });
@@ -417,9 +430,9 @@ public class HouseAreaFragment extends BaseFragment {
 
     private void MoveCows(final String id, final String s, String s1) {
         OkHttpUtils.get()
-                .addParams("farmid",id)
-                .addParams("oldarea",s)
-                .addParams("newarea",s1)
+                .addParams("farmid", id)
+                .addParams("oldarea", s)
+                .addParams("newarea", s1)
                 .url(HttpUrlUtils.CATTLESMOVEAREABYOLDAREA)
                 .build()
                 .execute(new StringCallback() {
@@ -430,17 +443,17 @@ public class HouseAreaFragment extends BaseFragment {
 
                     @Override
                     public void onResponse(String response) {
-                        if("ok".equals(response)){
-                            Toast.makeText(getContext(),"重新分配分区成功",Toast.LENGTH_SHORT).show();
-                            DeleteHouseArea(id,s);
+                        if ("ok".equals(response)) {
+                            Toast.makeText(getContext(), "重新分配分区成功", Toast.LENGTH_SHORT).show();
+                            DeleteHouseArea(id, s);
                             new Handler().postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
                                     initCrashAreaList(id);
                                 }
-                            },1000);
-                        }else{
-                            Toast.makeText(getContext(),"重新分配分区失败",Toast.LENGTH_SHORT).show();
+                            }, 1000);
+                        } else {
+                            Toast.makeText(getContext(), "重新分配分区失败", Toast.LENGTH_SHORT).show();
 
                         }
 
@@ -473,7 +486,7 @@ public class HouseAreaFragment extends BaseFragment {
      * Called when the fragment attaches to the context
      */
     protected void onAttachToContext(Context context) {
-        if(context instanceof HouseAreaActivity) {
+        if (context instanceof HouseAreaActivity) {
             house = ((HouseAreaActivity) context).setData();
             Log.e(TAG, "HouseAreaActivity传递来的数据" + house);
         }
