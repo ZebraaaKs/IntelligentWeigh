@@ -19,10 +19,13 @@ import com.example.chen.intelligentweigh.BaseFragment;
 import com.example.chen.intelligentweigh.R;
 import com.example.chen.intelligentweigh.activity.kidActivity.ShowCowInfoActivity;
 import com.example.chen.intelligentweigh.bean.Cow;
+import com.example.chen.intelligentweigh.util.LineChartsUtils;
 import com.example.chen.intelligentweigh.util.MyLineChartView;
 import com.example.chen.intelligentweigh.util.TitleBuilder;
 
 import java.util.ArrayList;
+
+import lecho.lib.hellocharts.view.LineChartView;
 
 /**
  * @author chen
@@ -43,12 +46,12 @@ public class ShowCowInfoFragment extends BaseFragment {
     private TextView tv_access_date;
     private TextView tv_access_price;
     private TextView tv_mother_id;
-    private MyLineChartView cv_chart;
     private String TAG = "TAG";
     private Cow cows;
     private ArrayList<String> xListData, xListData2;
     private ArrayList<Float> yListData, yListData2;
-    private MyLineChartView cv_chart_b;
+    private LineChartView lcv_chart;
+    private LineChartView lcv_chart_b;
 
     @Nullable
     @Override
@@ -87,10 +90,11 @@ public class ShowCowInfoFragment extends BaseFragment {
         tv_access_date = (TextView) view.findViewById(R.id.tv_access_date);
         tv_access_price = (TextView) view.findViewById(R.id.tv_access_price);
         tv_mother_id = (TextView) view.findViewById(R.id.tv_mother_id);
-        cv_chart = (MyLineChartView) view.findViewById(R.id.cv_chart);
-        cv_chart_b = (MyLineChartView) view.findViewById(R.id.cv_chart_b);
+        lcv_chart = (LineChartView) view.findViewById(R.id.lcv_chart);
+        lcv_chart_b = (LineChartView) view.findViewById(R.id.lcv_chart_b);
         initFragView(view);
         initActivityView(view);
+
 
 
     }
@@ -106,7 +110,7 @@ public class ShowCowInfoFragment extends BaseFragment {
             Glide.with(getActivity()).load(R.drawable.cowphoto).into(iv_cow_photo);
             tv_cow_id.setText("" + cows.getID());
             tv_access_date.setText(cows.getEntranceDay());
-            tv_access_price.setText("" + cows.getEnterancePrice() + " (元/斤)");
+            tv_access_price.setText("" + cows.getEnterancePrice() + " (元/公斤)");
             tv_cow_birth.setText(cows.getBirthday());
             tv_cow_name.setText(cows.getName());
             tv_cow_sex.setText(cows.getSex());
@@ -116,11 +120,13 @@ public class ShowCowInfoFragment extends BaseFragment {
             tv_house_name.setText(cows.getFarmname() + "·" + cows.getArea());
             tv_mother_id.setText(cows.getMother_id());
             tv_register_date.setText(cows.getRegisterDay());
-            cv_chart.setXValues(xListData);
-            cv_chart.setYValues(yListData);
-            cv_chart_b.setXValues(xListData2);
-            cv_chart_b.setYValues(yListData2);
-            cv_chart_b.setLegendTitle("肉牛日增(日增重/斤--日期)");
+            String[] date = (String[]) xListData.toArray(new String[xListData.size()]);
+            Float[] czdata = (Float[]) yListData.toArray(new Float[yListData.size()]);
+            LineChartsUtils.initLineCharts(date,czdata,lcv_chart,"肉牛称重(重量/公斤--日期)");
+            String[] date1 = (String[]) xListData2.toArray(new String[xListData.size()]);
+            Float[] czdata1 = (Float[]) yListData2.toArray(new Float[yListData.size()]);
+            LineChartsUtils.initLineCharts(date1,czdata1,lcv_chart_b,"肉牛日增(日增重/公斤--日期)");
+
 
 
         }
@@ -155,7 +161,7 @@ public class ShowCowInfoFragment extends BaseFragment {
             Glide.with(getActivity()).load(R.drawable.cow).into(iv_cow_photo);
             tv_cow_id.setText("" + newInfo.getID());
             tv_access_date.setText(newInfo.getEntranceDay());
-            tv_access_price.setText("" + newInfo.getEnterancePrice() + " (元/斤)");
+            tv_access_price.setText("" + newInfo.getEnterancePrice() + " (元/公斤)");
             tv_cow_birth.setText(newInfo.getBirthday());
             tv_cow_name.setText(newInfo.getName());
             tv_cow_sex.setText(newInfo.getSex());
@@ -166,11 +172,13 @@ public class ShowCowInfoFragment extends BaseFragment {
             tv_mother_id.setText(newInfo.getMother_id());
             tv_register_date.setText(newInfo.getRegisterDay());
             Log.e(TAG, ylist.toString());
-            cv_chart.setXValues(xlist);
-            cv_chart.setYValues(ylist);
-            cv_chart_b.setXValues(xlist2);
-            cv_chart_b.setYValues(ylist2);
-            cv_chart_b.setLegendTitle("肉牛日增(日增重/斤--日期)");
+            String[] date = (String[]) xlist.toArray(new String[xlist.size()]);
+            Float[] czdata = (Float[]) ylist.toArray(new Float[ylist.size()]);
+            LineChartsUtils.initLineCharts(date,czdata,lcv_chart,"肉牛称重(重量/公斤--日期)");
+            String[] date1 = (String[]) xlist2.toArray(new String[xlist2.size()]);
+            Float[] czdata1 = (Float[]) ylist2.toArray(new Float[ylist2.size()]);
+            LineChartsUtils.initLineCharts(date1,czdata1,lcv_chart_b,"肉牛日增(日增重/公斤--日期)");
+
 
 
         }

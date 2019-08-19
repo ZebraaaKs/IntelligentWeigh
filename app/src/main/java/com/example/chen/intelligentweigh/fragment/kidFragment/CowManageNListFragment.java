@@ -315,7 +315,7 @@ public class CowManageNListFragment extends BaseFragment {
                             if (!list.isEmpty()) {
                                 xValues = new ArrayList<>();   //x轴数据集合
                                 for (ChenZhong data : list) {
-                                    xValues.add(data.getWtime().substring(6));
+                                    xValues.add(data.getWtime().substring(5,6).equals("0")?data.getWtime().substring(6):data.getWtime().substring(5));
                                 }
                                 yValues = new ArrayList<>();  //y轴数据集合
                                 for (ChenZhong data : list) {
@@ -337,7 +337,7 @@ public class CowManageNListFragment extends BaseFragment {
                             if (!list2.isEmpty()) {
                                 xValues2 = new ArrayList<>();   //x轴数据集合
                                 for (RiZeng data : list2) {
-                                    xValues2.add(data.getWtime().substring(6));
+                                    xValues2.add(data.getWtime().substring(5,6).equals("0")?data.getWtime().substring(6):data.getWtime().substring(5));
                                 }
                                 yValues2 = new ArrayList<>();  //y轴数据集合
                                 for (RiZeng data : list2) {

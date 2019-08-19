@@ -31,6 +31,16 @@
             android:textSize="18sp"
             android:visibility="gone" />
 
+        <android.support.v7.widget.SearchView
+            android:id="@+id/sv_search"
+            android:layout_centerInParent="true"
+            android:layout_width="match_parent"
+            android:layout_marginRight="60dp"
+            android:layout_marginLeft="60dp"
+            android:layout_height="40dp"
+            android:visibility="gone"
+            />
+
         <TextView
             android:id="@+id/titlebar_tv"
             style="@style/TextViewTitle"
@@ -75,7 +85,7 @@
             android:paddingRight="16dp"
             android:textColor="@color/white"
             android:textSize="16sp"
-
             android:visibility="gone" />
+
     </RelativeLayout>
 </LinearLayout>

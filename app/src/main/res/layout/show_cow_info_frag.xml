@@ -329,12 +329,11 @@
         android:layout_weight="3"
         android:layout_width="match_parent"
         android:layout_height="0dp">
-        <com.example.chen.intelligentweigh.util.MyLineChartView
-            android:id="@+id/cv_chart"
-            android:layout_height="match_parent"
-            android:layout_width="match_parent"
-            >
-        </com.example.chen.intelligentweigh.util.MyLineChartView>
+       <lecho.lib.hellocharts.view.LineChartView
+           android:id="@+id/lcv_chart"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           />
     </LinearLayout>
     <View
         android:background="@color/txt_gray"
@@ -355,11 +354,10 @@
         android:layout_weight="3"
         android:layout_width="match_parent"
         android:layout_height="0dp">
-        <com.example.chen.intelligentweigh.util.MyLineChartView
-            android:id="@+id/cv_chart_b"
-            android:layout_height="match_parent"
+        <lecho.lib.hellocharts.view.LineChartView
+            android:id="@+id/lcv_chart_b"
             android:layout_width="match_parent"
-            >
-        </com.example.chen.intelligentweigh.util.MyLineChartView>
+            android:layout_height="match_parent"
+            />
     </LinearLayout>
 </LinearLayout>

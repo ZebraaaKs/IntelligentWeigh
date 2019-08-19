@@ -1,5 +1,6 @@
 package com.example.chen.intelligentweigh.fragment2;
 
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,11 +13,14 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.example.chen.intelligentweigh.R;
+import com.example.chen.intelligentweigh.activity2.SearchActivity;
 import com.example.chen.intelligentweigh.adapter.TabVpAdapter;
 import com.example.chen.intelligentweigh.fragment.kidFragment.CowManageNListFragment;
 import com.example.chen.intelligentweigh.fragment.kidFragment.CowManageYListFragment;
+import com.example.chen.intelligentweigh.fragment2.kidFragment.SearchFragment;
 import com.example.chen.intelligentweigh.fragment2.kidFragment.vpFragment.CzLogFragment;
 import com.example.chen.intelligentweigh.util.SharedUtils;
 import com.example.chen.intelligentweigh.util.TitleBuilder;
@@ -79,7 +83,23 @@ public class AnimalFragment extends BaseFragment {
     private void initView(View rootView) {
         ll_showfrag = (LinearLayout) rootView.findViewById(R.id.ll_showfrag);
         ll_showactivity = (RelativeLayout) rootView.findViewById(R.id.ll_showactivity);
-        new TitleBuilder(rootView).setTitleText("动物档案").build();
+        new TitleBuilder(rootView).setTitleText("动物档案").setLeftImage(R.drawable.search).setLeftOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isTwoPan){
+                    SearchFragment searchFragment = new SearchFragment();
+                    getFragmentManager().beginTransaction().replace(R.id.other_content_frag, searchFragment).commit();
+
+                }else{
+                    if(getActivity()!=null) {
+                        Intent intent = new Intent(getActivity(), SearchActivity.class);
+                        startActivity(intent);
+                    }
+                }
+
+
+            }
+        }).build();
 
 
         rl_black_show = (RelativeLayout) rootView.findViewById(R.id.rl_black_show);

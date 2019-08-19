@@ -8,12 +8,14 @@ package com.example.chen.intelligentweigh.util;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.v7.widget.SearchView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.chen.intelligentweigh.R;
+import com.google.gson.Gson;
 
 /**
  * 标题栏构造器,使用方法 new TitleBuilder().setMethod().setMethod()......
@@ -31,6 +33,7 @@ public class TitleBuilder {
     private TextView tvLeft;
     private TextView tvRight;
     private ImageView ivCall;
+    private SearchView searchView;
 
     /**
      * Activity中使用这个构造方法
@@ -43,6 +46,7 @@ public class TitleBuilder {
         tvLeft = (TextView) viewTitle.findViewById(R.id.titlebar_tv_left);
         tvRight = (TextView) viewTitle.findViewById(R.id.titlebar_tv_right);
         ivCall = (ImageView) viewTitle.findViewById(R.id.titlebar_iv_call);
+        searchView = (SearchView) viewTitle.findViewById(R.id.sv_search);
 
     }
 
@@ -57,6 +61,7 @@ public class TitleBuilder {
         tvLeft = (TextView) viewTitle.findViewById(R.id.titlebar_tv_left);
         tvRight = (TextView) viewTitle.findViewById(R.id.titlebar_tv_right);
         ivCall = (ImageView) viewTitle.findViewById(R.id.titlebar_iv_call);
+        searchView = (SearchView) viewTitle.findViewById(R.id.sv_search);
     }
 
     // title
@@ -72,6 +77,17 @@ public class TitleBuilder {
         tvTitle.setText(text);
         return this;
     }
+
+    public TitleBuilder setSv(Context context,String text,boolean showIcon){
+        searchView.setVisibility(TextUtils.isEmpty(text)? View.GONE:View.VISIBLE);
+        searchView.setQueryHint(text);
+        searchView.setIconifiedByDefault(showIcon);
+        searchView.findViewById(android.support.v7.appcompat.R.id.search_plate).setBackground(null);
+        searchView.findViewById(android.support.v7.appcompat.R.id.submit_area).setBackground(null);
+        searchView.setBackground(context.getResources().getDrawable(R.drawable.searview_shape));
+        return this;
+    }
+
 
     // left
     public TitleBuilder setLeftImage(int resId) {

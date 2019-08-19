@@ -12,6 +12,7 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -204,6 +205,7 @@ public class MyLineChartView extends View {
             path1.lineTo(mWidth - paddingRight, mHeight - paddingDown - leftRightExtra - i * intervalY);
         }
         canvas.drawPath(path1, p);
+        Log.e("Charts","变换X");
     }
 
     /**
@@ -250,6 +252,7 @@ public class MyLineChartView extends View {
             RectF rectF = new RectF(0, 0, originX, mHeight);
             canvas.drawRect(rectF, paintBack);
             canvas.restore();
+            Log.e("Charts","变换折线");
         }
     }
 
@@ -299,6 +302,7 @@ public class MyLineChartView extends View {
         RectF rectF = new RectF(mWidth - paddingRight, 0, mWidth, mHeight);
         canvas.drawRect(rectF, paintBack);
         canvas.restore();
+        Log.e("Charts","变换Y");
     }
 
     /**
@@ -343,6 +347,7 @@ public class MyLineChartView extends View {
                     e1.getY() > paddingTop && e1.getY() < mHeight - paddingDown) {
                 //注意：这里的distanceX是e1.getX()-e2.getX()
                 distanceX = -distanceX;
+
                 if (firstPointX + distanceX > firstMaxX) {
                     firstPointX = firstMaxX;
                 } else if (firstPointX + distanceX < firstMinX) {
@@ -412,5 +417,6 @@ public class MyLineChartView extends View {
         paint.getTextBounds(text, 0, text.length(), rect);
         return rect.height();
     }
+
 }
 

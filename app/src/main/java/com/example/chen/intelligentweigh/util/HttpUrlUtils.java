@@ -103,4 +103,7 @@ public class HttpUrlUtils {
     //返回称重记录
     public final static String CATTLEBACKDAYWEIGHRECORD = BASE_URL+"CattleBackDayWeighRecord";
 
+    //搜索肉牛信息
+    public final static String  CATTLEBACKSEARCHINFO = BASE_URL+"CattleBackSearchInfo";
+
 }
