@@ -20,7 +20,6 @@ import com.example.chen.intelligentweigh.R;
 import com.example.chen.intelligentweigh.activity.kidActivity.ShowCowInfoActivity;
 import com.example.chen.intelligentweigh.bean.Cow;
 import com.example.chen.intelligentweigh.util.LineChartsUtils;
-import com.example.chen.intelligentweigh.util.MyLineChartView;
 import com.example.chen.intelligentweigh.util.TitleBuilder;
 
 import java.util.ArrayList;

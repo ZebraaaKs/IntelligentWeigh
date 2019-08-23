@@ -58,5 +58,5 @@ dependencies {
 
 
 
-    compile project(path: ':hellocharts-library')
+    implementation project(path: ':hellocharts-library')
 }

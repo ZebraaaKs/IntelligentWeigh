@@ -3,6 +3,7 @@ package com.example.chen.intelligentweigh.adapter;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -63,11 +64,13 @@ public class ListViewPeopleAdapter extends ArrayAdapter<People> {
         viewHolder.tv_name.setText(people.getName());
         String farmids = people.getFarmids();
         Log.e(TAG,"牧场:"+farmids);
-        if (farmids!=null){
+        if (!TextUtils.isEmpty(farmids)){
             viewHolder.tv_houseinfo.setText(farmids);
+            viewHolder.tv_houseinfo.setTextColor(context.getResources().getColor(R.color.txt_black));
         }else{
-            viewHolder.tv_houseinfo.setTextColor(context.getResources().getColor(R.color.txt_red));
             viewHolder.tv_houseinfo.setText("暂无绑定");
+            viewHolder.tv_houseinfo.setTextColor(context.getResources().getColor(R.color.txt_red));
+
         }
         return view;
     }

@@ -22,10 +22,13 @@ public class SearchCowData {
      * mother_id : 0000
      */
 
+
+
     private String ID;
     private String name;
     private String past_id;
     private String farmname;
+    private String area;
     private String kind;
     private String sex;
     private String birthday;
@@ -129,5 +132,13 @@ public class SearchCowData {
 
     public void setMother_id(String mother_id) {
         this.mother_id = mother_id;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
     }
 }

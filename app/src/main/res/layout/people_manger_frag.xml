@@ -5,6 +5,18 @@
     android:orientation="vertical"
     android:layout_height="match_parent">
     <include layout="@layout/rl_titlebar"></include>
+    <LinearLayout
+        android:background="@drawable/device_search_shape"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        >
+        <android.support.v7.widget.SearchView
+            android:id="@+id/sv_people"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></android.support.v7.widget.SearchView>
+    </LinearLayout>
     <ListView
         android:background="@drawable/itembackgroud"
         android:id="@+id/lv_people"

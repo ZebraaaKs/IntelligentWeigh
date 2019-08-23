@@ -21,6 +21,7 @@ import com.example.chen.intelligentweigh.bean.RiZeng;
 import com.example.chen.intelligentweigh.bean.SearchCowData;
 import com.example.chen.intelligentweigh.bean.SearchCowInfo;
 import com.example.chen.intelligentweigh.fragment2.AnimalFragment;
+import com.example.chen.intelligentweigh.fragment2.BlankFragment;
 import com.example.chen.intelligentweigh.util.HttpUrlUtils;
 import com.example.chen.intelligentweigh.util.LineChartsUtils;
 import com.example.chen.intelligentweigh.util.SharedUtils;
@@ -121,8 +122,8 @@ public class SearchFragment extends BaseFragment {
                 @Override
                 public void onClick(View v) {
                     if (isTwoPan) {
-                        AnimalFragment animalFragment = new AnimalFragment();
-                        getFragmentManager().beginTransaction().replace(R.id.other_content_frag, animalFragment).commit();
+                        BlankFragment blankFragment = new BlankFragment();
+                        getFragmentManager().beginTransaction().replace(R.id.other_content_frag, blankFragment).commit();
                     } else {
                         getActivity().finish();
 
@@ -197,7 +198,7 @@ public class SearchFragment extends BaseFragment {
                                     tv_cow_type.setText(cowData.getKind());
                                     tv_father_id.setText(cowData.getFather_id());
                                     tv_house_id.setText(cowData.getFather_id());
-                                    tv_house_name.setText(cowData.getFarmname());
+                                    tv_house_name.setText(cowData.getFarmname()+"·"+cowData.getArea());
                                     tv_mother_id.setText(cowData.getMother_id());
                                     tv_register_date.setText(cowData.getRegisterDay());
                                 } else {
