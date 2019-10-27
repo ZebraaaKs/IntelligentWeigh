@@ -36,7 +36,7 @@
             android:value="640" />
 
         <activity
-            android:name=".activity.LoginActivity"
+            android:name=".activity.WelcomeActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="sensorPortrait">
             <intent-filter>
@@ -45,6 +45,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activity.LoginActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="sensorPortrait"
+            />
         <activity android:name=".MainActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             />

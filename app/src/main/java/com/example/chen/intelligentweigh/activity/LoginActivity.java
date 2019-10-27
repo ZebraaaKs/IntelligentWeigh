@@ -159,6 +159,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             SharedPreferences.Editor editor=sharedPreferences.edit();
             editor.putString("phone",phone);
             editor.commit();
+
+
+            SharedPreferences sharedPreferences2 = getSharedPreferences("autoLogin",MODE_PRIVATE);
+            SharedPreferences.Editor editor2=sharedPreferences2.edit();
+            editor2.putString("autoFlag","YES");
+            editor2.commit();
+
+
             Intent intent = new Intent(LoginActivity.this, Main2Activity.class);
             startActivity(intent);
             finish();
@@ -211,6 +219,12 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                             SharedPreferences.Editor editor=sharedPreferences.edit();
                             editor.putString("phone",user.getPhone());
                             editor.commit();
+
+
+                            SharedPreferences sharedPreferences2 = getSharedPreferences("autoLogin",MODE_PRIVATE);
+                            SharedPreferences.Editor editor2=sharedPreferences2.edit();
+                            editor2.putString("autoFlag","YES");
+                            editor2.commit();
                             //更新数据库
                             user.updateAll("phone = ?",phone);
                             Intent intent = new Intent(LoginActivity.this, Main2Activity.class);

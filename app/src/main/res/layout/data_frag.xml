@@ -1,13 +1,504 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
     <include layout="@layout/rl_titlebar"></include>
-    <TextView
-        android:gravity="center_horizontal|center_vertical"
-        android:text="数据"
+    <ScrollView
+        android:scrollbars="none"
+        android:background="@color/line_default_color"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
+        <LinearLayout
+            android:orientation="vertical"
+            android:padding="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <android.support.v7.widget.CardView
+                android:id="@+id/cv_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:cardCornerRadius="8dp"
+                android:elevation="5dp"
+                app:cardBackgroundColor="@color/text_nodata_color"
+                >
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="100dp">
+            <TextView
+                android:gravity="center_horizontal|center_vertical"
+                android:textSize="20sp"
+                android:textColor="@color/txt_black"
+                android:text="牧场总览"
+                android:textStyle="bold"
+                android:layout_weight="2"
+                android:layout_width="match_parent"
+                android:layout_height="0dp" />
+            <LinearLayout
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:orientation="horizontal"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp">
+                <TextView
+                    android:textColor="@color/txt_black"
+                    android:text="存栏数量："
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent" />
+                <TextView
+                    android:id="@+id/cunlannum"
+                    android:text="未知"
+                    android:textColor="@color/txt_black"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent" />
+                <TextView
+                    android:textColor="@color/txt_black"
+                    android:text="淘汰数量："
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent" />
+                <TextView
+                    android:id="@+id/taotainum"
+                    android:text="未知"
+                    android:textColor="@color/txt_black"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_marginTop="10dp"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
+                android:orientation="horizontal"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="0dp">
+                <TextView
+                    android:textColor="@color/txt_black"
+                    android:text="出栏数量："
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent" />
+                <TextView
+                    android:id="@+id/chulannum"
+                    android:text="未知"
+                    android:textColor="@color/txt_black"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent" />
+                <TextView
+                    android:textColor="@color/txt_black"
+                    android:text="日均增量："
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent" />
+                <TextView
+                    android:id="@+id/tv_dayaddnum"
+                    android:text="未知"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
+        </LinearLayout>
+            </android.support.v7.widget.CardView>
+
+
+
+            <LinearLayout
+                android:layout_marginTop="20dp"
+                android:padding="10dp"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp">
+                    <TextView
+                        android:autoSizeTextType="uniform"
+                        android:layout_gravity="center_vertical"
+                        android:text="日饲养成本(元):"
+                        android:layout_width="0dp"
+                        android:textColor="@color/txt_black"
+                        android:layout_weight="3"
+                        android:layout_height="wrap_content" />
+                    <EditText
+                        android:id="@+id/et_feedcost"
+                        android:hint="请输入日成本"
+                        android:textColor="@color/txt_black"
+                        android:autoSizeTextType="uniform"
+                        android:background="@null"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="4"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/txt_gray"
+                    ></View>
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp">
+                    <TextView
+                        android:autoSizeTextType="uniform"
+                        android:layout_gravity="center_vertical"
+                        android:text="当前肉价(元/斤):"
+                        android:layout_width="0dp"
+                        android:layout_weight="3"
+                        android:textColor="@color/txt_black"
+                        android:layout_height="wrap_content" />
+                    <EditText
+                        android:id="@+id/et_currentprice"
+                        android:hint="请输入当前肉价"
+                        android:textColor="@color/txt_black"
+                        android:autoSizeTextType="uniform"
+                        android:background="@null"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="4"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/txt_gray"
+                    ></View>
+            </LinearLayout>
+            <LinearLayout
+                android:padding="10dp"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <View
+                    android:background="@color/txt_gray"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"></View>
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp">
+                    <TextView
+                        android:textColor="@color/txt_black"
+                        android:autoSizeTextType="uniform"
+                        android:text="存栏总量:"
+                        android:layout_gravity="center_vertical"
+                        android:layout_width="0dp"
+                        android:layout_weight="2.5"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/tv_cunlannum"
+                        android:text="0"
+                        android:autoSizeTextType="uniform"
+                        android:textColor="@color/txt_black"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_horizontal"
+                        android:layout_width="0dp"
+                        android:layout_weight="3"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:autoSizeTextType="uniform"
+                        android:layout_gravity="center_vertical"
+                        android:text="头"
+                        android:textColor="@color/txt_black"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+                <View
+                    android:background="@color/txt_gray"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"></View>
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp">
+                    <TextView
+                        android:textColor="@color/txt_black"
+                        android:autoSizeTextType="uniform"
+                        android:text="出栏总量:"
+                        android:layout_gravity="center_vertical"
+                        android:layout_width="0dp"
+                        android:layout_weight="2.5"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/tv_chulannum"
+                        android:text="0"
+                        android:autoSizeTextType="uniform"
+                        android:textColor="@color/txt_black"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_horizontal"
+                        android:layout_width="0dp"
+                        android:layout_weight="3"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:autoSizeTextType="uniform"
+                        android:layout_gravity="center_vertical"
+                        android:text="头"
+                        android:textColor="@color/txt_black"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+                <View
+                    android:background="@color/txt_gray"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"></View>
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="2.5"
+                        android:text="淘汰总量:"
+                        android:textColor="@color/txt_black"
+                        android:autoSizeTextType="uniform" />
+                    <TextView
+                        android:id="@+id/tv_taotai"
+                        android:text="0"
+                        android:autoSizeTextType="uniform"
+                        android:textColor="@color/txt_black"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_horizontal"
+                        android:layout_width="0dp"
+                        android:layout_weight="3"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:autoSizeTextType="uniform"
+                        android:layout_gravity="center_vertical"
+                        android:text="头"
+                        android:textColor="@color/txt_black"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+                <View
+                    android:background="@color/txt_gray"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"></View>
+
+            </LinearLayout>
+            <LinearLayout
+                android:padding="10dp"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <View
+                    android:background="@color/txt_gray"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"></View>
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp">
+                    <TextView
+                        android:textColor="@color/txt_black"
+                        android:autoSizeTextType="uniform"
+                        android:text="存栏总重量:"
+                        android:layout_gravity="center_vertical"
+                        android:layout_width="0dp"
+                        android:layout_weight="2.5"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/tv_cunlanweight"
+                        android:text="0"
+                        android:autoSizeTextType="uniform"
+                        android:textColor="@color/txt_black"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_horizontal"
+                        android:layout_width="0dp"
+                        android:layout_weight="3"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:autoSizeTextType="uniform"
+                        android:layout_gravity="center_vertical|right"
+                        android:text="公斤"
+                        android:textColor="@color/txt_black"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+                <View
+                    android:background="@color/txt_gray"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"></View>
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp">
+                    <TextView
+                        android:textColor="@color/txt_black"
+                        android:autoSizeTextType="uniform"
+                        android:text="存栏总价值:"
+                        android:layout_gravity="center_vertical"
+                        android:layout_width="0dp"
+                        android:layout_weight="2.5"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/tv_cunlanmoney"
+                        android:text="0"
+                        android:autoSizeTextType="uniform"
+                        android:textColor="@color/txt_black"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_horizontal"
+                        android:layout_width="0dp"
+                        android:layout_weight="3"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:autoSizeTextType="uniform"
+                        android:layout_gravity="center_vertical"
+                        android:text="元"
+                        android:textColor="@color/txt_black"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+                <View
+                    android:background="@color/txt_gray"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"></View>
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp">
+                    <TextView
+                        android:textColor="@color/txt_black"
+                        android:autoSizeTextType="uniform"
+                        android:text="存栏初始价值:"
+                        android:layout_gravity="center_vertical"
+                        android:layout_width="0dp"
+                        android:layout_weight="2.5"
+                        android:singleLine="true"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/tv_cunlanstartvalue"
+                        android:text="0"
+                        android:autoSizeTextType="uniform"
+                        android:textColor="@color/txt_black"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_horizontal"
+                        android:layout_width="0dp"
+                        android:layout_weight="3"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:autoSizeTextType="uniform"
+                        android:layout_gravity="center_vertical"
+                        android:text="元"
+                        android:textColor="@color/txt_black"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+                <View
+                    android:background="@color/txt_gray"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"></View>
+            </LinearLayout>
+
+            <LinearLayout
+                android:padding="10dp"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <View
+                    android:background="@color/txt_gray"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"></View>
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp">
+                    <TextView
+                        android:textColor="@color/txt_black"
+                        android:autoSizeTextType="uniform"
+                        android:text="存栏净利润:"
+                        android:layout_gravity="center_vertical"
+                        android:layout_width="0dp"
+                        android:layout_weight="2.5"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/tv_cunlanprofits"
+                        android:text="0"
+                        android:autoSizeTextType="uniform"
+                        android:textColor="@color/txt_black"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_horizontal"
+                        android:layout_width="0dp"
+                        android:layout_weight="3"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:autoSizeTextType="uniform"
+                        android:layout_gravity="center_vertical"
+                        android:text="元"
+                        android:textColor="@color/txt_black"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <View
+                    android:background="@color/txt_gray"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"></View>
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp">
+                    <TextView
+                        android:textColor="@color/txt_black"
+                        android:autoSizeTextType="uniform"
+                        android:text="盈利平衡指数:"
+                        android:layout_gravity="center_vertical"
+                        android:layout_width="0dp"
+                        android:layout_weight="2.5"
+                        android:singleLine="true"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:id="@+id/tv_kpi"
+                        android:text="0"
+                        android:autoSizeTextType="uniform"
+                        android:textColor="@color/txt_black"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_horizontal"
+                        android:layout_width="0dp"
+                        android:layout_weight="3"
+                        android:layout_height="wrap_content" />
+                    <TextView
+                        android:autoSizeTextType="uniform"
+                        android:layout_gravity="center_vertical"
+                        android:text=""
+                        android:textColor="@color/txt_black"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+                <View
+                    android:background="@color/txt_gray"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"></View>
+            </LinearLayout>
+        </LinearLayout>
+
+
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

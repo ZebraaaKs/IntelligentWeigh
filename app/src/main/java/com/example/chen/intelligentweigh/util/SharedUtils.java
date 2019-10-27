@@ -26,6 +26,9 @@ public class SharedUtils {
         return phone;
     }
 
+
+
+
     public static String getTime(Context context) {
         String phone = getPhone(context);
         SharedPreferences sharedPreferences = context.getSharedPreferences(phone,MODE_PRIVATE);
