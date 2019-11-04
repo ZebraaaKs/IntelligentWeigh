@@ -124,15 +124,19 @@ public class DataFragment extends BaseFragment {
                                 Type type = new TypeToken<CardData>(){}.getType();
                                 Gson gson = new Gson();
                                 CardData data = (CardData)gson.fromJson(response, type);
-                                cunlannum.setText(data.getCunl());
-                                chulannum.setText(data.getChul());
-                                taotainum.setText(data.getTaotai());
-                                if(data.getRizengzhong().contains("-")){
-                                    tv_dayaddnum.setTextColor(getResources().getColor(R.color.red));
-                                }else{
-                                    tv_dayaddnum.setTextColor(getResources().getColor(R.color.greenofnum));
+                                if(data!=null) {
+                                    cunlannum.setText(data.getCunl());
+                                    chulannum.setText(data.getChul());
+                                    taotainum.setText(data.getTaotai());
+                                    if(data.getRizengzhong()!=null&&!"".equals(data.getRizengzhong())) {
+                                        if (data.getRizengzhong().contains("-")) {
+                                            tv_dayaddnum.setTextColor(getResources().getColor(R.color.red));
+                                        } else {
+                                            tv_dayaddnum.setTextColor(getResources().getColor(R.color.greenofnum));
+                                        }
+                                        tv_dayaddnum.setText(data.getRizengzhong());
+                                    }
                                 }
-                                tv_dayaddnum.setText(data.getRizengzhong());
                             }
 
                         }

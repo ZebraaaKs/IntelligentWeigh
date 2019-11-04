@@ -18,6 +18,7 @@ import com.example.chen.intelligentweigh.BaseFragment;
 import com.example.chen.intelligentweigh.R;
 import com.example.chen.intelligentweigh.adapter.CowWightLogAdapter;
 import com.example.chen.intelligentweigh.bean.WeightLogData;
+import com.example.chen.intelligentweigh.util.ActionSheet;
 import com.example.chen.intelligentweigh.util.HttpUrlUtils;
 import com.example.chen.intelligentweigh.util.SharedUtils;
 import com.example.chen.intelligentweigh.util.TitleBuilder;
@@ -53,6 +54,7 @@ public class CzLogFragment extends BaseFragment {
 
     private final static String TAG = "CzLogFragment";
     private RelativeLayout rl_nodata_show;
+    private ActionSheet actionSheet;
 
     @Nullable
     @Override
@@ -81,6 +83,8 @@ public class CzLogFragment extends BaseFragment {
             isTwoPan = false;
         }
         initDiffentView(rootView);
+
+
     }
 
     private void initView(View rootView) {
@@ -160,6 +164,34 @@ public class CzLogFragment extends BaseFragment {
                             list = new Gson().fromJson(response, type);
                             if(list!=null&&list.size()>0) {
                                 adapter = new CowWightLogAdapter(list);
+                                adapter.setOnItemClickListener(new CowWightLogAdapter.OnItemClickListener() {
+                                    @Override
+                                    public void OnItemClick(View view, final int position) {
+                                        actionSheet = new ActionSheet.DialogBuilder(getActivity())
+                                                .setTitle("批量操作")
+                                                .addSheet("出栏", new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View v) {
+                                                        Log.e(TAG,"目前"+position);
+
+                                                    }
+                                                })
+                                                .addSheet("淘汰", new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View v) {
+                                                        Log.e(TAG,"目前"+position);
+                                                    }
+                                                })
+                                                .setCancel("取消")
+                                                .addCancelListener(new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View v) {
+                                                        actionSheet.dismiss();
+                                                    }
+                                                })
+                                                .create();
+                                    }
+                                });
                                 lv_czlog.setAdapter(adapter);
                             }else{
                                 srl_czlog.setVisibility(View.GONE);

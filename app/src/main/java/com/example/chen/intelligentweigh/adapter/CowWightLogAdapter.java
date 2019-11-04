@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.example.chen.intelligentweigh.R;
 import com.example.chen.intelligentweigh.bean.WeightLogData;
+import com.example.chen.intelligentweigh.util.ActionSheet;
 
 import java.util.List;
 
@@ -19,6 +20,17 @@ import java.util.List;
 public class CowWightLogAdapter extends RecyclerView.Adapter<CowWightLogAdapter.ViewHolder> {
 
     private List<WeightLogData> list;
+
+    public interface OnItemClickListener{
+        void OnItemClick(View view,int position);
+    }
+
+    private OnItemClickListener onItemClickListener;
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener){
+        this.onItemClickListener = onItemClickListener;
+    }
+
 
 
     static class ViewHolder extends RecyclerView.ViewHolder{
@@ -44,16 +56,26 @@ public class CowWightLogAdapter extends RecyclerView.Adapter<CowWightLogAdapter.
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_cowweight_log,parent,false);
         ViewHolder holder = new ViewHolder(view);
+
         return holder;
     }
 
     //将数据绑定到控件上
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         WeightLogData weightLogData = list.get(position);
         holder.tv_sumweight.setText("总重量："+weightLogData.getSumweigh()+"公斤");
         holder.tv_cownum.setText("数量："+weightLogData.getCattlenum()+"头");
         holder.tv_weighttime.setText(weightLogData.getWtime());
+        if(onItemClickListener!=null){
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = holder.getLayoutPosition();
+                    onItemClickListener.OnItemClick(holder.itemView,position);
+                }
+            });
+        }
     }
 
     @Override
